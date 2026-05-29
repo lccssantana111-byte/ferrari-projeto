@@ -98,19 +98,37 @@ export default function BrandManifesto() {
       <div className="relative overflow-hidden pointer-events-none select-none py-3 sm:py-6">
         <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap">
           {Array.from({ length: 5 }).map((_, i) => (
-            <span
-              key={i}
-              className="font-black tracking-[-0.03em] mr-16 shrink-0"
-              style={{
-                fontSize: 'clamp(5rem, 18vw, 10rem)',
-                lineHeight: 1,
-                fontFamily: 'Georgia, "Times New Roman", serif',
-                color: 'transparent',
-                WebkitTextStroke: '1.5px rgba(10,10,10,0.18)',
-                textShadow: '-60px 0 rgba(0,140,69,0.12), 0 0 rgba(255,255,255,0.06), 60px 0 rgba(206,43,55,0.12)',
-              }}
-            >
-              Ferrari
+            <span key={i} className="relative inline-block mr-16 shrink-0">
+              {/* Camada 1: gradiente italiano no fill */}
+              <span
+                aria-hidden
+                className="font-black tracking-[-0.03em]"
+                style={{
+                  fontSize: 'clamp(5rem, 18vw, 10rem)',
+                  lineHeight: 1,
+                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  background: 'linear-gradient(90deg, rgba(0,140,69,0.25) 0%, rgba(200,200,200,0.08) 50%, rgba(206,43,55,0.25) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  display: 'block',
+                }}
+              >
+                Ferrari
+              </span>
+              {/* Camada 2: stroke preto por cima */}
+              <span
+                className="font-black tracking-[-0.03em] absolute inset-0"
+                style={{
+                  fontSize: 'clamp(5rem, 18vw, 10rem)',
+                  lineHeight: 1,
+                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  color: 'transparent',
+                  WebkitTextStroke: '1.5px rgba(10,10,10,0.15)',
+                }}
+              >
+                Ferrari
+              </span>
             </span>
           ))}
         </motion.div>
