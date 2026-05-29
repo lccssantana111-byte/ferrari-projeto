@@ -39,7 +39,7 @@ export default function BrandManifesto() {
               width={320}
               height={320}
               className="object-contain shrink-0"
-              style={{ mixBlendMode: 'multiply', opacity: 0.08 }}
+              style={{ mixBlendMode: 'multiply', opacity: 0.35 }}
             />
           ))}
         </motion.div>
