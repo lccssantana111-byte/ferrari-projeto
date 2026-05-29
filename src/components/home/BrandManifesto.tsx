@@ -44,7 +44,7 @@ export default function BrandManifesto() {
         </motion.div>
 
         {/* Headline principal */}
-        <div className="mb-0 text-center sm:text-left">
+        <div className="mb-0 text-center">
           {/* Par 1 */}
           <div style={{ marginBottom: 'clamp(0.3rem, 1vw, 1rem)' }}>
             {[
@@ -58,7 +58,7 @@ export default function BrandManifesto() {
                 transition={{ delay: line.delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 className="block font-black tracking-[-0.04em]"
                 style={{
-                  fontSize: 'clamp(2.8rem, 10vw, 5.5rem)',
+                  fontSize: 'clamp(2rem, 5vw, 3.8rem)',
                   lineHeight: 1.0,
                   color: line.outline ? '#F0EDE8' : '#0A0A0A',
                   WebkitTextStroke: line.outline ? '1.5px rgba(10,10,10,0.18)' : undefined,
@@ -82,7 +82,7 @@ export default function BrandManifesto() {
                 transition={{ delay: line.delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 className="block font-black tracking-[-0.04em]"
                 style={{
-                  fontSize: 'clamp(2.8rem, 10vw, 5.5rem)',
+                  fontSize: 'clamp(2rem, 5vw, 3.8rem)',
                   lineHeight: 1.0,
                   color: line.red ? '#DC143C' : '#0A0A0A',
                 }}
