@@ -29,26 +29,32 @@ export default function BrandManifesto() {
 
       {/* Marquee de fundo — entre a headline e a divisória */}
       <div
-        className="absolute left-0 right-0 overflow-hidden pointer-events-none select-none flex items-center"
-        style={{ top: '42%', bottom: '30%' }}
+        className="absolute left-0 right-0 pointer-events-none select-none"
+        style={{ top: '38%', bottom: '28%' }}
       >
-        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <span
-              key={i}
-              className="font-black tracking-[-0.03em] mr-20 shrink-0"
-              style={{
-                fontSize: 'clamp(5rem, 12vw, 12rem)',
-                lineHeight: 1,
-                color: 'transparent',
-                WebkitTextStroke: '1.5px rgba(10,10,10,0.13)',
-                fontFamily: 'Georgia, "Times New Roman", serif',
-              }}
-            >
-              Ferrari
-            </span>
-          ))}
-        </motion.div>
+        {/* fade topo */}
+        <div className="absolute top-0 left-0 right-0 h-8 z-10" style={{ background: 'linear-gradient(to bottom, #F0EDE8, transparent)' }} />
+        {/* fade base */}
+        <div className="absolute bottom-0 left-0 right-0 h-8 z-10" style={{ background: 'linear-gradient(to top, #F0EDE8, transparent)' }} />
+        <div className="overflow-hidden h-full flex items-center">
+          <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <span
+                key={i}
+                className="font-black tracking-[-0.03em] mr-20 shrink-0"
+                style={{
+                  fontSize: 'clamp(5rem, 12vw, 12rem)',
+                  lineHeight: 1,
+                  color: 'transparent',
+                  WebkitTextStroke: '1.5px rgba(10,10,10,0.13)',
+                  fontFamily: 'Georgia, "Times New Roman", serif',
+                }}
+              >
+                Ferrari
+              </span>
+            ))}
+          </motion.div>
+        </div>
       </div>
 
       {/* Conteúdo */}
