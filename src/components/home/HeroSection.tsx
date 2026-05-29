@@ -194,7 +194,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 8 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-3 mb-3 sm:mb-4"
+            className="flex items-center gap-3 mb-2 sm:mb-4"
           >
             <span className="w-5 sm:w-6 h-px bg-ferrari-red" />
             <span style={{ fontSize: '9px', letterSpacing: '0.4em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>
@@ -205,7 +205,7 @@ export default function HeroSection() {
 
         {/* Headline */}
         <AnimatePresence mode="wait">
-          <motion.div key={`title-${current}`} className="tracking-[-0.04em] mb-5 sm:mb-7">
+          <motion.div key={`title-${current}`} className="tracking-[-0.04em] mb-3 sm:mb-7">
             <motion.div
               initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
@@ -242,7 +242,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.45, delay: 0.1 }}
-            className="flex items-center gap-0 mb-5 sm:mb-6"
+            className="flex items-center gap-0 mb-3 sm:mb-6"
           >
             {slide.specs.map((s, i) => (
               <div key={i} className="flex items-center">
@@ -266,7 +266,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45, duration: 0.5 }}
-          className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-6"
+          className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-6"
         >
           <button
             onClick={scrollToCollection}
@@ -289,7 +289,7 @@ export default function HeroSection() {
         </motion.div>
 
         {/* Dots de navegação — centralizados no mobile */}
-        <div className="flex items-center justify-center sm:justify-start gap-2 pb-5 sm:pb-7">
+        <div className="flex items-center justify-center sm:justify-start gap-2 pb-8 sm:pb-7">
           {SLIDES.map((_, i) => (
             <button
               key={i}
