@@ -27,30 +27,6 @@ export default function BrandManifesto() {
         transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
       />
 
-      {/* Marquee de fundo — centralizado entre headline e divisória */}
-      <div
-        className="absolute left-0 right-0 pointer-events-none select-none overflow-hidden"
-        style={{ top: '55%', height: '120px', transform: 'translateY(-50%)' }}
-      >
-        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap h-full">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <span
-              key={i}
-              className="font-black tracking-[-0.03em] mr-20 shrink-0"
-              style={{
-                fontSize: 'clamp(5rem, 18vw, 10rem)',
-                lineHeight: 1,
-                color: 'transparent',
-                WebkitTextStroke: '1.5px rgba(10,10,10,0.13)',
-                fontFamily: 'Georgia, "Times New Roman", serif',
-              }}
-            >
-              Ferrari
-            </span>
-          ))}
-        </motion.div>
-      </div>
-
       {/* Conteúdo */}
       <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20 pt-14 pb-12 sm:pt-28 sm:pb-20">
 
@@ -68,7 +44,7 @@ export default function BrandManifesto() {
         </motion.div>
 
         {/* Headline principal */}
-        <div className="mb-20 sm:mb-36">
+        <div className="mb-0">
           {/* Par 1 */}
           <div style={{ marginBottom: 'clamp(0.3rem, 1vw, 1rem)' }}>
             {[
@@ -116,13 +92,36 @@ export default function BrandManifesto() {
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Linha divisória + stats + parágrafo */}
+      {/* Marquee — no fluxo, entre headline e divisória */}
+      <div className="relative overflow-hidden pointer-events-none select-none py-6 sm:py-10">
+        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <span
+              key={i}
+              className="font-black tracking-[-0.03em] mr-16 shrink-0"
+              style={{
+                fontSize: 'clamp(5rem, 18vw, 10rem)',
+                lineHeight: 1,
+                color: 'transparent',
+                WebkitTextStroke: '1.5px rgba(10,10,10,0.13)',
+                fontFamily: 'Georgia, "Times New Roman", serif',
+              }}
+            >
+              Ferrari
+            </span>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Linha divisória + stats + parágrafo */}
+      <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20 pb-12 sm:pb-20">
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.65, duration: 0.7 }}
-          className="relative z-20 border-t border-[#0A0A0A]/10 pt-8 sm:pt-12 flex flex-col lg:flex-row gap-8 sm:gap-12 items-start"
+          className="border-t border-[#0A0A0A]/10 pt-8 sm:pt-12 flex flex-col lg:flex-row gap-8 sm:gap-12 items-start"
         >
           {/* Parágrafo */}
           <p className="text-[#0A0A0A]/45 text-sm sm:text-base leading-[1.85] max-w-lg lg:flex-1">
