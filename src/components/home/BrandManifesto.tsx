@@ -121,7 +121,7 @@ export default function BrandManifesto() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.65, duration: 0.7 }}
-          className="border-t border-[#0A0A0A]/10 pt-8 sm:pt-12 flex flex-col lg:flex-row gap-8 sm:gap-12 items-start"
+          className="border-t border-[#0A0A0A]/10 pt-8 sm:pt-12 flex flex-col lg:flex-row gap-8 sm:gap-12 items-start bg-[#F0EDE8]"
         >
           {/* Parágrafo */}
           <p className="text-[#0A0A0A]/45 text-sm sm:text-base leading-[1.85] max-w-lg lg:flex-1">
