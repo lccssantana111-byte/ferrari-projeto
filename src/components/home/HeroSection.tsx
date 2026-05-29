@@ -76,14 +76,6 @@ export default function HeroSection() {
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const touchStartX = useRef<number | null>(null)
 
-  useEffect(() => {
-    function setVh() {
-      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
-    }
-    setVh()
-    window.addEventListener('resize', setVh)
-    return () => window.removeEventListener('resize', setVh)
-  }, [])
 
   function startCycle(index = current) {
     if (intervalRef.current) clearInterval(intervalRef.current)
@@ -139,7 +131,7 @@ export default function HeroSection() {
   return (
     <section
       className="relative overflow-hidden bg-carbon select-none"
-      style={{ height: 'calc(var(--vh, 1vh) * 100)', minHeight: '600px' }}
+      style={{ height: '100svh', minHeight: '600px' }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
