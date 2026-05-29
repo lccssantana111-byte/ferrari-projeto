@@ -42,6 +42,7 @@ export default function Navbar() {
             ? 'bg-carbon/80 backdrop-blur-xl'
             : 'bg-transparent'
         )}
+        style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
 <div className="max-w-[1400px] mx-auto px-8 sm:px-12 lg:px-20 h-[92px] flex items-center justify-between">
 

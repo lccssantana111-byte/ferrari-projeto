@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import LenisProvider from '@/components/layout/LenisProvider'
@@ -10,6 +10,12 @@ const inter = Inter({
   variable: '--font-sans',
   display: 'swap',
 })
+
+export const viewport: Viewport = {
+  viewportFit: 'cover',
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export const metadata: Metadata = {
   title: {

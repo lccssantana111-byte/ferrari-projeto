@@ -110,7 +110,7 @@ export default function HeroSection() {
   const slide = SLIDES[current]
 
   return (
-    <section className="relative h-[100svh] min-h-[600px] overflow-hidden bg-carbon select-none">
+    <section className="relative overflow-hidden bg-carbon select-none" style={{ height: '100dvh', minHeight: '600px', paddingTop: 'env(safe-area-inset-top)' }}>
 
       {/* ── Background crossfade + Ken Burns ── */}
       <AnimatePresence initial={false}>
@@ -163,7 +163,7 @@ export default function HeroSection() {
       </AnimatePresence>
 
       {/* ── Main content ── */}
-      <div className="relative z-10 h-full flex flex-col justify-end px-5 sm:px-12 lg:px-28 max-w-[1400px] mx-auto">
+      <div className="relative z-10 h-full flex flex-col justify-end px-5 sm:px-16 lg:px-28 xl:px-40 2xl:px-56">
 
         {/* Label do modelo */}
         <AnimatePresence mode="wait">
@@ -191,7 +191,7 @@ export default function HeroSection() {
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="font-black text-white"
-              style={{ fontSize: 'clamp(2.4rem, 8.5vw, 6.5rem)', lineHeight: 0.9 }}
+              style={{ fontSize: 'clamp(2.8rem, 6vw, 5rem)', lineHeight: 0.9 }}
             >
               {slide.tagline[0]}
             </motion.div>
@@ -202,7 +202,7 @@ export default function HeroSection() {
               transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
               className="font-black"
               style={{
-                fontSize: 'clamp(2.4rem, 8.5vw, 6.5rem)',
+                fontSize: 'clamp(2.8rem, 6vw, 5rem)',
                 lineHeight: 0.9,
                 paddingBottom: '0.18em',
                 ...slide.line2Style,
@@ -226,7 +226,7 @@ export default function HeroSection() {
             {slide.specs.map((s, i) => (
               <div key={i} className="flex items-center">
                 <div className="flex flex-col pr-4 sm:pr-6">
-                  <span className="font-bold text-white leading-none" style={{ fontSize: 'clamp(0.85rem, 3vw, 1.3rem)', letterSpacing: '-0.01em' }}>
+                  <span className="font-bold text-white leading-none" style={{ fontSize: 'clamp(1rem, 3vw, 1.3rem)', letterSpacing: '-0.01em' }}>
                     {s.value}
                     <span className="text-ferrari-red font-normal ml-0.5" style={{ fontSize: '0.5em' }}>{s.unit}</span>
                   </span>
