@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useSwipe } from '@/hooks/useSwipe'
 
 interface CarGalleryProps {
   images: string[]
@@ -17,17 +18,20 @@ export default function CarGallery({ images, carName }: CarGalleryProps) {
   function prev() { setSelected((s) => (s - 1 + images.length) % images.length) }
   function next() { setSelected((s) => (s + 1) % images.length) }
 
+  const swipeRef = useSwipe<HTMLDivElement>(next, prev)
+
   if (!images.length) return null
 
   return (
     <>
       <div className="space-y-3">
         <motion.div
+          ref={swipeRef}
           key={selected}
           initial={{ opacity: 0.5 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
-          className="relative aspect-[16/9] rounded-2xl overflow-hidden bg-graphite cursor-pointer"
+          className="relative aspect-[16/9] rounded-2xl overflow-hidden bg-graphite cursor-pointer group"
           onClick={() => setLightbox(true)}
         >
           <Image
@@ -38,6 +42,27 @@ export default function CarGallery({ images, carName }: CarGalleryProps) {
             className="object-cover"
             priority={selected === 0}
           />
+          {images.length > 1 && (
+            <>
+              <button
+                className="absolute left-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center justify-center w-9 h-9 bg-carbon/60 text-white/70 hover:text-white hover:bg-carbon/80 transition-all rounded-full opacity-0 group-hover:opacity-100"
+                onClick={(e) => { e.stopPropagation(); prev() }}
+                aria-label="Anterior"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center justify-center w-9 h-9 bg-carbon/60 text-white/70 hover:text-white hover:bg-carbon/80 transition-all rounded-full opacity-0 group-hover:opacity-100"
+                onClick={(e) => { e.stopPropagation(); next() }}
+                aria-label="Próximo"
+              >
+                <ChevronRight size={18} />
+              </button>
+              <span className="absolute bottom-3 right-3 hidden sm:block text-white/40 text-xs bg-carbon/60 px-2 py-0.5 rounded-full">
+                {selected + 1} / {images.length}
+              </span>
+            </>
+          )}
         </motion.div>
 
         {images.length > 1 && (

@@ -31,6 +31,7 @@ export interface Car {
   specs: CarSpec
   featured: boolean
   year: number | null
+  mileage: number | null
   color_options: ColorOption[]
   status: CarStatus
   created_at: string

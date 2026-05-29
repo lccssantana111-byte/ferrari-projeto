@@ -195,8 +195,8 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
           <div className="flex flex-col gap-12">
 
             {/* Nome + status + preço */}
-            <div>
-              <div className="flex items-center gap-4 mb-4">
+            <div className="text-center sm:text-left">
+              <div className="flex items-center justify-center sm:justify-start gap-4 mb-4">
                 <span
                   className="flex items-center gap-1.5"
                   style={{ fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 600, color: STATUS_COLOR[car.status] }}
@@ -225,21 +225,29 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
                 </p>
               )}
 
-              <div className="mt-6 flex items-baseline gap-3">
+              <div className="mt-6 flex items-baseline justify-center sm:justify-start gap-3">
                 <span className="font-black" style={{ fontSize: 'clamp(2.2rem, 2.8vw, 2.6rem)', color: '#DC143C', letterSpacing: '-0.03em', lineHeight: 1 }}>
                   {formattedPrice}
                 </span>
               </div>
             </div>
 
-            {/* Specs destacados (aceleração, potência, vel max) */}
-            {specs.length > 0 && (() => {
+            {/* Specs destacados (aceleração, potência, vel max + km rodados) */}
+            {(() => {
               const highlight = ['acceleration', 'horsepower', 'top_speed']
-              const featured = specs.filter(([k]) => highlight.includes(k))
-              if (!featured.length) return null
+              const featuredSpecs = specs.filter(([k]) => highlight.includes(k))
+              const hasMileage = car.mileage != null
+              if (!featuredSpecs.length && !hasMileage) return null
+              const cols = featuredSpecs.length + (hasMileage ? 1 : 0)
               return (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-px" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                  {featured.map(([k, v]) => (
+                <div
+                  className="grid gap-px"
+                  style={{
+                    background: 'rgba(255,255,255,0.05)',
+                    gridTemplateColumns: `repeat(${Math.min(cols, 2)}, 1fr)`,
+                  }}
+                >
+                  {featuredSpecs.map(([k, v]) => (
                     <div key={k} className="flex flex-col gap-1.5 px-6 py-5" style={{ background: '#0A0A0A' }}>
                       <span className="font-black text-white leading-none" style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', letterSpacing: '-0.03em' }}>
                         {String(v)}
@@ -249,6 +257,16 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
                       </span>
                     </div>
                   ))}
+                  {hasMileage && (
+                    <div className="flex flex-col gap-1.5 px-6 py-5" style={{ background: '#0A0A0A' }}>
+                      <span className="font-black text-white leading-none" style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', letterSpacing: '-0.03em' }}>
+                        {new Intl.NumberFormat('pt-BR').format(car.mileage!)}
+                      </span>
+                      <span style={{ fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.28)' }}>
+                        KM Rodados
+                      </span>
+                    </div>
+                  )}
                 </div>
               )
             })()}

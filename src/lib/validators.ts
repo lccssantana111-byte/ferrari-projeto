@@ -7,6 +7,7 @@ export const carFormSchema = z.object({
   short_tagline: z.string().optional(),
   price: z.coerce.number().min(1, 'Preço é obrigatório'),
   year: z.coerce.number().min(1900).max(new Date().getFullYear() + 1).optional().nullable(),
+  mileage: z.coerce.number().min(0).optional().nullable(),
   status: z.enum(['active', 'sold', 'reserved']),
   featured: z.boolean(),
   video_url: z.string().url('URL inválida').optional().or(z.literal('')),

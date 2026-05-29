@@ -39,6 +39,7 @@ export default function CarForm({ car }: CarFormProps) {
       short_tagline: car?.short_tagline ?? '',
       price: car?.price ?? 0,
       year: car?.year ?? null,
+      mileage: car?.mileage ?? null,
       status: car?.status ?? 'active',
       featured: car?.featured ?? false,
       video_url: car?.video_url ?? '',
@@ -131,6 +132,11 @@ export default function CarForm({ car }: CarFormProps) {
           <div className="space-y-2">
             <label className={labelClass}>Ano</label>
             <input {...register('year')} type="number" className={inputClass} placeholder="2024" />
+          </div>
+
+          <div className="space-y-2">
+            <label className={labelClass}>KM Rodados</label>
+            <input {...register('mileage')} type="number" className={inputClass} placeholder="15000" />
           </div>
 
           <div className="space-y-2">
