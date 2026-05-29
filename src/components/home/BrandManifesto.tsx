@@ -14,7 +14,7 @@ export default function BrandManifesto() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const xMarquee = useTransform(scrollYProgress, [0, 1], ['0%', '-18%'])
+  const xMarquee = useTransform(scrollYProgress, [0, 1], ['0%', '-55%'])
 
   return (
     <section ref={ref} className="relative overflow-hidden bg-[#F0EDE8]">
@@ -95,7 +95,7 @@ export default function BrandManifesto() {
       </div>
 
       {/* Marquee — no fluxo, entre headline e divisória */}
-      <div className="relative overflow-hidden pointer-events-none select-none py-6 sm:py-10">
+      <div className="relative overflow-hidden pointer-events-none select-none py-3 sm:py-6">
         <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap">
           {Array.from({ length: 5 }).map((_, i) => (
             <span
