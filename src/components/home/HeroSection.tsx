@@ -74,6 +74,7 @@ export default function HeroSection() {
   const [progress, setProgress] = useState(0)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const touchStartX = useRef<number | null>(null)
 
   function startCycle(index = current) {
     if (intervalRef.current) clearInterval(intervalRef.current)
@@ -107,10 +108,32 @@ export default function HeroSection() {
     document.getElementById('colecao')?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  function handleTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return
+    const diff = touchStartX.current - e.changedTouches[0].clientX
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        setCurrent(c => (c + 1) % SLIDES.length)
+      } else {
+        setCurrent(c => (c - 1 + SLIDES.length) % SLIDES.length)
+      }
+    }
+    touchStartX.current = null
+  }
+
   const slide = SLIDES[current]
 
   return (
-    <section className="relative overflow-hidden bg-carbon select-none" style={{ height: '100dvh', minHeight: '600px', paddingTop: 'env(safe-area-inset-top)' }}>
+    <section
+      className="relative overflow-hidden bg-carbon select-none"
+      style={{ height: '100dvh', minHeight: '600px', paddingTop: 'env(safe-area-inset-top)' }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
 
       {/* ── Background crossfade + Ken Burns ── */}
       <AnimatePresence initial={false}>
@@ -138,18 +161,16 @@ export default function HeroSection() {
               style={{ objectPosition: slide.objectPosition }}
             />
           </motion.div>
-          {/* Gradiente mobile — mais denso na parte inferior para legibilidade */}
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,0.35)_0%,rgba(10,10,10,0.1)_35%,rgba(10,10,10,0.55)_65%,rgba(10,10,10,0.92)_100%)]" />
-          {/* Gradiente lateral — só desktop */}
           <div className="absolute inset-0 hidden sm:block bg-[linear-gradient(110deg,rgba(10,10,10,0.75)_0%,rgba(10,10,10,0.3)_45%,transparent_70%)]" />
         </motion.div>
       </AnimatePresence>
 
-      {/* ── Índice do slide — canto superior direito ── */}
+      {/* ── Índice do slide — apenas desktop ── */}
       <AnimatePresence mode="wait">
         <motion.div
           key={`idx-${current}`}
-          className="absolute top-[calc(92px+20px)] right-5 sm:right-10 z-20 flex flex-col items-end gap-1"
+          className="absolute top-[calc(92px+20px)] right-5 sm:right-10 z-20 hidden sm:flex flex-col items-end gap-1"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -191,7 +212,7 @@ export default function HeroSection() {
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="font-black text-white"
-              style={{ fontSize: 'clamp(2rem, 8vw, 5rem)', lineHeight: 0.9 }}
+              style={{ fontSize: 'clamp(2.6rem, 10vw, 5rem)', lineHeight: 0.9 }}
             >
               {slide.tagline[0]}
             </motion.div>
@@ -202,7 +223,7 @@ export default function HeroSection() {
               transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
               className="font-black"
               style={{
-                fontSize: 'clamp(2rem, 8vw, 5rem)',
+                fontSize: 'clamp(2.6rem, 10vw, 5rem)',
                 lineHeight: 0.9,
                 paddingBottom: '0.18em',
                 ...slide.line2Style,
@@ -213,7 +234,7 @@ export default function HeroSection() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Specs — linha horizontal em mobile, lado a lado no desktop */}
+        {/* Specs */}
         <AnimatePresence mode="wait">
           <motion.div
             key={`specs-${current}`}
@@ -267,14 +288,14 @@ export default function HeroSection() {
           </Link>
         </motion.div>
 
-        {/* Dots de navegação */}
-        <div className="flex items-center gap-2 pb-5 sm:pb-7">
+        {/* Dots de navegação — centralizados no mobile */}
+        <div className="flex items-center justify-center sm:justify-start gap-2 pb-5 sm:pb-7">
           {SLIDES.map((_, i) => (
             <button
               key={i}
               onClick={() => goTo(i)}
               aria-label={`Slide ${i + 1}`}
-              className="relative flex items-center justify-center h-11 pr-2 pl-0"
+              className="relative flex items-center justify-center h-11 px-1"
             >
               <span
                 className="relative overflow-hidden block transition-all duration-300"
