@@ -3,25 +3,108 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0A0A0A;
+  --foreground: #F5F5F5;
+  --ferrari-red: #DC143C;
+  --ferrari-red-dark: #A50E2D;
+  --graphite: #2A2A2A;
+  --graphite-light: #3D3D3D;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles smooth scrolling */
 }
 
 body {
+  background-color: var(--background);
   color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+::-webkit-scrollbar-thumb {
+  background: #DC143C;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A50E2D;
+}
+
+/* Selection color */
+::selection {
+  background: #DC143C;
+  color: #fff;
+}
+
+/* Range slider — simulador financiamento */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 1px;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #DC143C;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 0 4px rgba(220, 20, 60, 0.15);
+  transition: box-shadow 0.2s;
+}
+input[type='range']::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 6px rgba(220, 20, 60, 0.25);
+}
+input[type='range']::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #DC143C;
+  cursor: pointer;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .ferrari-gradient {
+    background: linear-gradient(135deg, #DC143C 0%, #A50E2D 100%);
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #fff 0%, #999 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }

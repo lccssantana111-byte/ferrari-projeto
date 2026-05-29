@@ -1,0 +1,47 @@
+import { createClient } from '@/lib/supabase/server'
+import { Car, ClipboardList, Star, TrendingUp } from 'lucide-react'
+
+async function getStats() {
+  const supabase = await createClient()
+  const [{ count: totalCars }, { count: featuredCars }, { count: testDrives }] = await Promise.all([
+    supabase.from('cars').select('*', { count: 'exact', head: true }),
+    supabase.from('cars').select('*', { count: 'exact', head: true }).eq('featured', true),
+    supabase.from('test_drive_requests').select('*', { count: 'exact', head: true }),
+  ])
+  return { totalCars: totalCars ?? 0, featuredCars: featuredCars ?? 0, testDrives: testDrives ?? 0 }
+}
+
+export default async function AdminDashboard() {
+  const { totalCars, featuredCars, testDrives } = await getStats()
+
+  const stats = [
+    { label: 'Total de Veículos', value: totalCars, icon: Car, color: 'text-blue-400' },
+    { label: 'Em Destaque', value: featuredCars, icon: Star, color: 'text-yellow-400' },
+    { label: 'Test Drives', value: testDrives, icon: ClipboardList, color: 'text-green-400' },
+    { label: 'Conversões', value: '—', icon: TrendingUp, color: 'text-ferrari-red' },
+  ]
+
+  return (
+    <div>
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+        <p className="text-white/40 text-sm mt-1">Visão geral da concessionária</p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {stats.map((stat) => {
+          const Icon = stat.icon
+          return (
+            <div key={stat.label} className="glass rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <Icon size={20} className={stat.color} />
+              </div>
+              <p className="text-3xl font-bold text-white">{stat.value}</p>
+              <p className="text-white/40 text-sm mt-1">{stat.label}</p>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
