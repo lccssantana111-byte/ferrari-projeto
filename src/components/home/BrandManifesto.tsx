@@ -29,18 +29,21 @@ export default function BrandManifesto() {
 
       {/* Marquee de fundo */}
       <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none select-none">
-        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap gap-20">
-          {Array.from({ length: 6 }).map((_, i) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <span
               key={i}
-              src="/logo-ferrari-1536.png"
-              alt=""
-              width={320}
-              height={320}
-              className="object-contain shrink-0"
-              style={{ opacity: 0.12 }}
-            />
+              className="font-black tracking-[-0.03em] mr-20 shrink-0"
+              style={{
+                fontSize: 'clamp(5rem, 12vw, 12rem)',
+                lineHeight: 1,
+                color: 'transparent',
+                WebkitTextStroke: '1.5px rgba(10,10,10,0.13)',
+                fontFamily: 'Georgia, "Times New Roman", serif',
+              }}
+            >
+              Ferrari
+            </span>
           ))}
         </motion.div>
       </div>
