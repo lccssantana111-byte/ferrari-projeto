@@ -77,7 +77,7 @@ export default function SimuladorSection({ carros }: Props) {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: EASE }}
           className="font-black tracking-[-0.04em] text-white mb-3"
-          style={{ fontSize: 'clamp(2rem, 5vw, 5rem)', lineHeight: 1.0 }}
+          style={{ fontSize: 'clamp(2.5rem, 3.5vw, 3.5rem)', lineHeight: 1.0 }}
         >
           Simule o seu<br />
           <span style={{ color: '#DC143C' }}>financiamento.</span>

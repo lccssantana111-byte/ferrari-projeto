@@ -225,18 +225,18 @@ export default function CarForm({ car }: CarFormProps) {
         </div>
       )}
 
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-3">
         <button
           type="submit"
           disabled={loading}
-          className="ferrari-gradient text-white font-semibold px-8 py-3 rounded-lg tracking-widest uppercase text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
+          className="ferrari-gradient text-white font-semibold px-8 py-3 rounded-lg tracking-widest uppercase text-sm hover:opacity-90 transition-opacity disabled:opacity-50 min-h-[44px]"
         >
           {loading ? 'Salvando...' : (car ? 'Salvar Alterações' : 'Criar Veículo')}
         </button>
         <button
           type="button"
           onClick={() => router.back()}
-          className="border border-white/10 text-white/60 hover:text-white px-8 py-3 rounded-lg text-sm transition-colors"
+          className="border border-white/10 text-white/60 hover:text-white px-8 py-3 rounded-lg text-sm transition-colors min-h-[44px]"
         >
           Cancelar
         </button>

@@ -71,7 +71,7 @@ export default function FeaturedCars({ cars }: Props) {
             <span style={{ fontSize: '9px', letterSpacing: '0.4em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>Coleção</span>
             <h2
               className="font-black text-white mt-2 tracking-[-0.03em]"
-              style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', lineHeight: 1.0 }}
+              style={{ fontSize: 'clamp(2.5rem, 4.5vw, 4rem)', lineHeight: 1.0 }}
             >
               Veículos em<br />
               <span style={{ color: '#DC143C' }}>Destaque</span>
@@ -148,7 +148,7 @@ export default function FeaturedCars({ cars }: Props) {
                     {/* Info */}
                     <div className="px-0.5">
                       <div className="flex items-start justify-between mb-1">
-                        <h3 className="text-white font-bold group-hover:text-ferrari-red transition-colors leading-tight" style={{ fontSize: 'clamp(0.8rem, 2.5vw, 1.1rem)' }}>
+                        <h3 className="text-white font-bold group-hover:text-ferrari-red transition-colors leading-tight" style={{ fontSize: 'clamp(0.95rem, 2.5vw, 1.1rem)' }}>
                           {car.name}
                         </h3>
                         <ArrowRight size={14} className="text-white/20 group-hover:text-ferrari-red group-hover:translate-x-0.5 transition-all mt-0.5 flex-shrink-0 hidden sm:block" />
@@ -157,7 +157,7 @@ export default function FeaturedCars({ cars }: Props) {
                         <p className="text-white/35 text-xs mb-2 leading-relaxed hidden sm:block">{car.short_tagline}</p>
                       )}
                       <div className="flex items-center justify-between">
-                        <span className="text-ferrari-red font-bold" style={{ fontSize: 'clamp(0.75rem, 2.2vw, 1rem)' }}>
+                        <span className="text-ferrari-red font-bold" style={{ fontSize: 'clamp(0.9rem, 2.2vw, 1rem)' }}>
                           {formatPrice(car.price)}
                         </span>
                         {car.year && (

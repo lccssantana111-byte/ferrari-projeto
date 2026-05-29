@@ -75,7 +75,7 @@ export default function WhySection() {
             </div>
             <h2
               className="font-black text-white tracking-[-0.04em]"
-              style={{ fontSize: 'clamp(2rem, 5.5vw, 5rem)', lineHeight: 1.0 }}
+              style={{ fontSize: 'clamp(2.5rem, 4vw, 3.8rem)', lineHeight: 1.0 }}
             >
               O padrão que
               <br />

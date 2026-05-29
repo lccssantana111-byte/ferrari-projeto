@@ -24,26 +24,26 @@ export default async function TestDrivesPage() {
           <p className="text-white/30">Nenhuma solicitação ainda.</p>
         </div>
       ) : (
-        <div className="glass rounded-xl overflow-hidden">
-          <table className="w-full">
+        <div className="glass rounded-xl overflow-x-auto">
+          <table className="w-full min-w-[400px]">
             <thead>
               <tr className="border-b border-white/5">
-                <th className="text-left px-6 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Nome</th>
-                <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium hidden sm:table-cell">Telefone</th>
-                <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium hidden md:table-cell">Veículo</th>
-                <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium hidden lg:table-cell">Data</th>
+                <th className="text-left px-4 sm:px-6 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Nome</th>
+                <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Telefone</th>
+                <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium hidden sm:table-cell">Veículo</th>
+                <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium hidden md:table-cell">Data</th>
               </tr>
             </thead>
             <tbody>
               {(requests as TestDriveRow[]).map((req) => (
                 <tr key={req.id} className="border-b border-white/5 last:border-0">
-                  <td className="px-6 py-4">
+                  <td className="px-4 sm:px-6 py-4">
                     <p className="text-white text-sm font-medium">{req.name}</p>
                     {req.email && <p className="text-white/30 text-xs">{req.email}</p>}
                   </td>
-                  <td className="px-4 py-4 text-white/60 text-sm hidden sm:table-cell">{req.phone}</td>
-                  <td className="px-4 py-4 text-white/60 text-sm hidden md:table-cell">{req.cars?.name ?? '—'}</td>
-                  <td className="px-4 py-4 text-white/30 text-xs hidden lg:table-cell">
+                  <td className="px-4 py-4 text-white/60 text-sm whitespace-nowrap">{req.phone}</td>
+                  <td className="px-4 py-4 text-white/60 text-sm hidden sm:table-cell">{req.cars?.name ?? '—'}</td>
+                  <td className="px-4 py-4 text-white/30 text-xs hidden md:table-cell">
                     {new Date(req.created_at).toLocaleDateString('pt-BR')}
                   </td>
                 </tr>

@@ -8,14 +8,14 @@ export default async function AdminCarsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl font-bold text-white">Veículos</h1>
           <p className="text-white/40 text-sm mt-1">{cars.length} veículo(s) cadastrado(s)</p>
         </div>
         <Link
           href="/admin/carros/novo"
-          className="flex items-center gap-2 ferrari-gradient text-white font-semibold px-5 py-2.5 rounded-lg text-sm hover:opacity-90 transition-opacity"
+          className="flex items-center gap-2 ferrari-gradient text-white font-semibold px-5 py-2.5 rounded-lg text-sm hover:opacity-90 transition-opacity min-h-[44px]"
         >
           <Plus size={16} />
           Novo Veículo

@@ -130,7 +130,7 @@ export default function ShowroomSection() {
 
             <h2
               className="font-black tracking-[-0.04em]"
-              style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', lineHeight: 1.0, color: '#0A0A0A' }}
+              style={{ fontSize: 'clamp(2.5rem, 3.8vw, 3.2rem)', lineHeight: 1.0, color: '#0A0A0A' }}
             >
               Conheça
               <br />

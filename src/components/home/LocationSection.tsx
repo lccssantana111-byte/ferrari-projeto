@@ -117,7 +117,7 @@ export default function LocationSection() {
               </div>
               <h2
                 className="font-black"
-                style={{ fontSize: 'clamp(1.8rem, 5vw, 3.2rem)', lineHeight: 1.0, letterSpacing: '-0.03em', color: '#fff' }}
+                style={{ fontSize: 'clamp(2.2rem, 3.5vw, 2.8rem)', lineHeight: 1.0, letterSpacing: '-0.03em', color: '#fff' }}
               >
                 Onde nos
                 <br />

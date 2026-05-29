@@ -100,7 +100,7 @@ export default function TestimonialsSection() {
             <span style={{ fontSize: '9px', letterSpacing: '0.4em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>Depoimentos</span>
             <h2
               className="font-black text-white mt-2 tracking-[-0.03em]"
-              style={{ fontSize: 'clamp(2rem, 6vw, 5.5rem)', lineHeight: 1.0 }}
+              style={{ fontSize: 'clamp(2.5rem, 4.5vw, 4rem)', lineHeight: 1.0 }}
             >
               O que nossos<br />
               <span style={{
@@ -203,7 +203,7 @@ export default function TestimonialsSection() {
 
               <blockquote
                 className="text-white relative z-10 mb-6 sm:mb-8"
-                style={{ fontSize: 'clamp(1rem, 2.8vw, 1.45rem)', fontWeight: 300, lineHeight: 1.7, letterSpacing: '-0.01em' }}
+                style={{ fontSize: 'clamp(1.1rem, 2.8vw, 1.45rem)', fontWeight: 300, lineHeight: 1.7, letterSpacing: '-0.01em' }}
               >
                 {t.text}
               </blockquote>

@@ -214,7 +214,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
 
               <h1
                 className="font-black text-white tracking-[-0.04em]"
-                style={{ fontSize: 'clamp(2.4rem, 5vw, 4.2rem)', lineHeight: 1.0 }}
+                style={{ fontSize: 'clamp(2.8rem, 3.5vw, 3.5rem)', lineHeight: 1.0 }}
               >
                 {car.name}
               </h1>
@@ -226,7 +226,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
               )}
 
               <div className="mt-6 flex items-baseline gap-3">
-                <span className="font-black" style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', color: '#DC143C', letterSpacing: '-0.03em', lineHeight: 1 }}>
+                <span className="font-black" style={{ fontSize: 'clamp(2.2rem, 2.8vw, 2.6rem)', color: '#DC143C', letterSpacing: '-0.03em', lineHeight: 1 }}>
                   {formattedPrice}
                 </span>
               </div>
