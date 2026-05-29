@@ -1,7 +1,6 @@
 'use client'
 
 import { useRef } from 'react'
-import Image from 'next/image'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 
 const STATS = [
@@ -32,7 +31,8 @@ export default function BrandManifesto() {
       <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none select-none">
         <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap gap-20">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Image
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
               key={i}
               src="/logo-ferrari-1536.png"
               alt=""
