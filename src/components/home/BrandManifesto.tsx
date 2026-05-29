@@ -14,7 +14,7 @@ export default function BrandManifesto() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const xMarquee = useTransform(scrollYProgress, [0, 1], ['0%', '-55%'])
+  const xMarquee = useTransform(scrollYProgress, [0, 1], ['0%', '-85%'])
 
   return (
     <section ref={ref} className="relative overflow-hidden bg-[#F0EDE8]">
@@ -104,9 +104,11 @@ export default function BrandManifesto() {
               style={{
                 fontSize: 'clamp(5rem, 18vw, 10rem)',
                 lineHeight: 1,
-                color: 'transparent',
-                WebkitTextStroke: '1.5px rgba(10,10,10,0.13)',
                 fontFamily: 'Georgia, "Times New Roman", serif',
+                background: 'linear-gradient(90deg, rgba(0,140,69,0.18) 0%, rgba(255,255,255,0.10) 50%, rgba(206,43,55,0.18) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
               }}
             >
               Ferrari
