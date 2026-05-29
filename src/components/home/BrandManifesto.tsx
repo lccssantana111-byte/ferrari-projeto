@@ -28,14 +28,14 @@ export default function BrandManifesto() {
       />
 
       {/* Conteúdo */}
-      <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20 pt-14 pb-12 sm:pt-28 sm:pb-20 flex flex-col items-center">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20 pt-10 pb-8 sm:pt-16 sm:pb-12 flex flex-col items-center">
 
         {/* Label */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="flex items-center gap-3 mb-10 sm:mb-16"
+          className="flex items-center gap-3 mb-6 sm:mb-10"
         >
           <span className="w-8 h-px bg-ferrari-red" />
           <span style={{ fontSize: '9px', letterSpacing: '0.5em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>
@@ -96,7 +96,7 @@ export default function BrandManifesto() {
       </div>
 
       {/* Marquee — no fluxo, entre headline e divisória */}
-      <div className="relative overflow-hidden pointer-events-none select-none py-3 sm:py-6">
+      <div className="relative overflow-hidden pointer-events-none select-none py-2 sm:py-4">
         <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap">
           {Array.from({ length: 5 }).map((_, i) => (
             <span key={i} className="relative inline-block mr-16 shrink-0">
@@ -136,12 +136,12 @@ export default function BrandManifesto() {
       </div>
 
       {/* Linha divisória + stats + parágrafo */}
-      <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20 pb-12 sm:pb-20">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20 pb-8 sm:pb-12">
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.65, duration: 0.7 }}
-          className="border-t border-[#0A0A0A]/10 pt-8 sm:pt-12 flex flex-col gap-8 sm:gap-12 items-center bg-[#F0EDE8]"
+          className="border-t border-[#0A0A0A]/10 pt-6 sm:pt-8 flex flex-col gap-6 sm:gap-8 items-center bg-[#F0EDE8]"
         >
           {/* Parágrafo */}
           <p className="text-[#0A0A0A]/45 text-sm sm:text-base leading-[1.85] max-w-lg text-center">
