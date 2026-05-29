@@ -27,9 +27,9 @@ export default function BrandManifesto() {
         transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
       />
 
-      {/* Marquee de fundo */}
-      <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none select-none">
-        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap">
+      {/* Marquee de fundo — posicionado na área do divisor/parágrafo */}
+      <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none select-none" style={{ height: '45%' }}>
+        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap h-full">
           {Array.from({ length: 5 }).map((_, i) => (
             <span
               key={i}
@@ -119,7 +119,7 @@ export default function BrandManifesto() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.65, duration: 0.7 }}
-          className="border-t border-[#0A0A0A]/10 pt-8 sm:pt-12 flex flex-col lg:flex-row gap-8 sm:gap-12 items-start"
+          className="relative z-20 border-t border-[#0A0A0A]/10 pt-8 sm:pt-12 flex flex-col lg:flex-row gap-8 sm:gap-12 items-start"
         >
           {/* Parágrafo */}
           <p className="text-[#0A0A0A]/45 text-sm sm:text-base leading-[1.85] max-w-lg lg:flex-1">
