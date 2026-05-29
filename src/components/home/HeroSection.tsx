@@ -130,8 +130,8 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative overflow-hidden bg-carbon select-none"
-      style={{ height: '100svh', minHeight: '600px' }}
+      className="hero-full relative overflow-hidden bg-carbon select-none"
+      style={{ minHeight: '600px' }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >

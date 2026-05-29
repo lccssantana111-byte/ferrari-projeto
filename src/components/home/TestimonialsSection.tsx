@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
+import { useSwipe } from '@/hooks/useSwipe'
 
 const TESTIMONIALS = [
   {
@@ -85,9 +86,14 @@ export default function TestimonialsSection() {
   function handleNav(fn: () => void) { fn(); startAuto() }
 
   const t = TESTIMONIALS[current]
+  const swipeRef = useSwipe<HTMLElement>(
+    () => handleNav(next),
+    () => handleNav(prev),
+  )
 
   return (
     <section
+      ref={swipeRef}
       className="py-14 sm:py-28 px-5 sm:px-12 lg:px-20"
       style={{ background: 'linear-gradient(160deg, #141414 0%, #0f0f0f 50%, #1a0a0d 100%)', borderTop: '1px solid rgba(220,20,60,0.12)' }}
     >

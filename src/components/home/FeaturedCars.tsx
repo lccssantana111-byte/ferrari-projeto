@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ArrowRight, ArrowLeft } from 'lucide-react'
 import { formatPrice, cn } from '@/lib/utils'
 import type { Car } from '@/types'
@@ -29,6 +29,8 @@ export default function FeaturedCars({ cars }: Props) {
   const [progress, setProgress] = useState(0)
   const timerRef    = useRef<ReturnType<typeof setInterval> | null>(null)
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const scrollRef   = useRef<HTMLDivElement>(null)
+  const isMobileScrolling = useRef(false)
 
   const go = useCallback((next: number, dir: number) => {
     setDirection(dir)
@@ -39,6 +41,7 @@ export default function FeaturedCars({ cars }: Props) {
   const prev = useCallback(() => go(index - 1, -1), [index, go])
   const next = useCallback(() => go(index + 1, 1), [index, go])
 
+  // autoplay (desktop)
   useEffect(() => {
     if (paused) return
     if (timerRef.current)    clearInterval(timerRef.current)
@@ -53,6 +56,37 @@ export default function FeaturedCars({ cars }: Props) {
     }
   }, [index, paused, next])
 
+  // sincroniza dot com scroll nativo no mobile
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    function onScroll() {
+      if (!el) return
+      const cardW = el.scrollWidth / total
+      const i = Math.round(el.scrollLeft / cardW)
+      if (i !== index) {
+        isMobileScrolling.current = true
+        setIndex(i)
+        setDirection(1)
+        setProgress(0)
+        setTimeout(() => { isMobileScrolling.current = false }, 100)
+      }
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [index, total])
+
+  // botões no mobile fazem scrollTo no container nativo
+  function mobileScroll(targetIndex: number) {
+    const el = scrollRef.current
+    if (!el) return
+    const cardW = el.scrollWidth / total
+    el.scrollTo({ left: cardW * targetIndex, behavior: 'smooth' })
+  }
+
+  function handlePrev() { mobileScroll(index - 1 < 0 ? total - 1 : index - 1); prev() }
+  function handleNext() { mobileScroll(index + 1 >= total ? 0 : index + 1); next() }
+
   if (!total) return null
 
   const visibleIndices = Array.from({ length: VISIBLE }, (_, i) => ((index + i) % total))
@@ -60,7 +94,7 @@ export default function FeaturedCars({ cars }: Props) {
   return (
     <section
       id="colecao"
-      className="py-14 sm:py-24 overflow-hidden"
+      className="py-14 sm:py-24"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -77,18 +111,16 @@ export default function FeaturedCars({ cars }: Props) {
               <span style={{ color: '#DC143C' }}>Destaque</span>
             </h2>
           </div>
-
-          {/* Botões ← → */}
           <div className="flex items-center gap-2">
             <button
-              onClick={prev}
+              onClick={handlePrev}
               className="w-11 h-11 flex items-center justify-center border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-all duration-200"
               aria-label="Anterior"
             >
               <ArrowLeft size={16} />
             </button>
             <button
-              onClick={next}
+              onClick={handleNext}
               className="w-11 h-11 flex items-center justify-center border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-all duration-200"
               aria-label="Próximo"
             >
@@ -98,79 +130,107 @@ export default function FeaturedCars({ cars }: Props) {
         </div>
       </div>
 
-      {/* Slider */}
-      <div className="w-full px-3 sm:px-6 lg:px-10">
-        <AnimatePresence mode="popLayout" initial={false}>
-          <motion.div
-            key={index}
-            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
-            initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      {/* Mobile: scroll nativo horizontal com snap */}
+      <div
+        ref={scrollRef}
+        className="flex sm:hidden overflow-x-auto gap-3 px-5 pb-1 snap-x snap-mandatory"
+        style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+      >
+        {featured.map((car) => (
+          <div
+            key={car.id}
+            className="flex-none w-[72vw] snap-start"
           >
-            {visibleIndices.map((carIdx, slot) => {
-              const car = featured[carIdx]
-              return (
-                <motion.div
-                  key={car.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: slot * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <Link href={`/carros/${car.slug}`} className="group block">
-                    {/* Imagem */}
-                    <div
-                      className="relative overflow-hidden bg-graphite mb-3 sm:mb-5"
-                      style={{ aspectRatio: '4/3' }}
-                    >
-                      {car.images[0] ? (
-                        <Image
-                          src={car.images[0]}
-                          alt={car.name}
-                          fill
-                          sizes="(max-width: 640px) 48vw, (max-width: 1024px) 48vw, 26vw"
-                          className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-graphite to-carbon flex items-center justify-center">
-                          <span className="text-white/10 text-4xl font-bold">{car.name[0]}</span>
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-carbon/60 via-carbon/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <div className="absolute top-2.5 left-2.5 sm:top-4 sm:left-4">
-                        <span className={cn('text-[10px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border', STATUS_COLORS[car.status])}>
-                          {STATUS_LABELS[car.status]}
-                        </span>
-                      </div>
-                    </div>
+            <Link href={`/carros/${car.slug}`} className="group block">
+              <div className="relative overflow-hidden bg-graphite mb-3" style={{ aspectRatio: '4/3' }}>
+                {car.images[0] ? (
+                  <Image
+                    src={car.images[0]}
+                    alt={car.name}
+                    fill
+                    sizes="72vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-graphite to-carbon flex items-center justify-center">
+                    <span className="text-white/10 text-4xl font-bold">{car.name[0]}</span>
+                  </div>
+                )}
+                <div className="absolute top-2.5 left-2.5">
+                  <span className={cn('text-[10px] px-2 py-0.5 rounded-full border', STATUS_COLORS[car.status])}>
+                    {STATUS_LABELS[car.status]}
+                  </span>
+                </div>
+              </div>
+              <div className="px-0.5">
+                <h3 className="text-white font-bold leading-tight mb-1" style={{ fontSize: '0.95rem' }}>{car.name}</h3>
+                <span className="text-ferrari-red font-bold" style={{ fontSize: '0.9rem' }}>{formatPrice(car.price)}</span>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
 
-                    {/* Info */}
-                    <div className="px-0.5">
-                      <div className="flex items-start justify-between mb-1">
-                        <h3 className="text-white font-bold group-hover:text-ferrari-red transition-colors leading-tight" style={{ fontSize: 'clamp(0.95rem, 2.5vw, 1.1rem)' }}>
-                          {car.name}
-                        </h3>
-                        <ArrowRight size={14} className="text-white/20 group-hover:text-ferrari-red group-hover:translate-x-0.5 transition-all mt-0.5 flex-shrink-0 hidden sm:block" />
+      {/* Desktop: grid animado */}
+      <div className="hidden sm:block w-full px-6 lg:px-10 overflow-hidden">
+        <motion.div
+          key={index}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4"
+          initial={{ opacity: 0, x: direction > 0 ? 80 : -80 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {visibleIndices.map((carIdx, slot) => {
+            const car = featured[carIdx]
+            return (
+              <motion.div
+                key={car.id}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: slot * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Link href={`/carros/${car.slug}`} className="group block">
+                  <div className="relative overflow-hidden bg-graphite mb-5" style={{ aspectRatio: '4/3' }}>
+                    {car.images[0] ? (
+                      <Image
+                        src={car.images[0]}
+                        alt={car.name}
+                        fill
+                        sizes="(max-width: 1024px) 48vw, 26vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-graphite to-carbon flex items-center justify-center">
+                        <span className="text-white/10 text-4xl font-bold">{car.name[0]}</span>
                       </div>
-                      {car.short_tagline && (
-                        <p className="text-white/35 text-xs mb-2 leading-relaxed hidden sm:block">{car.short_tagline}</p>
-                      )}
-                      <div className="flex items-center justify-between">
-                        <span className="text-ferrari-red font-bold" style={{ fontSize: 'clamp(0.9rem, 2.2vw, 1rem)' }}>
-                          {formatPrice(car.price)}
-                        </span>
-                        {car.year && (
-                          <span className="text-white/25 text-xs hidden sm:block">{car.year}</span>
-                        )}
-                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-carbon/60 via-carbon/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute top-4 left-4">
+                      <span className={cn('text-xs px-3 py-1 rounded-full border', STATUS_COLORS[car.status])}>
+                        {STATUS_LABELS[car.status]}
+                      </span>
                     </div>
-                  </Link>
-                </motion.div>
-              )
-            })}
-          </motion.div>
-        </AnimatePresence>
+                  </div>
+                  <div className="px-0.5">
+                    <div className="flex items-start justify-between mb-1">
+                      <h3 className="text-white font-bold group-hover:text-ferrari-red transition-colors leading-tight" style={{ fontSize: '1.05rem' }}>
+                        {car.name}
+                      </h3>
+                      <ArrowRight size={14} className="text-white/20 group-hover:text-ferrari-red group-hover:translate-x-0.5 transition-all mt-0.5 flex-shrink-0" />
+                    </div>
+                    {car.short_tagline && (
+                      <p className="text-white/35 text-xs mb-2 leading-relaxed">{car.short_tagline}</p>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <span className="text-ferrari-red font-bold" style={{ fontSize: '1rem' }}>{formatPrice(car.price)}</span>
+                      {car.year && <span className="text-white/25 text-xs">{car.year}</span>}
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            )
+          })}
+        </motion.div>
       </div>
 
       {/* Dots + CTA */}
@@ -179,7 +239,7 @@ export default function FeaturedCars({ cars }: Props) {
           {featured.map((_, i) => (
             <button
               key={i}
-              onClick={() => go(i, i > index ? 1 : -1)}
+              onClick={() => { go(i, i > index ? 1 : -1); mobileScroll(i) }}
               className="relative flex items-center justify-center h-10 px-1"
               aria-label={`Slide ${i + 1}`}
             >

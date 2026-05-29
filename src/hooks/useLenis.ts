@@ -3,8 +3,18 @@
 import { useEffect, useRef } from 'react'
 import type Lenis from 'lenis'
 
+function setVh() {
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
+}
+
 export function useLenis() {
   const lenisRef = useRef<Lenis | null>(null)
+
+  useEffect(() => {
+    setVh()
+    window.addEventListener('resize', setVh)
+    return () => window.removeEventListener('resize', setVh)
+  }, [])
 
   useEffect(() => {
     let lenis: Lenis
