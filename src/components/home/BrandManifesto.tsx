@@ -30,15 +30,16 @@ export default function BrandManifesto() {
 
       {/* Marquee de fundo */}
       <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none select-none">
-        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap gap-16">
+        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap gap-20">
           {Array.from({ length: 6 }).map((_, i) => (
             <Image
               key={i}
               src="/logo-ferrari-1536.png"
               alt=""
-              width={240}
-              height={240}
-              className="object-contain opacity-[0.12] shrink-0"
+              width={320}
+              height={320}
+              className="object-contain shrink-0"
+              style={{ mixBlendMode: 'multiply', opacity: 0.08 }}
             />
           ))}
         </motion.div>
