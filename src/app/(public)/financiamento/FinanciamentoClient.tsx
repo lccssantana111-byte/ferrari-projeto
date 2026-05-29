@@ -168,7 +168,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1, duration: 0.7, ease: EASE }}
                 className="font-black tracking-[-0.04em] text-white"
-                style={{ fontSize: 'clamp(2.6rem, 7vw, 7.5rem)', lineHeight: 0.88 }}
+                style={{ fontSize: 'clamp(3rem, 5vw, 5.5rem)', lineHeight: 0.88 }}
               >
                 O carro dos
               </motion.h1>
@@ -177,7 +177,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.18, duration: 0.7, ease: EASE }}
                 className="font-black tracking-[-0.04em]"
-                style={{ fontSize: 'clamp(2.6rem, 7vw, 7.5rem)', lineHeight: 0.88, paddingBottom: '0.18em', color: '#DC143C' }}
+                style={{ fontSize: 'clamp(3rem, 5vw, 5.5rem)', lineHeight: 0.88, paddingBottom: '0.18em', color: '#DC143C' }}
               >
                 seus sonhos.
               </motion.h1>
@@ -186,7 +186,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.26, duration: 0.7, ease: EASE }}
                 className="font-black tracking-[-0.04em]"
-                style={{ fontSize: 'clamp(2.6rem, 7vw, 7.5rem)', lineHeight: 0.88, paddingBottom: '0.18em', color: 'white', mixBlendMode: 'overlay', opacity: 0.6 }}
+                style={{ fontSize: 'clamp(3rem, 5vw, 5.5rem)', lineHeight: 0.88, paddingBottom: '0.18em', color: 'white', mixBlendMode: 'overlay', opacity: 0.6 }}
               >
                 No seu tempo.
               </motion.h1>
@@ -254,7 +254,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
 
               {[
                 { text: 'Não financiamos', delay: 0.1, style: { color: '#0A0A0A' } },
-                { text: 'carros.', delay: 0.18, style: { color: '#0A0A0A', opacity: 0.22, fontStyle: 'italic' as const } },
+                { text: 'carros.', delay: 0.18, style: { color: '#F0EDE8', WebkitTextStroke: '1.5px rgba(10,10,10,0.18)' } },
                 { text: 'Realizamos', delay: 0.26, style: { color: '#0A0A0A' } },
                 { text: 'conquistas.', delay: 0.34, style: { color: '#DC143C' } },
               ].map((line, i) => (
@@ -264,7 +264,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
                   animate={manifestoInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: line.delay, duration: 0.7, ease: EASE }}
                   className="font-black tracking-[-0.04em]"
-                  style={{ fontSize: 'clamp(2.2rem, 5.5vw, 6rem)', lineHeight: 0.92, paddingBottom: '0.06em', ...line.style }}
+                  style={{ fontSize: 'clamp(2.6rem, 4vw, 4.5rem)', lineHeight: 0.92, paddingBottom: '0.06em', ...line.style }}
                 >
                   {line.text}
                 </motion.h2>
@@ -285,7 +285,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
                   transition={{ delay: 0.2 + i * 0.1, duration: 0.6, ease: EASE }}
                   className="flex flex-col"
                 >
-                  <span className="font-black tracking-tight text-[#0A0A0A] leading-none" style={{ fontSize: 'clamp(2rem, 4.5vw, 4rem)' }}>
+                  <span className="font-black tracking-tight text-[#0A0A0A] leading-none" style={{ fontSize: 'clamp(2rem, 3.5vw, 3.2rem)' }}>
                     {stat.num}
                   </span>
                   <span className="text-[#0A0A0A]/40 uppercase whitespace-pre-line mt-2" style={{ fontSize: '9px', letterSpacing: '0.2em' }}>
@@ -313,7 +313,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
             animate={diferenciaisInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: EASE }}
             className="font-black tracking-[-0.04em] text-white mb-10 sm:mb-20"
-            style={{ fontSize: 'clamp(2rem, 5vw, 5rem)', lineHeight: 1.0 }}
+            style={{ fontSize: 'clamp(2rem, 3.5vw, 3.5rem)', lineHeight: 1.0 }}
           >
             O padrão que<br />
             <span style={{ color: 'white', opacity: 0.25, fontStyle: 'italic' }}>nos separa.</span>
@@ -367,7 +367,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
                   Dúvidas frequentes
                 </span>
               </div>
-              <h2 className="font-black tracking-[-0.04em] text-white leading-[0.92]" style={{ fontSize: 'clamp(1.8rem, 4vw, 4rem)' }}>
+              <h2 className="font-black tracking-[-0.04em] text-white leading-[0.92]" style={{ fontSize: 'clamp(2.2rem, 3vw, 3rem)' }}>
                 Tudo que você precisa saber.
               </h2>
             </div>
@@ -402,7 +402,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
             animate={ctaInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.1, duration: 0.7, ease: EASE }}
             className="font-black tracking-[-0.04em] text-white leading-[0.9] mb-6 sm:mb-8"
-            style={{ fontSize: 'clamp(2.4rem, 7vw, 7rem)' }}
+            style={{ fontSize: 'clamp(2.8rem, 5vw, 5rem)' }}
           >
             Fale com um<br />
             <span style={{ color: '#DC143C' }}>especialista.</span>
