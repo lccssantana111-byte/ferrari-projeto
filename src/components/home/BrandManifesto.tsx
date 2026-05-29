@@ -27,9 +27,12 @@ export default function BrandManifesto() {
         transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
       />
 
-      {/* Marquee de fundo — posicionado na área do divisor/parágrafo */}
-      <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none select-none" style={{ height: '45%' }}>
-        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap h-full">
+      {/* Marquee de fundo — entre a headline e a divisória */}
+      <div
+        className="absolute left-0 right-0 overflow-hidden pointer-events-none select-none flex items-center"
+        style={{ top: '42%', bottom: '30%' }}
+      >
+        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap">
           {Array.from({ length: 5 }).map((_, i) => (
             <span
               key={i}
