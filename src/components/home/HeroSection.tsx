@@ -267,7 +267,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45, duration: 0.5 }}
-          className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-6"
+          className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 mb-3 sm:mb-6"
         >
           <button
             onClick={scrollToCollection}
