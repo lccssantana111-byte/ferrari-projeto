@@ -27,34 +27,28 @@ export default function BrandManifesto() {
         transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
       />
 
-      {/* Marquee de fundo — entre a headline e a divisória */}
+      {/* Marquee de fundo — centralizado entre headline e divisória */}
       <div
-        className="absolute left-0 right-0 pointer-events-none select-none"
-        style={{ top: '38%', bottom: '28%' }}
+        className="absolute left-0 right-0 pointer-events-none select-none overflow-hidden"
+        style={{ top: '55%', height: '120px', transform: 'translateY(-50%)' }}
       >
-        {/* fade topo */}
-        <div className="absolute top-0 left-0 right-0 h-8 z-10" style={{ background: 'linear-gradient(to bottom, #F0EDE8, transparent)' }} />
-        {/* fade base */}
-        <div className="absolute bottom-0 left-0 right-0 h-8 z-10" style={{ background: 'linear-gradient(to top, #F0EDE8, transparent)' }} />
-        <div className="overflow-hidden h-full flex items-center">
-          <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <span
-                key={i}
-                className="font-black tracking-[-0.03em] mr-20 shrink-0"
-                style={{
-                  fontSize: 'clamp(5rem, 12vw, 12rem)',
-                  lineHeight: 1,
-                  color: 'transparent',
-                  WebkitTextStroke: '1.5px rgba(10,10,10,0.13)',
-                  fontFamily: 'Georgia, "Times New Roman", serif',
-                }}
-              >
-                Ferrari
-              </span>
-            ))}
-          </motion.div>
-        </div>
+        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap h-full">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <span
+              key={i}
+              className="font-black tracking-[-0.03em] mr-20 shrink-0"
+              style={{
+                fontSize: 'clamp(5rem, 18vw, 10rem)',
+                lineHeight: 1,
+                color: 'transparent',
+                WebkitTextStroke: '1.5px rgba(10,10,10,0.13)',
+                fontFamily: 'Georgia, "Times New Roman", serif',
+              }}
+            >
+              Ferrari
+            </span>
+          ))}
+        </motion.div>
       </div>
 
       {/* Conteúdo */}
@@ -74,7 +68,7 @@ export default function BrandManifesto() {
         </motion.div>
 
         {/* Headline principal */}
-        <div className="mb-12 sm:mb-20">
+        <div className="mb-20 sm:mb-36">
           {/* Par 1 */}
           <div style={{ marginBottom: 'clamp(0.3rem, 1vw, 1rem)' }}>
             {[
