@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import Image from 'next/image'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 
 const STATS = [
@@ -29,15 +30,16 @@ export default function BrandManifesto() {
 
       {/* Marquee de fundo */}
       <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none select-none">
-        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <span
+        <motion.div style={{ x: xMarquee }} className="flex items-center whitespace-nowrap gap-16">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Image
               key={i}
-              className="text-[#E8E4DE] font-black uppercase tracking-[-0.04em] mr-16"
-              style={{ fontSize: 'clamp(5rem, 18vw, 18rem)', lineHeight: 1 }}
-            >
-              FERRARIM&nbsp;·&nbsp;
-            </span>
+              src="/logo-ferrari-1536.png"
+              alt=""
+              width={180}
+              height={180}
+              className="object-contain opacity-[0.07] shrink-0"
+            />
           ))}
         </motion.div>
       </div>
@@ -73,7 +75,7 @@ export default function BrandManifesto() {
                 transition={{ delay: line.delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 className="block font-black tracking-[-0.04em]"
                 style={{
-                  fontSize: 'clamp(2.6rem, 7.5vw, 8rem)',
+                  fontSize: 'clamp(2.6rem, 5vw, 5.5rem)',
                   lineHeight: 1.0,
                   color: line.outline ? '#F0EDE8' : '#0A0A0A',
                   WebkitTextStroke: line.outline ? '1.5px rgba(10,10,10,0.18)' : undefined,
@@ -97,7 +99,7 @@ export default function BrandManifesto() {
                 transition={{ delay: line.delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 className="block font-black tracking-[-0.04em]"
                 style={{
-                  fontSize: 'clamp(2.6rem, 7.5vw, 8rem)',
+                  fontSize: 'clamp(2.6rem, 5vw, 5.5rem)',
                   lineHeight: 1.0,
                   color: line.red ? '#DC143C' : '#0A0A0A',
                 }}
@@ -132,7 +134,7 @@ export default function BrandManifesto() {
               >
                 <span
                   className="font-black text-[#0A0A0A] leading-none tracking-tight"
-                  style={{ fontSize: 'clamp(1.6rem, 4vw, 3rem)' }}
+                  style={{ fontSize: 'clamp(2rem, 3vw, 2.6rem)' }}
                 >
                   {s.number}
                 </span>
