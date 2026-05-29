@@ -179,7 +179,7 @@ export default function HeroSection() {
       <AnimatePresence mode="wait">
         <motion.div
           key={`idx-${current}`}
-          className="absolute top-[calc(92px+20px)] right-5 sm:right-10 z-20 hidden sm:flex flex-col items-end gap-1"
+          className="absolute top-[calc(92px+20px)] right-5 sm:right-10 z-20 hidden flex-col items-end gap-1"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
