@@ -9,6 +9,12 @@
   --ferrari-red-dark: #A50E2D;
   --graphite: #2A2A2A;
   --graphite-light: #3D3D3D;
+  --vh: 1vh;
+}
+
+.hero-full {
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 * {
