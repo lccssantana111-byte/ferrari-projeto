@@ -36,9 +36,9 @@ export default function BrandManifesto() {
               key={i}
               src="/logo-ferrari-1536.png"
               alt=""
-              width={180}
-              height={180}
-              className="object-contain opacity-[0.07] shrink-0"
+              width={240}
+              height={240}
+              className="object-contain opacity-[0.12] shrink-0"
             />
           ))}
         </motion.div>
