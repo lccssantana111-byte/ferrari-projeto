@@ -105,7 +105,7 @@ export default function BrandManifesto() {
                 fontSize: 'clamp(5rem, 18vw, 10rem)',
                 lineHeight: 1,
                 fontFamily: 'Georgia, "Times New Roman", serif',
-                background: 'linear-gradient(90deg, rgba(0,140,69,0.18) 0%, rgba(255,255,255,0.10) 50%, rgba(206,43,55,0.18) 100%)',
+                background: 'linear-gradient(90deg, rgba(0,140,69,0.15) 0%, rgba(180,180,180,0.10) 50%, rgba(206,43,55,0.15) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
