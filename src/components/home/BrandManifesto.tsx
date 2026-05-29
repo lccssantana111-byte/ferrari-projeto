@@ -28,7 +28,7 @@ export default function BrandManifesto() {
       />
 
       {/* Conteúdo */}
-      <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20 pt-14 pb-12 sm:pt-28 sm:pb-20">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20 pt-14 pb-12 sm:pt-28 sm:pb-20 flex flex-col items-center">
 
         {/* Label */}
         <motion.div
@@ -41,6 +41,7 @@ export default function BrandManifesto() {
           <span style={{ fontSize: '9px', letterSpacing: '0.5em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>
             Nossa Filosofia
           </span>
+          <span className="w-8 h-px bg-ferrari-red" />
         </motion.div>
 
         {/* Headline principal */}
