@@ -105,10 +105,9 @@ export default function BrandManifesto() {
                 fontSize: 'clamp(5rem, 18vw, 10rem)',
                 lineHeight: 1,
                 fontFamily: 'Georgia, "Times New Roman", serif',
-                background: 'linear-gradient(90deg, rgba(0,140,69,0.15) 0%, rgba(180,180,180,0.10) 50%, rgba(206,43,55,0.15) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
+                color: 'transparent',
+                WebkitTextStroke: '1.5px rgba(10,10,10,0.18)',
+                textShadow: '-60px 0 rgba(0,140,69,0.12), 0 0 rgba(255,255,255,0.06), 60px 0 rgba(206,43,55,0.12)',
               }}
             >
               Ferrari
