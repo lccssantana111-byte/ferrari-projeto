@@ -140,22 +140,22 @@ export default function BrandManifesto() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.65, duration: 0.7 }}
-          className="border-t border-[#0A0A0A]/10 pt-8 sm:pt-12 flex flex-col lg:flex-row gap-8 sm:gap-12 items-start bg-[#F0EDE8]"
+          className="border-t border-[#0A0A0A]/10 pt-8 sm:pt-12 flex flex-col gap-8 sm:gap-12 items-center bg-[#F0EDE8]"
         >
           {/* Parágrafo */}
-          <p className="text-[#0A0A0A]/45 text-sm sm:text-base leading-[1.85] max-w-lg lg:flex-1">
+          <p className="text-[#0A0A0A]/45 text-sm sm:text-base leading-[1.85] max-w-lg text-center">
             Cada Ferrari que passa pelas nossas mãos é tratado como uma obra de arte — selecionado com critério, inspecionado com rigor e entregue com a cerimônia que um ícone como esse merece.
           </p>
 
-          {/* Stats — horizontal em mobile */}
-          <div className="flex items-start gap-8 sm:gap-14 flex-wrap">
+          {/* Stats */}
+          <div className="flex items-start justify-center gap-10 sm:gap-16 flex-wrap w-full">
             {STATS.map((s, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 16 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.75 + i * 0.1, duration: 0.5 }}
-                className="flex flex-col"
+                className="flex flex-col items-center"
               >
                 <span
                   className="font-black text-[#0A0A0A] leading-none tracking-tight"
