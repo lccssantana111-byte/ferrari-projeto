@@ -107,15 +107,17 @@ function Dropdown({
   )
 }
 
-function Panel({ children, width = 200 }: { children: React.ReactNode; width?: number }) {
+function Panel({ children, width = 200, align = 'left' }: { children: React.ReactNode; width?: number; align?: 'left' | 'right' }) {
   return (
     <div
-      className="absolute top-full left-0 mt-2 z-30 rounded-xl border"
+      className="absolute top-full mt-2 z-30 rounded-xl border"
       style={{
         background: '#141414',
         borderColor: 'rgba(255,255,255,0.08)',
         width,
+        maxWidth: 'calc(100vw - 24px)',
         boxShadow: '0 16px 48px rgba(0,0,0,0.7)',
+        ...(align === 'right' ? { right: 0, left: 'auto' } : { left: 0 }),
       }}
     >
       {children}
@@ -368,7 +370,7 @@ export default function ColecaoFilters({ cars }: Props) {
               onToggle={() => { closeOthers('price'); setPriceOpen(v => !v); setTimeout(() => minRef.current?.focus(), 50) }}
             />
             {priceOpen && (
-              <Panel width={270}>
+              <Panel width={270} align="right">
                 <div className="p-4">
                   <p style={{ fontSize: '9px', letterSpacing: '0.18em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', marginBottom: '14px' }}>
                     Faixa de preço

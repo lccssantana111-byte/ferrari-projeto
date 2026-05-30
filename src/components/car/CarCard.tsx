@@ -7,6 +7,11 @@ import { ArrowRight } from 'lucide-react'
 import { formatPrice, cn } from '@/lib/utils'
 import type { Car } from '@/types'
 
+function formatMileage(km: number) {
+  if (km === 0) return '0 km'
+  return km.toLocaleString('pt-BR') + ' km'
+}
+
 const STATUS_LABELS: Record<string, string> = { active: 'Disponível', sold: 'Vendido', reserved: 'Reservado' }
 const STATUS_COLORS: Record<string, string> = {
   active: 'text-green-400 bg-green-400/10 border-green-400/20',
@@ -63,14 +68,28 @@ export default function CarCard({ car, index = 0 }: CarCardProps) {
             <p className="text-white/40 text-sm mb-3">{car.short_tagline}</p>
           )}
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-3">
             <span className="text-ferrari-red font-bold text-lg">{formatPrice(car.price)}</span>
             {car.year && <span className="text-white/25 text-sm">{car.year}</span>}
           </div>
 
-          {car.specs?.acceleration && (
-            <p className="text-white/25 text-xs mt-2">{car.specs.acceleration}</p>
-          )}
+          <div className="flex flex-wrap gap-x-3 gap-y-1.5">
+            {car.mileage != null && (
+              <span className="text-white/35 text-xs">{formatMileage(car.mileage)}</span>
+            )}
+            {car.specs?.transmission && (
+              <span className="text-white/35 text-xs">{car.specs.transmission}</span>
+            )}
+            {car.specs?.engine && (
+              <span className="text-white/35 text-xs">{car.specs.engine}</span>
+            )}
+            {car.specs?.horsepower && (
+              <span className="text-white/35 text-xs">{car.specs.horsepower} cv</span>
+            )}
+            {car.specs?.acceleration && (
+              <span className="text-white/35 text-xs">{car.specs.acceleration}</span>
+            )}
+          </div>
         </div>
       </Link>
     </motion.div>
