@@ -68,12 +68,7 @@ export default function CarCard({ car, index = 0 }: CarCardProps) {
             <p className="text-white/40 text-sm mb-3">{car.short_tagline}</p>
           )}
 
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-ferrari-red font-bold text-lg">{formatPrice(car.price)}</span>
-            {car.year && <span className="text-white/25 text-sm">{car.year}</span>}
-          </div>
-
-          <div className="flex flex-wrap gap-x-3 gap-y-1.5">
+          <div className="flex flex-wrap gap-x-3 gap-y-1.5 mb-3">
             {car.mileage != null && (
               <span className="text-white/35 text-xs">{formatMileage(car.mileage)}</span>
             )}
@@ -89,6 +84,11 @@ export default function CarCard({ car, index = 0 }: CarCardProps) {
             {car.specs?.acceleration && (
               <span className="text-white/35 text-xs">{car.specs.acceleration}</span>
             )}
+          </div>
+
+          <div className="flex items-center justify-between">
+            <span className="text-ferrari-red font-bold text-lg">{formatPrice(car.price)}</span>
+            {car.year && <span className="text-white/25 text-sm">{car.year}</span>}
           </div>
         </div>
       </Link>
