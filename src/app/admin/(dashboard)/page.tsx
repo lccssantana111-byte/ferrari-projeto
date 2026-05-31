@@ -22,7 +22,7 @@ export default async function AdminDashboard() {
 
   const stats = [
     { label: 'Total de Veículos', value: totalCars, icon: Car, color: 'text-blue-400', href: '/admin/carros' },
-    { label: 'Em Destaque', value: featuredCars, icon: Star, color: 'text-yellow-400', href: '/admin/carros' },
+    { label: 'Em Destaque', value: featuredCars, icon: Star, color: 'text-yellow-400', href: '/admin/carros?featured=true' },
     { label: 'Total de Leads', value: totalLeads, icon: Users, color: 'text-green-400', href: '/admin/leads' },
     { label: 'Conversões', value: totalLeads > 0 ? `${totalLeads}` : '—', icon: TrendingUp, color: 'text-ferrari-red', href: '/admin/leads' },
   ]
