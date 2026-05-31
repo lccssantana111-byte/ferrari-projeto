@@ -72,3 +72,14 @@ export async function getTestDriveRequests() {
   if (error) throw new Error(error.message)
   return data ?? []
 }
+
+export async function getFinancingLeads() {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('financing_leads')
+    .select('*, cars(name, slug)')
+    .order('created_at', { ascending: false })
+
+  if (error) throw new Error(error.message)
+  return data ?? []
+}

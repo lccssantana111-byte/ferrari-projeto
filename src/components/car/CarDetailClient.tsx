@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { testDriveSchema, type TestDriveFormData } from '@/lib/validators'
 import { getWhatsAppLink } from '@/lib/constants'
 import CarVideo from '@/components/car/CarVideo'
+import FinanciamentoCarDetail from '@/components/financiamento/FinanciamentoCarDetail'
 import type { Car } from '@/types'
 
 const EASE = [0.16, 1, 0.3, 1] as const
@@ -346,6 +347,9 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
                 <CarVideo url={car.video_url} />
               </div>
             )}
+
+            {/* Simulador de financiamento */}
+            {car.status === 'active' && <FinanciamentoCarDetail car={car} />}
           </div>
 
           {/* ── COLUNA DIREITA: painel sticky ── */}

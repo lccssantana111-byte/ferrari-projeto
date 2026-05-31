@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Car, ClipboardList, LogOut, Menu, X } from 'lucide-react'
+import { LayoutDashboard, Car, ClipboardList, DollarSign, LogOut, Menu, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { BRAND_NAME } from '@/lib/constants'
@@ -12,6 +12,7 @@ const navItems = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { label: 'Veículos', href: '/admin/carros', icon: Car },
   { label: 'Test Drives', href: '/admin/test-drives', icon: ClipboardList },
+  { label: 'Financiamentos', href: '/admin/financiamento', icon: DollarSign },
 ]
 
 export default function AdminSidebar() {

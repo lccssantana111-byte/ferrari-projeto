@@ -40,3 +40,15 @@ export const loginSchema = z.object({
 })
 
 export type LoginFormData = z.infer<typeof loginSchema>
+
+export const financingLeadSchema = z.object({
+  car_id: z.string().uuid().optional(),
+  name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
+  phone: z.string().min(10, 'Telefone inválido').max(15, 'Telefone inválido'),
+  email: z.string().email('Email inválido').optional().or(z.literal('')),
+  entrada_pct: z.coerce.number().min(20).max(80),
+  prazo: z.coerce.number(),
+  parcela_estimada: z.coerce.number(),
+})
+
+export type FinancingLeadFormData = z.infer<typeof financingLeadSchema>
