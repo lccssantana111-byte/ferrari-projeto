@@ -47,3 +47,20 @@ export interface TestDriveRequest {
   message: string | null
   created_at: string
 }
+
+export type LeadOrigem = 'Visita' | 'Financiamento'
+
+export interface UnifiedLead {
+  id: string
+  car_id: string | null
+  name: string
+  phone: string
+  email: string | null
+  created_at: string
+  origem: LeadOrigem
+  cars: { id: string; name: string } | null
+  entrada_pct?: number
+  prazo?: number
+  parcela_estimada?: number
+  message?: string | null
+}

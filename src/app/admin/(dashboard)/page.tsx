@@ -1,24 +1,29 @@
 import { createClient } from '@/lib/supabase/server'
-import { Car, ClipboardList, Star, TrendingUp } from 'lucide-react'
+import { getLeadsStats } from '@/lib/queries/admin'
+import { Car, Star, Users, TrendingUp } from 'lucide-react'
 
 async function getStats() {
   const supabase = await createClient()
-  const [{ count: totalCars }, { count: featuredCars }, { count: testDrives }] = await Promise.all([
+  const [{ count: totalCars }, { count: featuredCars }, leads] = await Promise.all([
     supabase.from('cars').select('*', { count: 'exact', head: true }),
     supabase.from('cars').select('*', { count: 'exact', head: true }).eq('featured', true),
-    supabase.from('test_drive_requests').select('*', { count: 'exact', head: true }),
+    getLeadsStats(),
   ])
-  return { totalCars: totalCars ?? 0, featuredCars: featuredCars ?? 0, testDrives: testDrives ?? 0 }
+  return {
+    totalCars: totalCars ?? 0,
+    featuredCars: featuredCars ?? 0,
+    totalLeads: leads.total,
+  }
 }
 
 export default async function AdminDashboard() {
-  const { totalCars, featuredCars, testDrives } = await getStats()
+  const { totalCars, featuredCars, totalLeads } = await getStats()
 
   const stats = [
     { label: 'Total de Veículos', value: totalCars, icon: Car, color: 'text-blue-400' },
     { label: 'Em Destaque', value: featuredCars, icon: Star, color: 'text-yellow-400' },
-    { label: 'Test Drives', value: testDrives, icon: ClipboardList, color: 'text-green-400' },
-    { label: 'Conversões', value: '—', icon: TrendingUp, color: 'text-ferrari-red' },
+    { label: 'Total de Leads', value: totalLeads, icon: Users, color: 'text-green-400' },
+    { label: 'Conversões', value: totalLeads > 0 ? `${totalLeads}` : '—', icon: TrendingUp, color: 'text-ferrari-red' },
   ]
 
   return (
