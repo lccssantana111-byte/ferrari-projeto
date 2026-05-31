@@ -25,14 +25,14 @@ export default function ConfiguradorVisual({ car, formattedPrice }: Props) {
   if (!car.color_options?.length) return null
 
   const [selectedColorIdx, setSelectedColorIdx] = useState(0)
-  const [configImg, setConfigImg] = useState(0)
 
   const selectedColor = car.color_options[selectedColorIdx]
-  const hasImages = car.images.length > 0
+
+  // Usa a foto vinculada à cor; fallback para a primeira foto do carro
+  const previewImage = selectedColor.image || car.images[0] || null
 
   function selectColor(idx: number) {
     setSelectedColorIdx(idx)
-    if (car.images.length > 1) setConfigImg(idx % car.images.length)
   }
 
   const whatsappMsg = `Olá! Gostaria de solicitar o ${car.name} na cor ${selectedColor.name}. Poderia me informar disponibilidade e condições?`
@@ -51,10 +51,10 @@ export default function ConfiguradorVisual({ car, formattedPrice }: Props) {
       {/* Painel de preview */}
       <div className="relative w-full overflow-hidden" style={{ aspectRatio: '16/9', background: '#111' }}>
 
-        {hasImages ? (
+        {previewImage ? (
           <AnimatePresence mode="wait">
             <motion.div
-              key={configImg}
+              key={previewImage}
               className="absolute inset-0"
               initial={{ opacity: 0, scale: 1.03 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -62,7 +62,7 @@ export default function ConfiguradorVisual({ car, formattedPrice }: Props) {
               transition={{ duration: 0.6, ease: EASE }}
             >
               <Image
-                src={car.images[configImg]}
+                src={previewImage}
                 alt={`${car.name} — ${selectedColor.name}`}
                 fill
                 sizes="(max-width: 1024px) 100vw, 60vw"

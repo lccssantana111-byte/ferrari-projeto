@@ -16,6 +16,7 @@ export interface CarSpec {
 export interface ColorOption {
   name: string
   hex: string
+  image?: string
 }
 
 export interface Car {

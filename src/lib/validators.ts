@@ -18,6 +18,7 @@ export const carFormSchema = z.object({
     z.object({
       name: z.string(),
       hex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Cor inválida'),
+      image: z.string().optional(),
     })
   ).optional(),
 })

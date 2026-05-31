@@ -1,12 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Plus, Trash2 } from 'lucide-react'
+import { Plus, Trash2, Upload, Loader2, X } from 'lucide-react'
+import Image from 'next/image'
 import { carFormSchema, type CarFormData } from '@/lib/validators'
 import { generateSlug } from '@/lib/utils'
+import { createClient } from '@/lib/supabase/client'
 import ImageUploader from './ImageUploader'
 import type { Car } from '@/types'
 
@@ -24,6 +26,9 @@ export default function CarForm({ car }: CarFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [serverError, setServerError] = useState<string | null>(null)
+  const [colorUploading, setColorUploading] = useState<Record<number, boolean>>({})
+  const [colorUploadError, setColorUploadError] = useState<Record<number, string>>({})
+  const colorInputRefs = useRef<(HTMLInputElement | null)[]>([])
 
   const defaultSpecs = SPEC_KEYS.reduce((acc, key) => {
     acc[key] = (car?.specs as Record<string, string | number>)?.[key] ?? ''
@@ -60,6 +65,40 @@ export default function CarForm({ car }: CarFormProps) {
     if (!car && nameValue) {
       setValue('slug', generateSlug(nameValue))
     }
+  }
+
+  async function handleColorImageUpload(index: number, file: File) {
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
+    if (!validTypes.includes(file.type)) {
+      setColorUploadError((prev) => ({ ...prev, [index]: 'Tipo inválido. Use JPG, PNG ou WebP.' }))
+      return
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setColorUploadError((prev) => ({ ...prev, [index]: 'Máximo 10MB.' }))
+      return
+    }
+
+    setColorUploadError((prev) => ({ ...prev, [index]: '' }))
+    setColorUploading((prev) => ({ ...prev, [index]: true }))
+
+    const supabase = createClient()
+    const fileId = `color_${index}_${Date.now()}_${file.name.replace(/\s/g, '_')}`
+    const folder = car?.id ?? 'temp'
+    const path = `${folder}/${fileId}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('car-images')
+      .upload(path, file, { upsert: false })
+
+    if (uploadError) {
+      setColorUploadError((prev) => ({ ...prev, [index]: `Erro: ${uploadError.message}` }))
+      setColorUploading((prev) => ({ ...prev, [index]: false }))
+      return
+    }
+
+    const { data: urlData } = supabase.storage.from('car-images').getPublicUrl(path)
+    setValue(`color_options.${index}.image`, urlData.publicUrl)
+    setColorUploading((prev) => ({ ...prev, [index]: false }))
   }
 
   async function onSubmit(data: CarFormData) {
@@ -188,30 +227,96 @@ export default function CarForm({ car }: CarFormProps) {
           <h2 className="text-white font-semibold">Opções de Cor</h2>
           <button
             type="button"
-            onClick={() => addColor({ name: '', hex: '#DC143C' })}
+            onClick={() => addColor({ name: '', hex: '#DC143C', image: '' })}
             className="flex items-center gap-2 text-ferrari-red text-sm hover:opacity-80 transition-opacity"
           >
-            <Plus size={16} /> Adicionar
+            <Plus size={16} /> Adicionar cor
           </button>
         </div>
-        <div className="space-y-3">
-          {colorFields.map((field, index) => (
-            <div key={field.id} className="flex items-center gap-3">
-              <input
-                {...register(`color_options.${index}.hex`)}
-                type="color"
-                className="h-10 w-14 rounded cursor-pointer border-0 bg-transparent"
-              />
-              <input
-                {...register(`color_options.${index}.name`)}
-                className={`${inputClass} flex-1`}
-                placeholder="Rosso Corsa"
-              />
-              <button type="button" onClick={() => removeColor(index)} className="text-white/30 hover:text-ferrari-red transition-colors">
-                <Trash2 size={16} />
-              </button>
-            </div>
-          ))}
+        <div className="space-y-4">
+          {colorFields.map((field, index) => {
+            const currentImage = watch(`color_options.${index}.image`)
+            return (
+              <div key={field.id} className="border border-white/8 rounded-lg p-4 space-y-3">
+                {/* Linha: color picker + nome + remover */}
+                <div className="flex items-center gap-3">
+                  <input
+                    {...register(`color_options.${index}.hex`)}
+                    type="color"
+                    className="h-10 w-14 rounded cursor-pointer border-0 bg-transparent flex-shrink-0"
+                  />
+                  <input
+                    {...register(`color_options.${index}.name`)}
+                    className={`${inputClass} flex-1`}
+                    placeholder="Rosso Corsa"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeColor(index)}
+                    className="text-white/30 hover:text-ferrari-red transition-colors flex-shrink-0"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+
+                {/* Upload de foto desta cor */}
+                <div className="space-y-2">
+                  <p className="text-white/40 text-xs uppercase tracking-widest">Foto nesta cor</p>
+
+                  {currentImage ? (
+                    <div className="relative w-full rounded-lg overflow-hidden" style={{ aspectRatio: '16/9' }}>
+                      <Image
+                        src={currentImage}
+                        alt="Foto da cor"
+                        fill
+                        sizes="400px"
+                        className="object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setValue(`color_options.${index}.image`, '')}
+                        className="absolute top-2 right-2 bg-carbon/80 rounded-full p-1 hover:bg-ferrari-red transition-colors"
+                      >
+                        <X size={12} />
+                      </button>
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => colorInputRefs.current[index]?.click()}
+                      className="border border-dashed border-white/10 rounded-lg p-5 text-center cursor-pointer hover:border-ferrari-red/40 transition-colors"
+                    >
+                      {colorUploading[index] ? (
+                        <div className="flex items-center justify-center gap-2 text-white/40 text-sm">
+                          <Loader2 size={16} className="animate-spin" />
+                          Enviando...
+                        </div>
+                      ) : (
+                        <>
+                          <Upload size={18} className="mx-auto mb-2 text-white/25" />
+                          <p className="text-white/35 text-xs">Clique para adicionar a foto desta cor</p>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  <input
+                    ref={(el) => { colorInputRefs.current[index] = el }}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/avif"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      if (file) handleColorImageUpload(index, file)
+                    }}
+                  />
+
+                  {colorUploadError[index] && (
+                    <p className="text-ferrari-red text-xs">{colorUploadError[index]}</p>
+                  )}
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
 
