@@ -4,7 +4,7 @@ import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Plus, Trash2, Upload, Loader2, X } from 'lucide-react'
+import { Plus, Trash2, Upload, Loader2, X, Sparkles } from 'lucide-react'
 import Image from 'next/image'
 import { carFormSchema, type CarFormData } from '@/lib/validators'
 import { generateSlug } from '@/lib/utils'
@@ -28,6 +28,7 @@ export default function CarForm({ car }: CarFormProps) {
   const [serverError, setServerError] = useState<string | null>(null)
   const [colorUploading, setColorUploading] = useState<Record<number, boolean>>({})
   const [colorUploadError, setColorUploadError] = useState<Record<number, string>>({})
+  const [generatingDesc, setGeneratingDesc] = useState(false)
   const colorInputRefs = useRef<(HTMLInputElement | null)[]>([])
 
   const defaultSpecs = SPEC_KEYS.reduce((acc, key) => {
@@ -35,7 +36,7 @@ export default function CarForm({ car }: CarFormProps) {
     return acc
   }, {} as Record<string, string | number>)
 
-  const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm<CarFormData>({
+  const { register, handleSubmit, watch, setValue, getValues, control, formState: { errors } } = useForm<CarFormData>({
     resolver: zodResolver(carFormSchema),
     defaultValues: {
       name: car?.name ?? '',
@@ -64,6 +65,24 @@ export default function CarForm({ car }: CarFormProps) {
   function handleNameBlur() {
     if (!car && nameValue) {
       setValue('slug', generateSlug(nameValue))
+    }
+  }
+
+  async function generateDescription() {
+    setGeneratingDesc(true)
+    try {
+      const { name, year, short_tagline, specs } = getValues()
+      const res = await fetch('/api/admin/cars/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, year, short_tagline, specs }),
+      })
+      const json = await res.json()
+      if (json.description) setValue('description', json.description)
+    } catch {
+      // silently fail — user can try again
+    } finally {
+      setGeneratingDesc(false)
     }
   }
 
@@ -157,7 +176,23 @@ export default function CarForm({ car }: CarFormProps) {
         </div>
 
         <div className="space-y-2">
-          <label className={labelClass}>Descrição</label>
+          <div className="flex items-center justify-between">
+            <label className={labelClass}>Descrição</label>
+            <button
+              type="button"
+              onClick={generateDescription}
+              disabled={generatingDesc || !watch('name')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ border: '1px solid rgba(220,20,60,0.35)', color: '#DC143C', background: 'rgba(220,20,60,0.05)' }}
+              onMouseEnter={e => { if (!generatingDesc && watch('name')) e.currentTarget.style.background = 'rgba(220,20,60,0.12)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(220,20,60,0.05)' }}
+            >
+              {generatingDesc
+                ? <><Loader2 size={12} className="animate-spin" /> Gerando...</>
+                : <><Sparkles size={12} /> Gerar com IA</>
+              }
+            </button>
+          </div>
           <textarea {...register('description')} rows={4} className={inputClass} placeholder="Descreva o veículo..." />
         </div>
 
