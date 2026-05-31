@@ -113,7 +113,7 @@ export default function AdminSidebar() {
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex w-64 min-h-screen bg-[#111] border-r border-white/5 flex-col flex-shrink-0">
         <div className="p-6 border-b border-white/5">
-          <Link href="/" className="text-ferrari-red font-bold text-xl tracking-widest">
+          <Link href="/admin" className="text-ferrari-red font-bold text-xl tracking-widest">
             {BRAND_NAME.toUpperCase()}
           </Link>
           <p className="text-white/30 text-xs mt-1 tracking-widest uppercase">Admin</p>
