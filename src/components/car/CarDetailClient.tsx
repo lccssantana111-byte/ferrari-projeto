@@ -11,6 +11,7 @@ import { testDriveSchema, type TestDriveFormData } from '@/lib/validators'
 import { getWhatsAppLink } from '@/lib/constants'
 import CarVideo from '@/components/car/CarVideo'
 import FinanciamentoCarDetail from '@/components/financiamento/FinanciamentoCarDetail'
+import ConfiguradorVisual from '@/components/car/ConfiguradorVisual'
 import type { Car } from '@/types'
 
 const EASE = [0.16, 1, 0.3, 1] as const
@@ -311,29 +312,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
               </div>
             )}
 
-            {/* Cores */}
-            {car.color_options?.length > 0 && (
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '2rem' }}>
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="h-px w-5 bg-ferrari-red" />
-                  <span style={{ fontSize: '9px', letterSpacing: '0.38em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>
-                    Cores
-                  </span>
-                </div>
-                <div className="flex items-center gap-4 flex-wrap">
-                  {car.color_options.map((c) => (
-                    <div key={c.hex} className="flex flex-col items-center gap-2">
-                      <div
-                        className="w-9 h-9 rounded-full transition-transform duration-200 hover:scale-110"
-                        style={{ background: c.hex, border: '2px solid rgba(255,255,255,0.12)', boxShadow: `0 0 0 1px rgba(255,255,255,0.05), inset 0 1px 1px rgba(255,255,255,0.15)` }}
-                        title={c.name}
-                      />
-                      <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.06em' }}>{c.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            <ConfiguradorVisual car={car} formattedPrice={formattedPrice} />
 
             {/* Vídeo */}
             {car.video_url && (
