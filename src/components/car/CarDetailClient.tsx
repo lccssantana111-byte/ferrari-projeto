@@ -415,20 +415,6 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
               </div>
             )}
 
-            {/* CTA WhatsApp */}
-            <a
-              href={getWhatsAppLink(`Olá! Tenho interesse no ${car.name}. Poderia me passar mais informações?`)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2.5 py-5 w-full transition-all duration-300"
-              style={{ background: '#DC143C', color: '#fff', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.24em' }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#A50E2D')}
-              onMouseLeave={e => (e.currentTarget.style.background = '#DC143C')}
-            >
-              <WhatsAppIcon />
-              Tenho interesse
-            </a>
-
             {/* Garantias */}
             <div className="flex flex-col gap-0" style={{ border: '1px solid rgba(255,255,255,0.07)', background: '#111111' }}>
               {[
@@ -448,13 +434,27 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
               ))}
             </div>
 
+            {/* CTA WhatsApp */}
+            <a
+              href={getWhatsAppLink(`Olá! Tenho interesse no ${car.name}. Poderia me passar mais informações?`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2.5 py-5 w-full transition-all duration-300"
+              style={{ background: '#DC143C', color: '#fff', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.24em' }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#A50E2D')}
+              onMouseLeave={e => (e.currentTarget.style.background = '#DC143C')}
+            >
+              <WhatsAppIcon />
+              Tenho interesse
+            </a>
+
           </div>
         </div>
       </div>
 
       {/* ── OUTROS CARROS ── */}
       {otherCars.length > 0 && (
-        <section ref={othersRef} className="py-14 sm:py-24" style={{ background: '#0D0D0D' }}>
+        <section ref={othersRef} className="pt-8 pb-14 sm:py-24" style={{ background: '#0D0D0D' }}>
           <div className="max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20">
 
             <div className="flex items-end justify-between mb-8 sm:mb-12">
