@@ -308,6 +308,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
             <span style={{ fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>
               Por que conosco
             </span>
+            <span className="h-px w-6 bg-ferrari-red" />
           </div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -368,6 +369,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
                 <span style={{ fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>
                   Dúvidas frequentes
                 </span>
+                <span className="h-px w-6 bg-ferrari-red" />
               </div>
               <h2 className="font-black tracking-[-0.04em] text-white leading-[0.92]" style={{ fontSize: 'clamp(2.5rem, 4vw, 3.8rem)' }}>
                 Tudo que você precisa saber.
