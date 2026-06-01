@@ -468,14 +468,6 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
                   <span style={{ color: '#DC143C' }}>veículos</span>
                 </h2>
               </div>
-              <Link
-                href="/colecao"
-                className="group hidden sm:flex items-center gap-2 text-white/30 hover:text-white transition-colors duration-200"
-                style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600 }}
-              >
-                Ver coleção
-                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform duration-200" />
-              </Link>
             </div>
 
             {/* Mobile: scroll horizontal com snap */}
