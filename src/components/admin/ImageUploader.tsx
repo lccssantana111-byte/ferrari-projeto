@@ -39,7 +39,8 @@ export default function ImageUploader({ images, onChange, carId }: ImageUploader
 
     const newUrls: string[] = []
     for (const file of valid) {
-      const fileId = `${Date.now()}_${file.name.replace(/\s/g, '_')}`
+      const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
+      const fileId = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`
       const folder = carId ?? 'temp'
       const path = `${folder}/${fileId}`
 

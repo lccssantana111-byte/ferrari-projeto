@@ -112,7 +112,8 @@ export default function CarForm({ car }: CarFormProps) {
     setColorUploading((prev) => ({ ...prev, [index]: true }))
 
     const supabase = createClient()
-    const fileId = `color_${index}_${Date.now()}_${file.name.replace(/\s/g, '_')}`
+    const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
+    const fileId = `color_${index}_${Date.now()}.${ext}`
     const folder = car?.id ?? 'temp'
     const path = `${folder}/${fileId}`
 
