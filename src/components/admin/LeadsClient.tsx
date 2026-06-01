@@ -125,7 +125,7 @@ export default function LeadsClient({ leads, cars }: Props) {
       </div>
 
       {/* Filtros */}
-      <div className="glass rounded-xl p-4 mb-4">
+      <div className="glass rounded-xl p-4 mb-4 overflow-hidden">
         <div className="flex flex-col gap-3">
           {/* Busca */}
           <div className="relative">
@@ -165,19 +165,19 @@ export default function LeadsClient({ leads, cars }: Props) {
           </div>
 
           {/* Data */}
-          <div className="grid grid-cols-2 gap-3 items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input
               type="date"
               value={dateFrom}
               onChange={e => setDateFrom(e.target.value)}
-              className={inputClass() + ' w-full'}
+              className={inputClass() + ' w-full min-w-0'}
               title="De"
             />
             <input
               type="date"
               value={dateTo}
               onChange={e => setDateTo(e.target.value)}
-              className={inputClass() + ' w-full'}
+              className={inputClass() + ' w-full min-w-0'}
               title="Até"
             />
           </div>
