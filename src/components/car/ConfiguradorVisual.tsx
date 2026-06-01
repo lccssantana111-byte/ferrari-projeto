@@ -80,21 +80,6 @@ export default function ConfiguradorVisual({ car, formattedPrice }: Props) {
         {/* Gradiente permanente de fundo */}
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.75) 0%, transparent 55%)' }} />
 
-        {/* Overlay de cor animada */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={selectedColor.hex}
-            className="absolute inset-0 pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: EASE }}
-            style={{
-              background: `linear-gradient(135deg, ${selectedColor.hex}00 50%, ${selectedColor.hex}12 80%, ${selectedColor.hex}22 100%)`,
-              mixBlendMode: 'screen',
-            }}
-          />
-        </AnimatePresence>
 
         {/* Badge da cor no canto inferior esquerdo */}
         <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2">
