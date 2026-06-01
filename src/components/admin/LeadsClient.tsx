@@ -126,9 +126,9 @@ export default function LeadsClient({ leads, cars }: Props) {
 
       {/* Filtros */}
       <div className="glass rounded-xl p-4 mb-4">
-        <div className="flex flex-wrap gap-3 items-end">
+        <div className="flex flex-col gap-3">
           {/* Busca */}
-          <div className="relative flex-1 min-w-[180px]">
+          <div className="relative">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/25 pointer-events-none" />
             <input
               type="text"
@@ -139,44 +139,45 @@ export default function LeadsClient({ leads, cars }: Props) {
             />
           </div>
 
-          {/* Origem */}
-          <select
-            value={origem}
-            onChange={e => setOrigem(e.target.value as typeof origem)}
-            className={inputClass() + ' min-w-[140px]'}
-          >
-            <option value="Todos">Todas origens</option>
-            <option value="Visita">Visita</option>
-            <option value="Financiamento">Financiamento</option>
-          </select>
+          <div className="grid grid-cols-2 gap-3">
+            {/* Origem */}
+            <select
+              value={origem}
+              onChange={e => setOrigem(e.target.value as typeof origem)}
+              className={inputClass() + ' w-full'}
+            >
+              <option value="Todos">Todas origens</option>
+              <option value="Visita">Visita</option>
+              <option value="Financiamento">Financiamento</option>
+            </select>
 
-          {/* Veículo */}
-          <select
-            value={carId}
-            onChange={e => setCarId(e.target.value)}
-            className={inputClass() + ' min-w-[160px] max-w-[220px]'}
-          >
-            <option value="">Todos os veículos</option>
-            {cars.map(c => (
-              <option key={c.id} value={c.id}>{c.name}</option>
-            ))}
-          </select>
+            {/* Veículo */}
+            <select
+              value={carId}
+              onChange={e => setCarId(e.target.value)}
+              className={inputClass() + ' w-full'}
+            >
+              <option value="">Todos os veículos</option>
+              {cars.map(c => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
+          </div>
 
-          {/* Data de */}
-          <div className="flex items-center gap-2">
+          {/* Data */}
+          <div className="grid grid-cols-2 gap-3 items-center">
             <input
               type="date"
               value={dateFrom}
               onChange={e => setDateFrom(e.target.value)}
-              className={inputClass()}
+              className={inputClass() + ' w-full'}
               title="De"
             />
-            <span className="text-white/25 text-xs">até</span>
             <input
               type="date"
               value={dateTo}
               onChange={e => setDateTo(e.target.value)}
-              className={inputClass()}
+              className={inputClass() + ' w-full'}
               title="Até"
             />
           </div>
@@ -185,13 +186,13 @@ export default function LeadsClient({ leads, cars }: Props) {
           {hasFilters && (
             <button
               onClick={clearFilters}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs transition-colors w-fit"
               style={{ color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.08)' }}
               onMouseEnter={e => { e.currentTarget.style.color = '#fff' }}
               onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.4)' }}
             >
               <X size={12} />
-              Limpar
+              Limpar filtros
             </button>
           )}
         </div>
@@ -201,58 +202,126 @@ export default function LeadsClient({ leads, cars }: Props) {
         )}
       </div>
 
-      {/* Tabela */}
+      {/* Lista */}
       {filtered.length === 0 ? (
         <div className="glass rounded-xl p-12 text-center">
           <p className="text-white/30">Nenhum lead encontrado.</p>
         </div>
       ) : (
-        <div className="glass rounded-xl overflow-x-auto">
-          <table className="w-full min-w-[640px]">
-            <thead>
-              <tr className="border-b border-white/5">
-                <th className="text-left px-4 sm:px-6 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Nome</th>
-                <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Telefone</th>
-                <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium hidden sm:table-cell">Veículo</th>
-                <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Origem</th>
-                <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium hidden lg:table-cell">Detalhes</th>
-                <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium hidden md:table-cell">Data</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(lead => (
-                <tr key={`${lead.origem}-${lead.id}`} className="border-b border-white/5 last:border-0">
-                  <td className="px-4 sm:px-6 py-4">
-                    <p className="text-white text-sm font-medium">{lead.name}</p>
-                    {lead.email && <p className="text-white/30 text-xs">{lead.email}</p>}
-                  </td>
-                  <td className="px-4 py-4 text-white/60 text-sm whitespace-nowrap">{lead.phone}</td>
-                  <td className="px-4 py-4 text-white/60 text-sm hidden sm:table-cell">
-                    {lead.cars?.name ?? <span className="text-white/20">—</span>}
-                  </td>
-                  <td className="px-4 py-4">
-                    <span className={`text-xs px-2.5 py-1 rounded-full border ${ORIGEM_COLORS[lead.origem]}`}>
-                      {lead.origem}
-                    </span>
-                  </td>
-                  <td className="px-4 py-4 text-white/40 text-xs hidden lg:table-cell">
-                    {lead.origem === 'Financiamento' && lead.parcela_estimada ? (
-                      <span>Entrada {lead.entrada_pct}% · {lead.prazo}x de <span className="text-ferrari-red font-semibold">{formatPrice(lead.parcela_estimada)}</span></span>
-                    ) : lead.message ? (
-                      <span className="truncate max-w-[200px] block">{lead.message}</span>
-                    ) : (
-                      <span className="text-white/20">—</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-4 text-white/30 text-xs hidden md:table-cell whitespace-nowrap">
-                    {new Date(lead.created_at).toLocaleDateString('pt-BR')}
-                    <span className="block text-white/20">{new Date(lead.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
-                  </td>
+        <>
+          {/* Mobile: cards */}
+          <div className="flex flex-col gap-3 sm:hidden">
+            {filtered.map(lead => (
+              <div key={`${lead.origem}-${lead.id}`} className="glass rounded-xl p-4 flex flex-col gap-3">
+                {/* Topo: nome + badge */}
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="text-white font-semibold text-sm">{lead.name}</p>
+                    {lead.email && <p className="text-white/35 text-xs mt-0.5">{lead.email}</p>}
+                  </div>
+                  <span className={`text-xs px-2.5 py-1 rounded-full border flex-shrink-0 ${ORIGEM_COLORS[lead.origem]}`}>
+                    {lead.origem}
+                  </span>
+                </div>
+
+                {/* Telefone */}
+                <a
+                  href={`tel:${lead.phone}`}
+                  className="text-white/70 text-sm font-mono"
+                >
+                  {lead.phone}
+                </a>
+
+                {/* Veículo */}
+                {lead.cars?.name && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-white/25 text-xs uppercase tracking-wider">Veículo</span>
+                    <span className="text-white/70 text-xs">{lead.cars.name}</span>
+                  </div>
+                )}
+
+                {/* Detalhes financiamento */}
+                {lead.origem === 'Financiamento' && lead.parcela_estimada && (
+                  <div className="rounded-lg p-3 flex flex-col gap-1" style={{ background: 'rgba(220,20,60,0.06)', border: '1px solid rgba(220,20,60,0.15)' }}>
+                    <p className="text-white/40 text-xs uppercase tracking-wider mb-1">Simulação</p>
+                    <div className="grid grid-cols-3 gap-2 text-center">
+                      <div>
+                        <p className="text-white/35 text-[10px]">Entrada</p>
+                        <p className="text-white text-xs font-semibold">{lead.entrada_pct}%</p>
+                      </div>
+                      <div>
+                        <p className="text-white/35 text-[10px]">Prazo</p>
+                        <p className="text-white text-xs font-semibold">{lead.prazo}x</p>
+                      </div>
+                      <div>
+                        <p className="text-white/35 text-[10px]">Parcela</p>
+                        <p className="text-ferrari-red text-xs font-bold">{formatPrice(lead.parcela_estimada)}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Mensagem visita */}
+                {lead.origem === 'Visita' && lead.message && (
+                  <p className="text-white/35 text-xs leading-relaxed">{lead.message}</p>
+                )}
+
+                {/* Data */}
+                <p className="text-white/20 text-xs">
+                  {new Date(lead.created_at).toLocaleDateString('pt-BR')} às {new Date(lead.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: tabela */}
+          <div className="hidden sm:block glass rounded-xl overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-white/5">
+                  <th className="text-left px-6 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Nome</th>
+                  <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Telefone</th>
+                  <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Veículo</th>
+                  <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Origem</th>
+                  <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium hidden lg:table-cell">Detalhes</th>
+                  <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Data</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filtered.map(lead => (
+                  <tr key={`${lead.origem}-${lead.id}`} className="border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors">
+                    <td className="px-6 py-4">
+                      <p className="text-white text-sm font-medium">{lead.name}</p>
+                      {lead.email && <p className="text-white/30 text-xs">{lead.email}</p>}
+                    </td>
+                    <td className="px-4 py-4 text-white/60 text-sm whitespace-nowrap">{lead.phone}</td>
+                    <td className="px-4 py-4 text-white/60 text-sm">
+                      {lead.cars?.name ?? <span className="text-white/20">—</span>}
+                    </td>
+                    <td className="px-4 py-4">
+                      <span className={`text-xs px-2.5 py-1 rounded-full border ${ORIGEM_COLORS[lead.origem]}`}>
+                        {lead.origem}
+                      </span>
+                    </td>
+                    <td className="px-4 py-4 text-white/40 text-xs hidden lg:table-cell">
+                      {lead.origem === 'Financiamento' && lead.parcela_estimada ? (
+                        <span>Entrada {lead.entrada_pct}% · {lead.prazo}x de <span className="text-ferrari-red font-semibold">{formatPrice(lead.parcela_estimada)}</span></span>
+                      ) : lead.message ? (
+                        <span className="truncate max-w-[200px] block">{lead.message}</span>
+                      ) : (
+                        <span className="text-white/20">—</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-4 text-white/30 text-xs whitespace-nowrap">
+                      {new Date(lead.created_at).toLocaleDateString('pt-BR')}
+                      <span className="block text-white/20">{new Date(lead.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   )

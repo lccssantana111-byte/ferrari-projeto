@@ -55,73 +55,120 @@ export default function CarTable({ cars }: CarTableProps) {
   }
 
   return (
-    <div className="glass rounded-xl overflow-x-auto">
-      <table className="w-full min-w-[500px]">
-        <thead>
-          <tr className="border-b border-white/5">
-            <th className="text-left px-4 sm:px-6 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Veículo</th>
-            <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Preço</th>
-            <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium hidden sm:table-cell">Status</th>
-            <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium hidden md:table-cell">Destaque</th>
-            <th className="px-4 sm:px-6 py-4" />
-          </tr>
-        </thead>
-        <tbody>
-          {cars.map((car) => (
-            <tr key={car.id} className="border-b border-white/5 last:border-0 hover:bg-white/2 transition-colors">
-              <td className="px-4 sm:px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="relative w-12 h-8 sm:w-16 sm:h-10 rounded-lg overflow-hidden bg-graphite flex-shrink-0">
-                    {car.images[0] ? (
-                      <Image src={car.images[0]} alt={car.name} fill sizes="64px" className="object-cover" />
-                    ) : (
-                      <div className="w-full h-full bg-graphite" />
-                    )}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-white font-medium text-sm truncate">{car.name}</p>
-                    <p className="text-white/30 text-xs">{car.year ?? '—'}</p>
-                  </div>
-                </div>
-              </td>
-              <td className="px-4 py-4 text-white/70 text-sm whitespace-nowrap">
-                {formatPrice(car.price)}
-              </td>
-              <td className="px-4 py-4 hidden sm:table-cell">
-                <span className={cn('text-xs px-2 py-1 rounded-full whitespace-nowrap', STATUS_COLORS[car.status])}>
+    <>
+      {/* Mobile: cards */}
+      <div className="flex flex-col gap-3 sm:hidden">
+        {cars.map((car) => (
+          <div key={car.id} className="glass rounded-xl p-4 flex items-center gap-3">
+            <div className="relative w-16 h-11 rounded-lg overflow-hidden bg-graphite flex-shrink-0">
+              {car.images[0] ? (
+                <Image src={car.images[0]} alt={car.name} fill sizes="64px" className="object-cover" />
+              ) : (
+                <div className="w-full h-full bg-graphite" />
+              )}
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <p className="text-white font-medium text-sm truncate">{car.name}</p>
+              <p className="text-white/30 text-xs">{car.year ?? '—'}</p>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-ferrari-red font-semibold text-xs">{formatPrice(car.price)}</span>
+                <span className={cn('text-xs px-1.5 py-0.5 rounded-full', STATUS_COLORS[car.status])}>
                   {STATUS_LABELS[car.status]}
                 </span>
-              </td>
-              <td className="px-4 py-4 hidden md:table-cell">
-                <button
-                  onClick={() => handleToggleFeatured(car)}
-                  disabled={togglingId === car.id}
-                  className={cn('transition-colors p-1', car.featured ? 'text-yellow-400' : 'text-white/20 hover:text-white/50')}
-                >
-                  <Star size={16} fill={car.featured ? 'currentColor' : 'none'} />
-                </button>
-              </td>
-              <td className="px-4 sm:px-6 py-4">
-                <div className="flex items-center gap-1 justify-end">
-                  <Link href={`/carros/${car.slug}`} target="_blank" className="text-white/30 hover:text-white transition-colors p-2 min-w-[36px] min-h-[36px] flex items-center justify-center">
-                    <ExternalLink size={15} />
-                  </Link>
-                  <Link href={`/admin/carros/${car.id}`} className="text-white/30 hover:text-white transition-colors p-2 min-w-[36px] min-h-[36px] flex items-center justify-center">
-                    <Edit2 size={15} />
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(car.id)}
-                    disabled={deletingId === car.id}
-                    className="text-white/30 hover:text-ferrari-red transition-colors p-2 min-w-[36px] min-h-[36px] flex items-center justify-center disabled:opacity-30"
-                  >
-                    <Trash2 size={15} />
-                  </button>
-                </div>
-              </td>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-0.5 flex-shrink-0">
+              <button
+                onClick={() => handleToggleFeatured(car)}
+                disabled={togglingId === car.id}
+                className={cn('p-2', car.featured ? 'text-yellow-400' : 'text-white/20')}
+              >
+                <Star size={15} fill={car.featured ? 'currentColor' : 'none'} />
+              </button>
+              <Link href={`/admin/carros/${car.id}`} className="text-white/30 hover:text-white p-2">
+                <Edit2 size={15} />
+              </Link>
+              <button
+                onClick={() => handleDelete(car.id)}
+                disabled={deletingId === car.id}
+                className="text-white/30 hover:text-ferrari-red p-2 disabled:opacity-30"
+              >
+                <Trash2 size={15} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: tabela */}
+      <div className="hidden sm:block glass rounded-xl overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-white/5">
+              <th className="text-left px-6 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Veículo</th>
+              <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Preço</th>
+              <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Status</th>
+              <th className="text-left px-4 py-4 text-white/40 text-xs uppercase tracking-widest font-medium">Destaque</th>
+              <th className="px-6 py-4" />
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {cars.map((car) => (
+              <tr key={car.id} className="border-b border-white/5 last:border-0 hover:bg-white/2 transition-colors">
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-3">
+                    <div className="relative w-16 h-10 rounded-lg overflow-hidden bg-graphite flex-shrink-0">
+                      {car.images[0] ? (
+                        <Image src={car.images[0]} alt={car.name} fill sizes="64px" className="object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-graphite" />
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-white font-medium text-sm truncate">{car.name}</p>
+                      <p className="text-white/30 text-xs">{car.year ?? '—'}</p>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-4 py-4 text-white/70 text-sm whitespace-nowrap">{formatPrice(car.price)}</td>
+                <td className="px-4 py-4">
+                  <span className={cn('text-xs px-2 py-1 rounded-full whitespace-nowrap', STATUS_COLORS[car.status])}>
+                    {STATUS_LABELS[car.status]}
+                  </span>
+                </td>
+                <td className="px-4 py-4">
+                  <button
+                    onClick={() => handleToggleFeatured(car)}
+                    disabled={togglingId === car.id}
+                    className={cn('transition-colors p-1', car.featured ? 'text-yellow-400' : 'text-white/20 hover:text-white/50')}
+                  >
+                    <Star size={16} fill={car.featured ? 'currentColor' : 'none'} />
+                  </button>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-1 justify-end">
+                    <Link href={`/carros/${car.slug}`} target="_blank" className="text-white/30 hover:text-white transition-colors p-2 flex items-center justify-center">
+                      <ExternalLink size={15} />
+                    </Link>
+                    <Link href={`/admin/carros/${car.id}`} className="text-white/30 hover:text-white transition-colors p-2 flex items-center justify-center">
+                      <Edit2 size={15} />
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(car.id)}
+                      disabled={deletingId === car.id}
+                      className="text-white/30 hover:text-ferrari-red transition-colors p-2 flex items-center justify-center disabled:opacity-30"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   )
 }
