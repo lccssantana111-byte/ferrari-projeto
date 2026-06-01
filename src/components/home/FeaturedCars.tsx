@@ -166,11 +166,17 @@ export default function FeaturedCars({ cars }: Props) {
                 </div>
               </div>
               <div className="px-0.5">
-                <h3 className="text-white font-bold leading-tight mb-1" style={{ fontSize: '0.95rem' }}>{car.name}</h3>
+                <div className="flex items-start justify-between mb-1">
+                  <h3 className="text-white font-bold leading-tight" style={{ fontSize: '0.95rem' }}>{car.name}</h3>
+                  <ArrowRight size={13} className="text-white/20 group-hover:text-ferrari-red transition-colors mt-0.5 flex-shrink-0" />
+                </div>
                 {car.short_tagline && (
                   <p className="text-white/50 leading-snug mb-1.5" style={{ fontSize: '0.72rem' }}>{car.short_tagline}</p>
                 )}
-                <span className="text-ferrari-red font-bold" style={{ fontSize: '0.9rem' }}>{formatPrice(car.price)}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-ferrari-red font-bold" style={{ fontSize: '0.9rem' }}>{formatPrice(car.price)}</span>
+                  {car.year && <span className="text-white/25 text-xs">{car.year}</span>}
+                </div>
               </div>
             </Link>
           </div>
