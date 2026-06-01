@@ -165,21 +165,25 @@ export default function LeadsClient({ leads, cars }: Props) {
           </div>
 
           {/* Data */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <input
-              type="date"
-              value={dateFrom}
-              onChange={e => setDateFrom(e.target.value)}
-              className={inputClass() + ' w-full min-w-0'}
-              title="De"
-            />
-            <input
-              type="date"
-              value={dateTo}
-              onChange={e => setDateTo(e.target.value)}
-              className={inputClass() + ' w-full min-w-0'}
-              title="Até"
-            />
+          <div className="grid grid-cols-1 gap-3">
+            <label className="flex items-center gap-2">
+              <span className="text-white/30 text-xs shrink-0 w-8">De</span>
+              <input
+                type="date"
+                value={dateFrom}
+                onChange={e => setDateFrom(e.target.value)}
+                className={inputClass() + ' flex-1 min-w-0 text-xs px-2 py-2'}
+              />
+            </label>
+            <label className="flex items-center gap-2">
+              <span className="text-white/30 text-xs shrink-0 w-8">Até</span>
+              <input
+                type="date"
+                value={dateTo}
+                onChange={e => setDateTo(e.target.value)}
+                className={inputClass() + ' flex-1 min-w-0 text-xs px-2 py-2'}
+              />
+            </label>
           </div>
 
           {/* Limpar */}
