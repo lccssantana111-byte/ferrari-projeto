@@ -13,6 +13,7 @@ export const carFormSchema = z.object({
   video_url: z.string().url('URL inválida').optional().or(z.literal('')),
   model_url: z.string().optional(),
   images: z.array(z.string()),
+  images_mobile: z.array(z.string()).optional(),
   specs: z.record(z.string(), z.union([z.string(), z.number()])).optional(),
   color_options: z.array(
     z.object({

@@ -37,6 +37,7 @@ export default function CarForm({ car }: CarFormProps) {
     return acc
   }, {} as Record<string, string | number>)
 
+  const [photoTab, setPhotoTab] = useState<'desktop' | 'mobile'>('desktop')
   const { register, handleSubmit, watch, setValue, getValues, control, formState: { errors } } = useForm<CarFormData>({
     resolver: zodResolver(carFormSchema),
     defaultValues: {
@@ -52,6 +53,7 @@ export default function CarForm({ car }: CarFormProps) {
       video_url: car?.video_url ?? '',
       model_url: car?.model_url ?? '',
       images: car?.images ?? [],
+      images_mobile: car?.images_mobile ?? [],
       specs: defaultSpecs,
       color_options: car?.color_options ?? [],
     },
@@ -247,11 +249,40 @@ export default function CarForm({ car }: CarFormProps) {
       {/* Images */}
       <div className="glass rounded-xl p-6 space-y-4">
         <h2 className="text-white font-semibold">Fotos</h2>
-        <ImageUploader
-          images={watch('images')}
-          onChange={(urls) => setValue('images', urls)}
-          carId={car?.id}
-        />
+        <div className="flex gap-1 p-1 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+          {(['desktop', 'mobile'] as const).map(tab => (
+            <button
+              key={tab}
+              type="button"
+              onClick={() => setPhotoTab(tab)}
+              className="flex-1 py-2 rounded-md text-xs font-semibold uppercase tracking-widest transition-all duration-200"
+              style={photoTab === tab
+                ? { background: '#DC143C', color: '#fff' }
+                : { color: 'rgba(255,255,255,0.35)' }
+              }
+            >
+              {tab === 'desktop' ? '🖥 Desktop' : '📱 Mobile'}
+            </button>
+          ))}
+        </div>
+        <p className="text-white/30 text-xs">
+          {photoTab === 'desktop'
+            ? 'Imagens exibidas em telas grandes (landscape, wide).'
+            : 'Imagens exibidas em celulares (portrait, vertical). Se vazio, usa as do desktop.'}
+        </p>
+        {photoTab === 'desktop' ? (
+          <ImageUploader
+            images={watch('images')}
+            onChange={(urls) => setValue('images', urls)}
+            carId={car?.id}
+          />
+        ) : (
+          <ImageUploader
+            images={watch('images_mobile') ?? []}
+            onChange={(urls) => setValue('images_mobile', urls)}
+            carId={car?.id}
+          />
+        )}
       </div>
 
       {/* Specs */}

@@ -55,6 +55,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
   const [slideIndex, setSlideIndex] = useState(0)
   const [slideDir, setSlideDir] = useState(1)
   const [activeImg, setActiveImg] = useState(0)
+  const [activeImgMobile, setActiveImgMobile] = useState(0)
 
   const totalSlides = Math.ceil(otherCars.length / VISIBLE)
   function slidePrev() { setSlideDir(-1); setSlideIndex(i => (i - 1 + totalSlides) % totalSlides) }
@@ -71,17 +72,20 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
   })
 
   const images = car.images.length ? car.images : []
+  const imagesMobile = car.images_mobile?.length ? car.images_mobile : images
   const specs = Object.entries(car.specs ?? {}).filter(([, v]) => v !== null && v !== undefined && v !== '')
 
   function prevImg() { setActiveImg((s) => (s - 1 + images.length) % images.length) }
   function nextImg() { setActiveImg((s) => (s + 1) % images.length) }
+  function prevImgMobile() { setActiveImgMobile((s) => (s - 1 + imagesMobile.length) % imagesMobile.length) }
+  function nextImgMobile() { setActiveImgMobile((s) => (s + 1) % imagesMobile.length) }
 
   const touchStartX = useRef<number | null>(null)
   function handleTouchStart(e: React.TouchEvent) { touchStartX.current = e.touches[0].clientX }
   function handleTouchEnd(e: React.TouchEvent) {
     if (touchStartX.current === null) return
     const diff = touchStartX.current - e.changedTouches[0].clientX
-    if (Math.abs(diff) > 40) diff > 0 ? nextImg() : prevImg()
+    if (Math.abs(diff) > 40) diff > 0 ? nextImgMobile() : prevImgMobile()
     touchStartX.current = null
   }
 
@@ -107,64 +111,47 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
   return (
     <div className="min-h-screen" style={{ background: '#0A0A0A' }}>
 
-      {/* ── HERO: imagem full-bleed com overlay ── */}
-      {images.length > 0 && (
+      {/* ── HERO: mobile (usa imagesMobile) ── */}
+      {imagesMobile.length > 0 && (
         <div
-          className="relative w-full overflow-hidden"
+          className="sm:hidden relative w-full overflow-hidden"
           style={{ height: 'clamp(380px, 55vh, 680px)' }}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
           <AnimatePresence mode="wait">
-            <motion.div
-              key={activeImg}
-              className="absolute inset-0"
-              initial={{ opacity: 0, scale: 1.03 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.7, ease: EASE }}
-            >
-              <Image
-                src={images[activeImg]}
-                alt={`${car.name} — foto ${activeImg + 1}`}
-                fill
-                sizes="100vw"
-                className="object-cover"
-                priority
-              />
+            <motion.div key={activeImgMobile} className="absolute inset-0" initial={{ opacity: 0, scale: 1.03 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7, ease: EASE }}>
+              <Image src={imagesMobile[activeImgMobile]} alt={`${car.name} — foto ${activeImgMobile + 1}`} fill sizes="100vw" className="object-cover" priority />
             </motion.div>
           </AnimatePresence>
-
-          {/* Gradientes */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/60 via-transparent to-transparent" />
+          <div className="absolute bottom-8 right-8 z-10" style={{ fontSize: '10px', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.35)', fontWeight: 700 }}>
+            {String(activeImgMobile + 1).padStart(2, '0')} / {String(imagesMobile.length).padStart(2, '0')}
+          </div>
+          <button onClick={() => setLightbox(true)} className="absolute inset-0 z-[5] cursor-zoom-in" aria-label="Abrir galeria" />
+        </div>
+      )}
 
-
-          {/* Navegação hero */}
+      {/* ── HERO: desktop (usa images) ── */}
+      {images.length > 0 && (
+        <div
+          className="hidden sm:block relative w-full overflow-hidden"
+          style={{ height: 'clamp(380px, 55vh, 680px)' }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div key={activeImg} className="absolute inset-0" initial={{ opacity: 0, scale: 1.03 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7, ease: EASE }}>
+              <Image src={images[activeImg]} alt={`${car.name} — foto ${activeImg + 1}`} fill sizes="100vw" className="object-cover" priority />
+            </motion.div>
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/60 via-transparent to-transparent" />
           {images.length > 1 && (
             <>
-              <button
-                onClick={prevImg}
-                className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 items-center justify-center transition-all duration-200"
-                style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#DC143C'; (e.currentTarget as HTMLButtonElement).style.color = '#fff' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.15)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.5)' }}
-              >
-                <ChevronLeft size={18} />
-              </button>
-              <button
-                onClick={nextImg}
-                className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 items-center justify-center transition-all duration-200"
-                style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#DC143C'; (e.currentTarget as HTMLButtonElement).style.color = '#fff' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.15)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.5)' }}
-              >
-                <ChevronRight size={18} />
-              </button>
+              <button onClick={prevImg} className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 flex items-center justify-center transition-all duration-200" style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }} onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#DC143C'; (e.currentTarget as HTMLButtonElement).style.color = '#fff' }} onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.15)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.5)' }}><ChevronLeft size={18} /></button>
+              <button onClick={nextImg} className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 flex items-center justify-center transition-all duration-200" style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }} onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#DC143C'; (e.currentTarget as HTMLButtonElement).style.color = '#fff' }} onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.15)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.5)' }}><ChevronRight size={18} /></button>
             </>
           )}
-
-          {/* Contador */}
           <div className="absolute bottom-8 right-8 z-10" style={{ fontSize: '10px', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.35)', fontWeight: 700 }}>
             {String(activeImg + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
           </div>
@@ -181,20 +168,22 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
       {/* ── CONTEÚDO ── */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-8 md:px-12 lg:px-20">
 
-        {/* Miniaturas */}
+        {/* Miniaturas mobile */}
+        {imagesMobile.length > 1 && (
+          <div className="sm:hidden flex gap-2 mt-4 overflow-x-auto pb-1 scrollbar-hide">
+            {imagesMobile.map((img, i) => (
+              <button key={i} onClick={() => setActiveImgMobile(i)} className="relative flex-shrink-0 overflow-hidden transition-all duration-200" style={{ width: 80, height: 52, border: i === activeImgMobile ? '1.5px solid #DC143C' : '1.5px solid rgba(255,255,255,0.07)', opacity: i === activeImgMobile ? 1 : 0.45 }}>
+                <Image src={img} alt={`${car.name} ${i + 1}`} fill sizes="80px" className="object-cover" />
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Miniaturas desktop */}
         {images.length > 1 && (
-          <div className="flex gap-2 mt-4 overflow-x-auto pb-1 scrollbar-hide">
+          <div className="hidden sm:flex gap-2 mt-4 overflow-x-auto pb-1 scrollbar-hide">
             {images.map((img, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveImg(i)}
-                className="relative flex-shrink-0 overflow-hidden transition-all duration-200"
-                style={{
-                  width: 80, height: 52,
-                  border: i === activeImg ? '1.5px solid #DC143C' : '1.5px solid rgba(255,255,255,0.07)',
-                  opacity: i === activeImg ? 1 : 0.45,
-                }}
-              >
+              <button key={i} onClick={() => setActiveImg(i)} className="relative flex-shrink-0 overflow-hidden transition-all duration-200" style={{ width: 80, height: 52, border: i === activeImg ? '1.5px solid #DC143C' : '1.5px solid rgba(255,255,255,0.07)', opacity: i === activeImg ? 1 : 0.45 }}>
                 <Image src={img} alt={`${car.name} ${i + 1}`} fill sizes="80px" className="object-cover" />
               </button>
             ))}

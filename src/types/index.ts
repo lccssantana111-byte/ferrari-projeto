@@ -27,6 +27,7 @@ export interface Car {
   short_tagline: string | null
   price: number
   images: string[]
+  images_mobile?: string[]
   video_url: string | null
   model_url: string | null
   specs: CarSpec

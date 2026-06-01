@@ -1,0 +1,1 @@
+ALTER TABLE cars ADD COLUMN IF NOT EXISTS images_mobile text[] NOT NULL DEFAULT '{}';
