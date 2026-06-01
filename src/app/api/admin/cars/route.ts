@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { carFormSchema } from '@/lib/validators'
 
@@ -20,6 +21,10 @@ export async function POST(request: Request) {
 
   const { data, error } = await supabase.from('cars').insert([parsed.data]).select().single()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  revalidatePath('/')
+  revalidatePath('/colecao')
+  revalidatePath('/carros/[slug]', 'page')
 
   return NextResponse.json(data, { status: 201 })
 }

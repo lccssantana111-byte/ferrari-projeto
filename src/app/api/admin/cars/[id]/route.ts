@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { carFormSchema } from '@/lib/validators'
 
@@ -30,6 +31,11 @@ export async function PATCH(
     .single()
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  revalidatePath('/')
+  revalidatePath('/colecao')
+  revalidatePath(`/carros/${data.slug}`)
+
   return NextResponse.json(data)
 }
 
