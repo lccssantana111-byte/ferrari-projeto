@@ -454,27 +454,23 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
 
       {/* ── OUTROS CARROS ── */}
       {otherCars.length > 0 && (
-        <section ref={othersRef} className="py-24" style={{ background: '#0D0D0D' }}>
-          <div className="max-w-[1400px] mx-auto px-8 sm:px-12 lg:px-20">
+        <section ref={othersRef} className="py-14 sm:py-24" style={{ background: '#0D0D0D' }}>
+          <div className="max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20">
 
-            <div className="flex items-end justify-between mb-12">
+            <div className="flex items-end justify-between mb-8 sm:mb-12">
               <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="h-px w-6" style={{ background: '#DC143C' }} />
-                  <span style={{ fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>
-                    Também disponíveis
-                  </span>
-                </div>
+                <span style={{ fontSize: '9px', letterSpacing: '0.4em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>Também disponíveis</span>
                 <h2
-                  className="font-black text-white tracking-[-0.03em]"
-                  style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3rem)', lineHeight: 1.0 }}
+                  className="font-black text-white mt-2 tracking-[-0.03em]"
+                  style={{ fontSize: 'clamp(2.5rem, 4.5vw, 4rem)', lineHeight: 1.0 }}
                 >
-                  Outros veículos
+                  Outros<br />
+                  <span style={{ color: '#DC143C' }}>veículos</span>
                 </h2>
               </div>
               <Link
                 href="/colecao"
-                className="group flex items-center gap-2 text-white/30 hover:text-white transition-colors duration-200"
+                className="group hidden sm:flex items-center gap-2 text-white/30 hover:text-white transition-colors duration-200"
                 style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600 }}
               >
                 Ver coleção
@@ -484,8 +480,8 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
 
             {/* Mobile: scroll horizontal com snap */}
             <div
-              className="flex sm:hidden overflow-x-auto gap-3 px-5 pb-1 snap-x snap-mandatory -mx-8"
-              style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+              className="flex sm:hidden overflow-x-auto gap-3 pb-1 snap-x snap-mandatory -mx-5"
+              style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', paddingLeft: '20px' } as React.CSSProperties}
             >
               {otherCars.map((c) => (
                 <div key={c.id} className="flex-none w-[72vw] snap-start">
