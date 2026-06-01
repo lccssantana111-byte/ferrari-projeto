@@ -90,7 +90,7 @@ export default function ConfiguradorVisual({ car, formattedPrice }: Props) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease: EASE }}
             style={{
-              background: `linear-gradient(135deg, ${selectedColor.hex}00 40%, ${selectedColor.hex}30 70%, ${selectedColor.hex}55 100%)`,
+              background: `linear-gradient(135deg, ${selectedColor.hex}00 50%, ${selectedColor.hex}12 80%, ${selectedColor.hex}22 100%)`,
               mixBlendMode: 'screen',
             }}
           />
