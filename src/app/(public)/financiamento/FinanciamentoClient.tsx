@@ -265,7 +265,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
                   animate={manifestoInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: line.delay, duration: 0.7, ease: EASE }}
                   className="font-black tracking-[-0.04em]"
-                  style={{ fontSize: 'clamp(2.6rem, 4vw, 4.5rem)', lineHeight: 0.92, paddingBottom: '0.06em', ...line.style }}
+                  style={{ fontSize: 'clamp(2.6rem, 6vw, 4.8rem)', lineHeight: 0.92, paddingBottom: '0.06em', ...line.style }}
                 >
                   {line.text}
                 </motion.h2>
