@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -8,18 +8,35 @@ import { createClient } from '@/lib/supabase/client'
 import { loginSchema, type LoginFormData } from '@/lib/validators'
 import { BRAND_NAME } from '@/lib/constants'
 
+const REMEMBER_KEY = 'admin_remembered_email'
+
 export default function AdminLoginPage() {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
 
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
+
+  useEffect(() => {
+    const saved = localStorage.getItem(REMEMBER_KEY)
+    if (saved) {
+      setValue('email', saved)
+      setRememberMe(true)
+    }
+  }, [setValue])
 
   async function onSubmit(data: LoginFormData) {
     setLoading(true)
     setError(null)
+
+    if (rememberMe) {
+      localStorage.setItem(REMEMBER_KEY, data.email)
+    } else {
+      localStorage.removeItem(REMEMBER_KEY)
+    }
 
     const supabase = createClient()
     const { error: authError } = await supabase.auth.signInWithPassword({
@@ -69,6 +86,27 @@ export default function AdminLoginPage() {
             />
             {errors.password && <p className="text-ferrari-red text-xs">{errors.password.message}</p>}
           </div>
+
+          <label className="flex items-center gap-3 cursor-pointer select-none">
+            <div
+              onClick={() => setRememberMe(v => !v)}
+              className={`w-4 h-4 rounded border flex items-center justify-center transition-colors flex-shrink-0 ${
+                rememberMe ? 'bg-ferrari-red border-ferrari-red' : 'bg-white/5 border-white/20'
+              }`}
+            >
+              {rememberMe && (
+                <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 10 10">
+                  <path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
+            </div>
+            <span
+              onClick={() => setRememberMe(v => !v)}
+              className="text-white/50 text-xs uppercase tracking-widest"
+            >
+              Lembrar email
+            </span>
+          </label>
 
           {error && (
             <div className="bg-ferrari-red/10 border border-ferrari-red/30 rounded-lg px-4 py-3 text-ferrari-red text-sm">

@@ -67,7 +67,7 @@ const SLIDES = [
   },
 ]
 
-const DURATION = 5000
+const DURATION = 2800
 
 export default function HeroSection() {
   const [current, setCurrent] = useState(0)
@@ -144,7 +144,7 @@ export default function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.4, ease: 'easeInOut' }}
+          transition={{ duration: 0.8, ease: 'easeInOut' }}
         >
           <motion.div
             className="absolute inset-0"

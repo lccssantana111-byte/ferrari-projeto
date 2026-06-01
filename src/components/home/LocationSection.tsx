@@ -65,19 +65,6 @@ export default function LocationSection() {
             boxShadow: 'inset 4px 0 24px rgba(17,17,17,0.5), inset -4px 0 24px rgba(17,17,17,0.1), inset 0 0 40px rgba(17,17,17,0.2)'
           }} />
 
-          {/* Badge coordenadas */}
-          <motion.div
-            className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-2"
-            initial={{ opacity: 0, y: 8 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.8, ease: EASE }}
-            style={{ background: 'rgba(17,17,17,0.82)', backdropFilter: 'blur(12px)', border: '1px solid rgba(220,20,60,0.3)' }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#DC143C' }} />
-            <span style={{ fontSize: '9px', letterSpacing: '0.18em', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase' }}>
-              -23.5630, -46.6567
-            </span>
-          </motion.div>
         </motion.div>
 
         {/* Painel de contato */}

@@ -164,6 +164,9 @@ export default function FeaturedCars({ cars }: Props) {
               </div>
               <div className="px-0.5">
                 <h3 className="text-white font-bold leading-tight mb-1" style={{ fontSize: '0.95rem' }}>{car.name}</h3>
+                {car.short_tagline && (
+                  <p className="text-white/50 leading-snug mb-1.5" style={{ fontSize: '0.72rem' }}>{car.short_tagline}</p>
+                )}
                 <span className="text-ferrari-red font-bold" style={{ fontSize: '0.9rem' }}>{formatPrice(car.price)}</span>
               </div>
             </Link>

@@ -234,7 +234,7 @@ export default function ConfiguradorVisual({ car, formattedPrice }: Props) {
           onMouseLeave={e => (e.currentTarget.style.background = '#DC143C')}
         >
           <WhatsAppIcon />
-          Solicitar esta configuração
+          Quero este carro assim
         </a>
       </div>
     </div>

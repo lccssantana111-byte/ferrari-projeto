@@ -334,20 +334,6 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
           {/* ── COLUNA DIREITA: painel sticky ── */}
           <div className="lg:sticky lg:top-8 lg:self-start flex flex-col gap-4">
 
-            {/* CTA WhatsApp */}
-            <a
-              href={getWhatsAppLink(`Olá! Tenho interesse no ${car.name}. Poderia me passar mais informações?`)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2.5 py-5 w-full transition-all duration-300"
-              style={{ background: '#DC143C', color: '#fff', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.24em' }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#A50E2D')}
-              onMouseLeave={e => (e.currentTarget.style.background = '#DC143C')}
-            >
-              <WhatsAppIcon />
-              Tenho interesse
-            </a>
-
             {/* Formulário test drive */}
             {car.status === 'active' && (
               <div style={{ border: '1px solid rgba(255,255,255,0.07)', background: '#111111' }}>
@@ -429,6 +415,20 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
               </div>
             )}
 
+            {/* CTA WhatsApp */}
+            <a
+              href={getWhatsAppLink(`Olá! Tenho interesse no ${car.name}. Poderia me passar mais informações?`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2.5 py-5 w-full transition-all duration-300"
+              style={{ background: '#DC143C', color: '#fff', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.24em' }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#A50E2D')}
+              onMouseLeave={e => (e.currentTarget.style.background = '#DC143C')}
+            >
+              <WhatsAppIcon />
+              Tenho interesse
+            </a>
+
             {/* Garantias */}
             <div className="flex flex-col gap-0" style={{ border: '1px solid rgba(255,255,255,0.07)', background: '#111111' }}>
               {[
@@ -474,7 +474,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
               </div>
               <Link
                 href="/colecao"
-                className="group hidden sm:flex items-center gap-2 text-white/30 hover:text-white transition-colors duration-200"
+                className="group flex items-center gap-2 text-white/30 hover:text-white transition-colors duration-200"
                 style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600 }}
               >
                 Ver coleção
@@ -482,7 +482,45 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
               </Link>
             </div>
 
-            <div className="relative">
+            {/* Mobile: scroll horizontal com snap */}
+            <div
+              className="flex sm:hidden overflow-x-auto gap-3 px-5 pb-1 snap-x snap-mandatory -mx-8"
+              style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+            >
+              {otherCars.map((c) => (
+                <div key={c.id} className="flex-none w-[72vw] snap-start">
+                  <Link href={`/carros/${c.slug}`} className="group block">
+                    <div className="relative overflow-hidden mb-3" style={{ aspectRatio: '4/3', background: '#1A1A1A' }}>
+                      {c.images[0] ? (
+                        <Image
+                          src={c.images[0]}
+                          alt={c.name}
+                          fill
+                          sizes="72vw"
+                          className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <span className="text-white/10 text-4xl font-bold">{c.name[0]}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="px-0.5">
+                      <h3 className="text-white font-bold leading-tight mb-1" style={{ fontSize: '0.95rem' }}>{c.name}</h3>
+                      {c.short_tagline && (
+                        <p className="text-white/50 leading-snug mb-1.5" style={{ fontSize: '0.72rem' }}>{c.short_tagline}</p>
+                      )}
+                      <span className="text-ferrari-red font-bold" style={{ fontSize: '0.9rem' }}>
+                        {c.price ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(c.price) : '—'}
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop: grid animado com paginação */}
+            <div className="relative hidden sm:block">
               {totalSlides > 1 && (
                 <div className="flex items-center justify-end gap-2 mb-6">
                   <button
@@ -501,73 +539,73 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
                   </button>
                 </div>
               )}
-            <div className="overflow-hidden">
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.div
-                  key={slideIndex}
-                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-                  initial={{ opacity: 0, x: slideDir > 0 ? 80 : -80 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: slideDir > 0 ? -80 : 80 }}
-                  transition={{ duration: 0.5, ease: EASE }}
-                >
-                  {visibleCars.map((c, i) => (
-                    <motion.div
-                      key={c.id}
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.06, duration: 0.45, ease: EASE }}
-                    >
-                      <Link href={`/carros/${c.slug}`} className="group block">
-                        <div className="relative overflow-hidden mb-4" style={{ aspectRatio: '16/10', background: '#1A1A1A' }}>
-                          {c.images[0] ? (
-                            <Image
-                              src={c.images[0]}
-                              alt={c.name}
-                              fill
-                              sizes="(max-width: 768px) 50vw, 25vw"
-                              className="object-cover group-hover:scale-105 transition-transform duration-700"
-                              style={{ transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)' }}
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center">
-                              <span className="text-white/10 text-4xl font-bold">{c.name[0]}</span>
-                            </div>
-                          )}
-                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.6), transparent)' }} />
-                        </div>
-                        <div className="px-1">
-                          <div className="flex items-start justify-between mb-1">
-                            <h3 className="text-white font-bold text-base group-hover:text-ferrari-red transition-colors leading-tight">{c.name}</h3>
-                            <ArrowRight size={14} className="text-white/15 group-hover:text-ferrari-red group-hover:translate-x-1 transition-all mt-0.5 flex-shrink-0" />
+              <div className="overflow-hidden">
+                <AnimatePresence mode="popLayout" initial={false}>
+                  <motion.div
+                    key={slideIndex}
+                    className="grid grid-cols-3 lg:grid-cols-4 gap-4"
+                    initial={{ opacity: 0, x: slideDir > 0 ? 80 : -80 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: slideDir > 0 ? -80 : 80 }}
+                    transition={{ duration: 0.5, ease: EASE }}
+                  >
+                    {visibleCars.map((c, i) => (
+                      <motion.div
+                        key={c.id}
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.06, duration: 0.45, ease: EASE }}
+                      >
+                        <Link href={`/carros/${c.slug}`} className="group block">
+                          <div className="relative overflow-hidden mb-4" style={{ aspectRatio: '16/10', background: '#1A1A1A' }}>
+                            {c.images[0] ? (
+                              <Image
+                                src={c.images[0]}
+                                alt={c.name}
+                                fill
+                                sizes="25vw"
+                                className="object-cover group-hover:scale-105 transition-transform duration-700"
+                                style={{ transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)' }}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center">
+                                <span className="text-white/10 text-4xl font-bold">{c.name[0]}</span>
+                              </div>
+                            )}
+                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.6), transparent)' }} />
                           </div>
-                          {c.short_tagline && (
-                            <p className="text-white/30 text-xs mb-2 leading-relaxed">{c.short_tagline}</p>
-                          )}
-                          <span style={{ color: '#DC143C', fontWeight: 700, fontSize: '14px' }}>
-                            {c.price ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(c.price) : '—'}
-                          </span>
-                        </div>
-                      </Link>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-            </div>
-
-            {totalSlides > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-8">
-                {Array.from({ length: totalSlides }).map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => { setSlideDir(i > slideIndex ? 1 : -1); setSlideIndex(i) }}
-                    className="h-px transition-all duration-300"
-                    style={{ width: i === slideIndex ? 32 : 16, background: i === slideIndex ? '#DC143C' : 'rgba(255,255,255,0.15)' }}
-                  />
-                ))}
+                          <div className="px-1">
+                            <div className="flex items-start justify-between mb-1">
+                              <h3 className="text-white font-bold text-base group-hover:text-ferrari-red transition-colors leading-tight">{c.name}</h3>
+                              <ArrowRight size={14} className="text-white/15 group-hover:text-ferrari-red group-hover:translate-x-1 transition-all mt-0.5 flex-shrink-0" />
+                            </div>
+                            {c.short_tagline && (
+                              <p className="text-white/30 text-xs mb-2 leading-relaxed">{c.short_tagline}</p>
+                            )}
+                            <span style={{ color: '#DC143C', fontWeight: 700, fontSize: '14px' }}>
+                              {c.price ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(c.price) : '—'}
+                            </span>
+                          </div>
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </AnimatePresence>
               </div>
-            )}
+
+              {totalSlides > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-8">
+                  {Array.from({ length: totalSlides }).map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => { setSlideDir(i > slideIndex ? 1 : -1); setSlideIndex(i) }}
+                      className="h-px transition-all duration-300"
+                      style={{ width: i === slideIndex ? 32 : 16, background: i === slideIndex ? '#DC143C' : 'rgba(255,255,255,0.15)' }}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </section>
       )}

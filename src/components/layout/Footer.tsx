@@ -51,14 +51,14 @@ export default function Footer() {
           <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(255,255,255,0.08), transparent)' }} />
         </div>
 
-        {/* Grid três colunas — em mobile empilha verticalmente com separadores */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-8">
+        {/* Grid três colunas */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
 
           {/* Col 1 — Brand */}
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col items-center sm:items-start gap-5 text-center sm:text-left">
             <p
-              className="text-sm leading-loose"
-              style={{ color: 'rgba(255,255,255,0.32)', letterSpacing: '0.02em', maxWidth: '22ch', lineHeight: '1.8' }}
+              className="text-sm"
+              style={{ color: 'rgba(255,255,255,0.32)', letterSpacing: '0.02em', maxWidth: '26ch', lineHeight: '1.8' }}
             >
               Excelência em veículos de alta performance. Cada modelo selecionado com rigor, cada detalhe cultivado com paixão.
             </p>
@@ -87,12 +87,15 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* Separador mobile entre brand e navegação */}
+          <div className="block sm:hidden h-px w-full" style={{ background: 'rgba(255,255,255,0.06)' }} />
+
           {/* Col 2 — Navegação */}
-          <div>
+          <div className="flex flex-col items-center sm:items-start">
             <p className="mb-5 sm:mb-7" style={{ fontSize: '9px', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase' }}>
               Navegação
             </p>
-            <ul className="grid grid-cols-2 sm:flex sm:flex-col gap-3 sm:gap-4">
+            <ul className="flex flex-col items-center sm:items-start gap-3 sm:gap-4">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -110,8 +113,11 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Separador mobile entre navegação e contato */}
+          <div className="block sm:hidden h-px w-full" style={{ background: 'rgba(255,255,255,0.06)' }} />
+
           {/* Col 3 — Contato */}
-          <div>
+          <div className="flex flex-col items-center sm:items-start">
             <p className="mb-5 sm:mb-7" style={{ fontSize: '9px', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase' }}>
               Contato
             </p>
