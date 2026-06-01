@@ -76,6 +76,15 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
   function prevImg() { setActiveImg((s) => (s - 1 + images.length) % images.length) }
   function nextImg() { setActiveImg((s) => (s + 1) % images.length) }
 
+  const touchStartX = useRef<number | null>(null)
+  function handleTouchStart(e: React.TouchEvent) { touchStartX.current = e.touches[0].clientX }
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return
+    const diff = touchStartX.current - e.changedTouches[0].clientX
+    if (Math.abs(diff) > 40) diff > 0 ? nextImg() : prevImg()
+    touchStartX.current = null
+  }
+
   async function onSubmit(data: TestDriveFormData) {
     setLoading(true)
     setFormError(null)
@@ -103,6 +112,8 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
         <div
           className="relative w-full overflow-hidden"
           style={{ height: 'clamp(380px, 55vh, 680px)' }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -134,7 +145,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
             <>
               <button
                 onClick={prevImg}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 flex items-center justify-center transition-all duration-200"
+                className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 items-center justify-center transition-all duration-200"
                 style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#DC143C'; (e.currentTarget as HTMLButtonElement).style.color = '#fff' }}
                 onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.15)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.5)' }}
@@ -143,7 +154,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
               </button>
               <button
                 onClick={nextImg}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 flex items-center justify-center transition-all duration-200"
+                className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 items-center justify-center transition-all duration-200"
                 style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#DC143C'; (e.currentTarget as HTMLButtonElement).style.color = '#fff' }}
                 onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.15)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.5)' }}
