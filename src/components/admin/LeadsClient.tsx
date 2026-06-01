@@ -23,8 +23,8 @@ export default function LeadsClient({ leads, cars }: Props) {
   const [search, setSearch] = useState('')
   const [origem, setOrigem] = useState<'Todos' | 'Visita' | 'Financiamento'>('Todos')
   const [carId, setCarId] = useState('')
-  const [dateFrom, setDateFrom] = useState('')
-  const [dateTo, setDateTo] = useState('')
+  const [monthFrom, setMonthFrom] = useState('')
+  const [monthTo, setMonthTo] = useState('')
 
   const filtered = useMemo(() => {
     return leads.filter(l => {
@@ -34,15 +34,24 @@ export default function LeadsClient({ leads, cars }: Props) {
       }
       if (origem !== 'Todos' && l.origem !== origem) return false
       if (carId && l.cars?.id !== carId) return false
-      if (dateFrom && new Date(l.created_at) < new Date(dateFrom)) return false
-      if (dateTo) {
-        const to = new Date(dateTo)
-        to.setHours(23, 59, 59, 999)
+      if (monthFrom && new Date(l.created_at) < new Date(monthFrom + '-01')) return false
+      if (monthTo) {
+        const [y, m] = monthTo.split('-').map(Number)
+        const to = new Date(y, m, 0, 23, 59, 59, 999)
         if (new Date(l.created_at) > to) return false
       }
       return true
     })
-  }, [leads, search, origem, carId, dateFrom, dateTo])
+  }, [leads, search, origem, carId, monthFrom, monthTo])
+
+  const monthOptions = useMemo(() => {
+    const set = new Set(leads.map(l => l.created_at.slice(0, 7)))
+    return Array.from(set).sort().reverse().map(ym => {
+      const [y, m] = ym.split('-')
+      const label = new Date(Number(y), Number(m) - 1).toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' })
+      return { value: ym, label }
+    })
+  }, [leads])
 
   const now7 = useMemo(() => {
     const cutoff = new Date()
@@ -53,14 +62,14 @@ export default function LeadsClient({ leads, cars }: Props) {
   const visitas = leads.filter(l => l.origem === 'Visita').length
   const financiamentos = leads.filter(l => l.origem === 'Financiamento').length
 
-  const hasFilters = search || origem !== 'Todos' || carId || dateFrom || dateTo
+  const hasFilters = search || origem !== 'Todos' || carId || monthFrom || monthTo
 
   function clearFilters() {
     setSearch('')
     setOrigem('Todos')
     setCarId('')
-    setDateFrom('')
-    setDateTo('')
+    setMonthFrom('')
+    setMonthTo('')
   }
 
   function exportCSV() {
@@ -165,25 +174,27 @@ export default function LeadsClient({ leads, cars }: Props) {
           </div>
 
           {/* Data */}
-          <div className="grid grid-cols-1 gap-3">
-            <label className="flex items-center gap-2">
-              <span className="text-white/30 text-xs shrink-0 w-8">De</span>
-              <input
-                type="date"
-                value={dateFrom}
-                onChange={e => setDateFrom(e.target.value)}
-                className={inputClass() + ' flex-1 min-w-0 text-xs px-2 py-2'}
-              />
-            </label>
-            <label className="flex items-center gap-2">
-              <span className="text-white/30 text-xs shrink-0 w-8">Até</span>
-              <input
-                type="date"
-                value={dateTo}
-                onChange={e => setDateTo(e.target.value)}
-                className={inputClass() + ' flex-1 min-w-0 text-xs px-2 py-2'}
-              />
-            </label>
+          <div className="grid grid-cols-2 gap-3">
+            <select
+              value={monthFrom}
+              onChange={e => setMonthFrom(e.target.value)}
+              className={inputClass() + ' w-full'}
+            >
+              <option value="">De (mês)</option>
+              {monthOptions.map(o => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+            <select
+              value={monthTo}
+              onChange={e => setMonthTo(e.target.value)}
+              className={inputClass() + ' w-full'}
+            >
+              <option value="">Até (mês)</option>
+              {monthOptions.map(o => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
           </div>
 
           {/* Limpar */}
