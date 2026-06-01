@@ -52,7 +52,7 @@ export default function Footer() {
         </div>
 
         {/* Grid três colunas */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8 sm:place-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8 sm:place-items-center sm:items-start">
 
           {/* Col 1 — Brand */}
           <div className="flex flex-col items-center gap-5 text-center">
