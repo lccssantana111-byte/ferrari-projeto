@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 
 const SPEC_LABELS: Record<string, string> = {
@@ -53,19 +52,27 @@ export async function POST(request: Request) {
     `Máximo 220 palavras. Retorne apenas o texto, sem títulos ou formatação extra.`,
   ].filter(Boolean).join('\n')
 
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
-  const message = await client.messages.create({
-    model: 'claude-haiku-4-5',
-    max_tokens: 512,
-    messages: [{ role: 'user', content: prompt }],
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'llama-3.1-8b-instant',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 512,
+      temperature: 0.75,
+    }),
   })
 
-  const text = message.content
-    .filter((b) => b.type === 'text')
-    .map((b) => (b as { type: 'text'; text: string }).text)
-    .join('')
-    .trim()
+  if (!res.ok) {
+    const err = await res.text()
+    return NextResponse.json({ error: `Groq error: ${err}` }, { status: 500 })
+  }
 
-  return NextResponse.json({ description: text })
+  const json = await res.json()
+  const description = json.choices?.[0]?.message?.content?.trim() ?? ''
+
+  return NextResponse.json({ description })
 }
