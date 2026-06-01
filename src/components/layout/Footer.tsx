@@ -52,10 +52,10 @@ export default function Footer() {
         </div>
 
         {/* Grid três colunas */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8 sm:place-items-center">
 
           {/* Col 1 — Brand */}
-          <div className="flex flex-col items-center sm:items-start gap-5 text-center sm:text-left">
+          <div className="flex flex-col items-center gap-5 text-center">
             <p
               className="text-sm"
               style={{ color: 'rgba(255,255,255,0.32)', letterSpacing: '0.02em', maxWidth: '26ch', lineHeight: '1.8' }}
@@ -91,11 +91,11 @@ export default function Footer() {
           <div className="block sm:hidden h-px w-full" style={{ background: 'rgba(255,255,255,0.06)' }} />
 
           {/* Col 2 — Navegação */}
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col items-start sm:items-center">
             <p className="mb-5 sm:mb-7" style={{ fontSize: '9px', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase' }}>
               Navegação
             </p>
-            <ul className="flex flex-col items-start gap-3 sm:gap-4">
+            <ul className="flex flex-col items-start sm:items-center gap-3 sm:gap-4">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -117,7 +117,7 @@ export default function Footer() {
           <div className="block sm:hidden h-px w-full" style={{ background: 'rgba(255,255,255,0.06)' }} />
 
           {/* Col 3 — Contato */}
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col items-start sm:items-center">
             <p className="mb-5 sm:mb-7" style={{ fontSize: '9px', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase' }}>
               Contato
             </p>
