@@ -14,7 +14,6 @@ export const GRAPHITE = '#2A2A2A'
 export const NAV_LINKS = [
   { label: 'Coleção', href: '/#colecao' },
   { label: 'Financiamento', href: '/financiamento' },
-  { label: 'Contato', href: '/#contato' },
 ]
 
 export const REVALIDATE_INTERVAL = 3600

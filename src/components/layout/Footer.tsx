@@ -122,7 +122,7 @@ export default function Footer() {
               Contato
             </p>
             <a
-              href={getWhatsAppLink()}
+              href={getWhatsAppLink('Olá! Vim pelo site da Ferrari e gostaria de mais informações sobre os veículos disponíveis.')}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 text-sm min-h-[44px]"
