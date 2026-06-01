@@ -102,7 +102,10 @@ export default function FeaturedCars({ cars }: Props) {
       <div className="max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20">
         <div className="flex items-end justify-between mb-8 sm:mb-12">
           <div>
-            <span style={{ fontSize: '9px', letterSpacing: '0.4em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>Coleção</span>
+            <div className="flex items-center gap-3 mb-2">
+              <span className="h-px w-6 bg-ferrari-red" />
+              <span style={{ fontSize: '9px', letterSpacing: '0.4em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>Coleção</span>
+            </div>
             <h2
               className="font-black text-white mt-2 tracking-[-0.03em]"
               style={{ fontSize: 'clamp(2.5rem, 4.5vw, 4rem)', lineHeight: 1.0 }}

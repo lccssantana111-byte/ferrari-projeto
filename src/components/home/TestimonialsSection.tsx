@@ -103,7 +103,10 @@ export default function TestimonialsSection() {
         <div className="mb-10 sm:mb-16">
           {/* Título */}
           <div className="mb-6 sm:mb-0">
-            <span style={{ fontSize: '9px', letterSpacing: '0.4em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>Depoimentos</span>
+            <div className="flex items-center gap-3 mb-2">
+              <span className="h-px w-6 bg-ferrari-red" />
+              <span style={{ fontSize: '9px', letterSpacing: '0.4em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>Depoimentos</span>
+            </div>
             <h2
               className="font-black text-white mt-2 tracking-[-0.03em]"
               style={{ fontSize: 'clamp(2.5rem, 4.5vw, 4rem)', lineHeight: 1.0 }}

@@ -459,7 +459,10 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
 
             <div className="flex items-end justify-between mb-8 sm:mb-12">
               <div>
-                <span style={{ fontSize: '9px', letterSpacing: '0.4em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>Também disponíveis</span>
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="h-px w-6 bg-ferrari-red" />
+                  <span style={{ fontSize: '9px', letterSpacing: '0.4em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>Também disponíveis</span>
+                </div>
                 <h2
                   className="font-black text-white mt-2 tracking-[-0.03em]"
                   style={{ fontSize: 'clamp(2.5rem, 4.5vw, 4rem)', lineHeight: 1.0 }}

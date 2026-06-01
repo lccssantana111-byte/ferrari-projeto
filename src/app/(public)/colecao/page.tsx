@@ -21,9 +21,10 @@ export default async function ColecaoPage() {
 
         {/* Header */}
         <div className="mb-10 sm:mb-16">
-          <span style={{ fontSize: '9px', letterSpacing: '0.4em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>
-            Estoque
-          </span>
+          <div className="flex items-center gap-3 mb-2">
+            <span className="h-px w-6 bg-ferrari-red" />
+            <span style={{ fontSize: '9px', letterSpacing: '0.4em', color: '#DC143C', textTransform: 'uppercase', fontWeight: 600 }}>Estoque</span>
+          </div>
           <h1
             className="font-black text-white mt-3 leading-[0.9] tracking-[-0.03em]"
             style={{ fontSize: 'clamp(2.8rem, 5vw, 4.5rem)' }}
