@@ -332,7 +332,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
           </div>
 
           {/* ── COLUNA DIREITA: painel sticky ── */}
-          <div className="lg:sticky lg:top-8 lg:self-start flex flex-col gap-4">
+          <div className="lg:sticky lg:top-[108px] lg:self-start flex flex-col gap-4">
 
             {/* Formulário test drive */}
             {car.status === 'active' && (
