@@ -57,6 +57,13 @@ body {
   color: #fff;
 }
 
+/* Previne zoom automático do iOS ao focar inputs */
+@media screen and (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
 /* Range slider — simulador financiamento */
 input[type='range'] {
   -webkit-appearance: none;
