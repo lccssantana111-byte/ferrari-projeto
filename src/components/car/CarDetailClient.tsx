@@ -602,6 +602,17 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
                 </div>
               )}
             </div>
+
+            <div className="mt-8 sm:mt-12 flex items-center justify-center">
+              <Link
+                href="/colecao"
+                className="group flex items-center gap-3 ferrari-gradient text-white font-bold uppercase min-h-[44px] px-8 sm:px-10 hover:opacity-90 transition-opacity"
+                style={{ fontSize: '10px', letterSpacing: '0.22em' }}
+              >
+                Ver coleção completa
+                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform duration-200" />
+              </Link>
+            </div>
           </div>
         </section>
       )}
