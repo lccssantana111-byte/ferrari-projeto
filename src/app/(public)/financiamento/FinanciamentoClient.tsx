@@ -328,7 +328,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
                   initial={{ opacity: 0, y: 24 }}
                   animate={diferenciaisInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: 0.1 + i * 0.08, duration: 0.55, ease: EASE }}
-                  className="relative flex flex-col gap-5 p-6 sm:p-10 group"
+                  className="relative flex flex-col items-center text-center sm:items-start sm:text-left gap-5 p-6 sm:p-10 group"
                   style={{ background: '#0D0D0D' }}
                 >
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: 'rgba(220,20,60,0.04)' }} />
@@ -339,11 +339,12 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
                     transition={{ duration: 0.4, ease: EASE }}
                     style={{ background: '#DC143C' }}
                   />
-                  <div className="w-11 h-11 flex items-center justify-center flex-shrink-0" style={{ border: '1px solid rgba(220,20,60,0.25)', background: 'rgba(220,20,60,0.06)' }}>
-                    <Icon size={18} strokeWidth={1.5} style={{ color: '#DC143C' }} />
+                  <div className="w-14 h-14 sm:w-11 sm:h-11 flex items-center justify-center flex-shrink-0" style={{ border: '1px solid rgba(220,20,60,0.25)', background: 'rgba(220,20,60,0.06)' }}>
+                    <Icon size={22} strokeWidth={1.5} className="sm:hidden" style={{ color: '#DC143C' }} />
+                    <Icon size={18} strokeWidth={1.5} className="hidden sm:block" style={{ color: '#DC143C' }} />
                   </div>
                   <div>
-                    <h3 className="text-white font-bold mb-2 sm:mb-3 text-base" style={{ letterSpacing: '-0.01em' }}>{item.titulo}</h3>
+                    <h3 className="text-white font-bold mb-2 sm:mb-3 text-lg sm:text-base" style={{ letterSpacing: '-0.01em' }}>{item.titulo}</h3>
                     <p style={{ fontSize: '14px', lineHeight: 1.85, color: 'rgba(255,255,255,0.38)' }}>{item.corpo}</p>
                   </div>
                 </motion.div>
