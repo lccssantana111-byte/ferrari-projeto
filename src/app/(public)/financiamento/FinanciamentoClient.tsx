@@ -238,13 +238,13 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
         </div>
 
         <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-12 sm:gap-16">
+          <div className="flex flex-col items-center text-center lg:flex-row lg:items-center lg:justify-between lg:text-left gap-12 sm:gap-16">
             <div className="lg:max-w-xl">
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={manifestoInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, ease: EASE }}
-                className="flex items-center gap-3 mb-8 sm:mb-10"
+                className="flex items-center justify-center lg:justify-start gap-3 mb-8 sm:mb-10"
               >
                 <span className="h-px w-6 bg-ferrari-red" />
                 <span style={{ fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(10,10,10,0.35)', fontWeight: 600 }}>
@@ -272,7 +272,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
             </div>
 
             {/* Stats — horizontal em mobile */}
-            <div className="flex flex-row lg:flex-col gap-8 sm:gap-10 flex-wrap">
+            <div className="flex flex-row justify-center lg:flex-col gap-8 sm:gap-10 flex-wrap">
               {[
                 { num: '98%', label: 'taxa de\naprovação' },
                 { num: '48h', label: 'resposta\nmáxima' },
