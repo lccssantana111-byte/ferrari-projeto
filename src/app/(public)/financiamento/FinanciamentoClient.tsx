@@ -238,18 +238,19 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
         </div>
 
         <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-12 lg:px-20">
-          <div className="flex flex-col items-center text-center lg:flex-row lg:items-center lg:justify-between lg:text-left gap-12 sm:gap-16">
-            <div className="lg:max-w-xl">
+          <div className="flex flex-col items-center text-center gap-10 sm:gap-14">
+            <div>
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={manifestoInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, ease: EASE }}
-                className="flex items-center justify-center lg:justify-start gap-3 mb-8 sm:mb-10"
+                className="flex items-center justify-center gap-3 mb-8 sm:mb-10"
               >
                 <span className="h-px w-6 bg-ferrari-red" />
                 <span style={{ fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(10,10,10,0.35)', fontWeight: 600 }}>
                   Nossa abordagem
                 </span>
+                <span className="h-px w-6 bg-ferrari-red" />
               </motion.div>
 
               {[
@@ -271,8 +272,8 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
               ))}
             </div>
 
-            {/* Stats — horizontal em mobile */}
-            <div className="flex flex-row justify-center lg:flex-col gap-8 sm:gap-10 flex-wrap">
+            {/* Stats */}
+            <div className="flex items-start justify-center gap-10 sm:gap-16 flex-wrap w-full">
               {[
                 { num: '98%', label: 'taxa de\naprovação' },
                 { num: '48h', label: 'resposta\nmáxima' },
@@ -280,15 +281,15 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
               ].map((stat, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={manifestoInView ? { opacity: 1, x: 0 } : {}}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={manifestoInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: 0.2 + i * 0.1, duration: 0.6, ease: EASE }}
-                  className="flex flex-col"
+                  className="flex flex-col items-center"
                 >
                   <span className="font-black tracking-tight text-[#0A0A0A] leading-none" style={{ fontSize: 'clamp(2rem, 3.5vw, 3.2rem)' }}>
                     {stat.num}
                   </span>
-                  <span className="text-[#0A0A0A]/40 uppercase whitespace-pre-line mt-2" style={{ fontSize: '9px', letterSpacing: '0.2em' }}>
+                  <span className="text-[#0A0A0A]/40 uppercase whitespace-pre-line mt-2 text-center" style={{ fontSize: '9px', letterSpacing: '0.2em' }}>
                     {stat.label}
                   </span>
                 </motion.div>
