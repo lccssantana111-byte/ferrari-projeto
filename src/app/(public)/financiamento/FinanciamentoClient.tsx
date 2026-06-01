@@ -314,7 +314,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
             animate={diferenciaisInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: EASE }}
             className="font-black tracking-[-0.04em] text-white mb-10 sm:mb-20"
-            style={{ fontSize: 'clamp(2.6rem, 3.5vw, 3.5rem)', lineHeight: 1.0 }}
+            style={{ fontSize: 'clamp(2.5rem, 4vw, 3.8rem)', lineHeight: 1.0 }}
           >
             O padrão que<br />
             <span style={{ color: 'white', opacity: 0.25, fontStyle: 'italic' }}>nos separa.</span>
@@ -369,7 +369,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
                   Dúvidas frequentes
                 </span>
               </div>
-              <h2 className="font-black tracking-[-0.04em] text-white leading-[0.92]" style={{ fontSize: 'clamp(2.6rem, 3vw, 3rem)' }}>
+              <h2 className="font-black tracking-[-0.04em] text-white leading-[0.92]" style={{ fontSize: 'clamp(2.5rem, 4vw, 3.8rem)' }}>
                 Tudo que você precisa saber.
               </h2>
             </div>
