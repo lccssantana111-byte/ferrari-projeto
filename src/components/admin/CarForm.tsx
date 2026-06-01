@@ -29,6 +29,7 @@ export default function CarForm({ car }: CarFormProps) {
   const [colorUploading, setColorUploading] = useState<Record<number, boolean>>({})
   const [colorUploadError, setColorUploadError] = useState<Record<number, string>>({})
   const [generatingDesc, setGeneratingDesc] = useState(false)
+  const [generateError, setGenerateError] = useState<string | null>(null)
   const colorInputRefs = useRef<(HTMLInputElement | null)[]>([])
 
   const defaultSpecs = SPEC_KEYS.reduce((acc, key) => {
@@ -70,17 +71,27 @@ export default function CarForm({ car }: CarFormProps) {
 
   async function generateDescription() {
     setGeneratingDesc(true)
+    setGenerateError(null)
     try {
       const { name, year, short_tagline, specs } = getValues()
+      if (!name?.trim()) {
+        setGenerateError('Preencha o nome do veículo antes de gerar.')
+        return
+      }
       const res = await fetch('/api/admin/cars/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, year, short_tagline, specs }),
       })
       const json = await res.json()
+      if (!res.ok) {
+        setGenerateError(json.error ?? 'Erro ao gerar conteúdo.')
+        return
+      }
       if (json.description) setValue('description', json.description)
+      if (json.short_tagline) setValue('short_tagline', json.short_tagline)
     } catch {
-      // silently fail — user can try again
+      setGenerateError('Erro de conexão. Tente novamente.')
     } finally {
       setGeneratingDesc(false)
     }
@@ -194,6 +205,9 @@ export default function CarForm({ car }: CarFormProps) {
             </button>
           </div>
           <textarea {...register('description')} rows={4} className={inputClass} placeholder="Descreva o veículo..." />
+          {generateError && (
+            <p className="text-xs" style={{ color: '#DC143C' }}>{generateError}</p>
+          )}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">

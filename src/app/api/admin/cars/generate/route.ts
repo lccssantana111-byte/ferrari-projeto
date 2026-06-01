@@ -41,15 +41,17 @@ export async function POST(request: Request) {
 
   const prompt = [
     `Você é um redator premium de uma concessionária de carros de luxo no Brasil.`,
-    `Escreva uma descrição de produto para o seguinte veículo:`,
+    `Gere conteúdo de marketing para o seguinte veículo:`,
     ``,
     `Modelo: ${name}${year ? ` (${year})` : ''}`,
-    short_tagline ? `Tagline: ${short_tagline}` : '',
+    short_tagline ? `Tagline atual: ${short_tagline}` : '',
     specsLines ? `\nEspecificações:\n${specsLines}` : '',
     ``,
-    `Escreva 2 a 3 parágrafos elegantes, em português do Brasil, com tom sofisticado e apaixonado.`,
-    `Sem bullet points. Destaque a experiência de dirigir, o design e a herança da marca.`,
-    `Máximo 220 palavras. Retorne apenas o texto, sem títulos ou formatação extra.`,
+    `Responda APENAS com um JSON válido, sem markdown, sem explicações, neste formato exato:`,
+    `{`,
+    `  "short_tagline": "frase curta de impacto, máximo 8 palavras",`,
+    `  "description": "2 a 3 parágrafos elegantes em português do Brasil, tom sofisticado e apaixonado, sem bullet points, máximo 220 palavras"`,
+    `}`,
   ].filter(Boolean).join('\n')
 
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -61,7 +63,7 @@ export async function POST(request: Request) {
     body: JSON.stringify({
       model: 'llama-3.1-8b-instant',
       messages: [{ role: 'user', content: prompt }],
-      max_tokens: 512,
+      max_tokens: 600,
       temperature: 0.75,
     }),
   })
@@ -72,7 +74,18 @@ export async function POST(request: Request) {
   }
 
   const json = await res.json()
-  const description = json.choices?.[0]?.message?.content?.trim() ?? ''
+  const raw = json.choices?.[0]?.message?.content?.trim() ?? ''
 
-  return NextResponse.json({ description })
+  let description = ''
+  let generatedTagline = ''
+  try {
+    const parsed = JSON.parse(raw)
+    description = parsed.description?.trim() ?? ''
+    generatedTagline = parsed.short_tagline?.trim() ?? ''
+  } catch {
+    // fallback: se o modelo não retornou JSON válido, usa o texto como descrição
+    description = raw
+  }
+
+  return NextResponse.json({ description, short_tagline: generatedTagline })
 }
