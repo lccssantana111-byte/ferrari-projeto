@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useMemo, useRef, useEffect } from 'react'
-import { SlidersHorizontal, X, ChevronDown, Search, Star } from 'lucide-react'
+import { SlidersHorizontal, X, ChevronDown, Search } from 'lucide-react'
 import CarCard from '@/components/car/CarCard'
 import { formatPrice } from '@/lib/utils'
-import type { Car, ColorOption } from '@/types'
+import type { Car } from '@/types'
 
 interface Props {
   cars: Car[]
@@ -219,10 +219,8 @@ export default function ColecaoFilters({ cars }: Props) {
   }
 
   function applyPrice() {
-    const minD = priceMin.replace(/\D/g, '')
-    const maxD = priceMax.replace(/\D/g, '')
-    setAppliedMin(minD ? parseInt(minD, 10) : null)
-    setAppliedMax(maxD ? parseInt(maxD, 10) : null)
+    setAppliedMin(priceMin ? parseInt(priceMin, 10) : null)
+    setAppliedMax(priceMax ? parseInt(priceMax, 10) : null)
     setPriceOpen(false)
   }
 
@@ -387,8 +385,8 @@ export default function ColecaoFilters({ cars }: Props) {
                       <input
                         ref={minRef}
                         type="text" inputMode="numeric" placeholder="0"
-                        value={priceMin}
-                        onChange={e => { const r = e.target.value.replace(/\D/g, ''); setPriceMin(r ? formatNum(parseInt(r, 10)) : '') }}
+                        value={priceMin ? formatNum(parseInt(priceMin, 10)) : ''}
+                        onChange={e => { const r = e.target.value.replace(/\D/g, ''); setPriceMin(r) }}
                         onKeyDown={e => { if (e.key === 'Enter') applyPrice() }}
                         className="flex-1 bg-transparent outline-none text-right"
                         style={{ fontSize: '13px', color: '#fff', caretColor: '#DC143C' }}
@@ -399,8 +397,8 @@ export default function ColecaoFilters({ cars }: Props) {
                       <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', flexShrink: 0, minWidth: '50px' }}>R$ máx</span>
                       <input
                         type="text" inputMode="numeric" placeholder="sem limite"
-                        value={priceMax}
-                        onChange={e => { const r = e.target.value.replace(/\D/g, ''); setPriceMax(r ? formatNum(parseInt(r, 10)) : '') }}
+                        value={priceMax ? formatNum(parseInt(priceMax, 10)) : ''}
+                        onChange={e => { const r = e.target.value.replace(/\D/g, ''); setPriceMax(r) }}
                         onKeyDown={e => { if (e.key === 'Enter') applyPrice() }}
                         className="flex-1 bg-transparent outline-none text-right"
                         style={{ fontSize: '13px', color: '#fff', caretColor: '#DC143C' }}
