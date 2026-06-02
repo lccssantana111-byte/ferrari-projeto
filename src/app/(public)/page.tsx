@@ -15,7 +15,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <HeroSection />
+      <HeroSection cars={cars} />
       <BrandManifesto />
       <FeaturedCars cars={cars} />
       <TestimonialsSection />

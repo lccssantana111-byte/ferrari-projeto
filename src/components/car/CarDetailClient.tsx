@@ -89,6 +89,15 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
     touchStartX.current = null
   }
 
+  const lightboxTouchStartX = useRef<number | null>(null)
+  function handleLightboxTouchStart(e: React.TouchEvent) { lightboxTouchStartX.current = e.touches[0].clientX }
+  function handleLightboxTouchEnd(e: React.TouchEvent) {
+    if (lightboxTouchStartX.current === null) return
+    const diff = lightboxTouchStartX.current - e.changedTouches[0].clientX
+    if (Math.abs(diff) > 40) diff > 0 ? nextImg() : prevImg()
+    lightboxTouchStartX.current = null
+  }
+
   async function onSubmit(data: TestDriveFormData) {
     setLoading(true)
     setFormError(null)
@@ -471,6 +480,24 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
                   <span style={{ color: '#DC143C' }}>veículos</span>
                 </h2>
               </div>
+              {totalSlides > 1 && (
+                <div className="hidden sm:flex items-center gap-2">
+                  <button
+                    onClick={slidePrev}
+                    className="w-11 h-11 flex items-center justify-center border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-all duration-200"
+                    style={{ background: '#0D0D0D' }}
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+                  <button
+                    onClick={slideNext}
+                    className="w-11 h-11 flex items-center justify-center border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-all duration-200"
+                    style={{ background: '#0D0D0D' }}
+                  >
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Mobile: scroll horizontal com snap */}
@@ -512,24 +539,6 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
 
             {/* Desktop: grid animado com paginação */}
             <div className="relative hidden sm:block">
-              {totalSlides > 1 && (
-                <div className="flex items-center justify-end gap-2 mb-6">
-                  <button
-                    onClick={slidePrev}
-                    className="w-11 h-11 flex items-center justify-center border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-all duration-200"
-                    style={{ background: '#0D0D0D' }}
-                  >
-                    <ChevronLeft size={16} />
-                  </button>
-                  <button
-                    onClick={slideNext}
-                    className="w-11 h-11 flex items-center justify-center border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-all duration-200"
-                    style={{ background: '#0D0D0D' }}
-                  >
-                    <ChevronRight size={16} />
-                  </button>
-                </div>
-              )}
               <div className="overflow-hidden">
                 <AnimatePresence mode="popLayout" initial={false}>
                   <motion.div
@@ -623,6 +632,8 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
             className="fixed inset-0 z-[200] flex items-center justify-center"
             style={{ background: 'rgba(0,0,0,0.95)' }}
             onClick={() => setLightbox(false)}
+            onTouchStart={handleLightboxTouchStart}
+            onTouchEnd={handleLightboxTouchEnd}
           >
             <button
               className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center transition-colors duration-200"
@@ -633,7 +644,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
             </button>
 
             <button
-              className="absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center"
+              className="absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 hidden sm:flex items-center justify-center"
               style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }}
               onClick={(e) => { e.stopPropagation(); prevImg() }}
             >
@@ -645,7 +656,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
             </div>
 
             <button
-              className="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center"
+              className="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 hidden sm:flex items-center justify-center"
               style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }}
               onClick={(e) => { e.stopPropagation(); nextImg() }}
             >

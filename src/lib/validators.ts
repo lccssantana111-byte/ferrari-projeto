@@ -14,6 +14,7 @@ export const carFormSchema = z.object({
   model_url: z.string().optional(),
   images: z.array(z.string()),
   images_mobile: z.array(z.string()).optional(),
+  hero_tagline: z.array(z.string()).optional().default([]),
   specs: z.record(z.string(), z.union([z.string(), z.number()])).optional(),
   color_options: z.array(
     z.object({

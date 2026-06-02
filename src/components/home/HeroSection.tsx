@@ -6,8 +6,9 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, ArrowRight } from 'lucide-react'
 import { getWhatsAppLink } from '@/lib/constants'
+import type { Car, CarSpec } from '@/types'
 
-const SLIDES = [
+const FALLBACK_SLIDES = [
   {
     image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=1920&q=95&auto=format&fit=crop',
     objectPosition: 'center 40%',
@@ -20,6 +21,7 @@ const SLIDES = [
       { value: '3.1', unit: 's', label: '0–100' },
       { value: '325', unit: 'km/h', label: 'Vel. Máx.' },
     ],
+    slug: null,
   },
   {
     image: 'https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=1920&q=95&auto=format&fit=crop',
@@ -33,6 +35,7 @@ const SLIDES = [
       { value: '3.4', unit: 's', label: '0–100' },
       { value: '320', unit: 'km/h', label: 'Vel. Máx.' },
     ],
+    slug: null,
   },
   {
     image: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1920&q=95&auto=format&fit=crop',
@@ -51,6 +54,7 @@ const SLIDES = [
       { value: '2.5', unit: 's', label: '0–100' },
       { value: '340', unit: 'km/h', label: 'Vel. Máx.' },
     ],
+    slug: null,
   },
   {
     image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=95&auto=format&fit=crop',
@@ -64,18 +68,47 @@ const SLIDES = [
       { value: '2.9', unit: 's', label: '0–100' },
       { value: '340', unit: 'km/h', label: 'Vel. Máx.' },
     ],
+    slug: null,
   },
 ]
 
+function buildSpecs(specs: CarSpec) {
+  const result: { value: string; unit: string; label: string }[] = []
+  if (specs.horsepower) result.push({ value: String(specs.horsepower), unit: 'cv', label: 'Potência' })
+  if (specs.acceleration) result.push({ value: String(specs.acceleration), unit: 's', label: '0–100' })
+  if (specs.top_speed) result.push({ value: String(specs.top_speed), unit: 'km/h', label: 'Vel. Máx.' })
+  return result
+}
+
+function carToSlide(car: Car, i: number) {
+  const t = car.hero_tagline ?? []
+  const specs = buildSpecs(car.specs ?? {})
+  return {
+    image: car.images[0] ?? '',
+    objectPosition: 'center 40%',
+    index: String(i + 1).padStart(2, '0'),
+    model: car.name,
+    tagline: [t[0] ?? car.name, t[1] ?? ''] as [string, string],
+    line2Style: { color: '#DC143C' } as React.CSSProperties,
+    specs: specs.length > 0 ? specs : FALLBACK_SLIDES[i % FALLBACK_SLIDES.length].specs,
+    slug: car.slug,
+  }
+}
+
 const DURATION = 2800
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  cars?: Car[]
+}
+
+export default function HeroSection({ cars }: HeroSectionProps) {
+  const slides = cars && cars.length > 0 ? cars.map(carToSlide) : FALLBACK_SLIDES
+
   const [current, setCurrent] = useState(0)
   const [progress, setProgress] = useState(0)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const touchStartX = useRef<number | null>(null)
-
 
   function startCycle(index = current) {
     if (intervalRef.current) clearInterval(intervalRef.current)
@@ -83,7 +116,7 @@ export default function HeroSection() {
     setProgress(0)
     const step = 100 / (DURATION / 50)
     progressRef.current = setInterval(() => setProgress(p => Math.min(p + step, 100)), 50)
-    intervalRef.current = setInterval(() => setCurrent(c => (c + 1) % SLIDES.length), DURATION)
+    intervalRef.current = setInterval(() => setCurrent(c => (c + 1) % slides.length), DURATION)
   }
 
   useEffect(() => {
@@ -118,15 +151,16 @@ export default function HeroSection() {
     const diff = touchStartX.current - e.changedTouches[0].clientX
     if (Math.abs(diff) > 50) {
       if (diff > 0) {
-        setCurrent(c => (c + 1) % SLIDES.length)
+        setCurrent(c => (c + 1) % slides.length)
       } else {
-        setCurrent(c => (c - 1 + SLIDES.length) % SLIDES.length)
+        setCurrent(c => (c - 1 + slides.length) % slides.length)
       }
     }
     touchStartX.current = null
   }
 
-  const slide = SLIDES[current]
+  const slide = slides[current]
+  const total = String(slides.length).padStart(2, '0')
 
   return (
     <section
@@ -152,15 +186,17 @@ export default function HeroSection() {
             animate={{ scale: 1.0 }}
             transition={{ duration: DURATION / 1000 + 1.4, ease: 'linear' }}
           >
-            <Image
-              src={slide.image}
-              alt={slide.model}
-              fill
-              priority={current === 0}
-              sizes="100vw"
-              className="object-cover"
-              style={{ objectPosition: slide.objectPosition }}
-            />
+            {slide.image && (
+              <Image
+                src={slide.image}
+                alt={slide.model}
+                fill
+                priority={current === 0}
+                sizes="100vw"
+                className="object-cover"
+                style={{ objectPosition: slide.objectPosition }}
+              />
+            )}
           </motion.div>
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,0.35)_0%,rgba(10,10,10,0.1)_35%,rgba(10,10,10,0.55)_65%,rgba(10,10,10,0.92)_100%)]" />
           <div className="absolute inset-0 hidden sm:block bg-[linear-gradient(110deg,rgba(10,10,10,0.75)_0%,rgba(10,10,10,0.3)_45%,transparent_70%)]" />
@@ -178,7 +214,7 @@ export default function HeroSection() {
           transition={{ duration: 0.4 }}
         >
           <span style={{ fontSize: '9px', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase' }}>
-            {slide.index} / 04
+            {slide.index} / {total}
           </span>
           <div className="w-4 h-px" style={{ background: '#DC143C' }} />
         </motion.div>
@@ -217,21 +253,23 @@ export default function HeroSection() {
             >
               {slide.tagline[0]}
             </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 36 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-              className="font-black"
-              style={{
-                fontSize: 'clamp(2.2rem, 7.5vw, 3.8rem)',
-                lineHeight: 0.9,
-                paddingBottom: '0.18em',
-                ...slide.line2Style,
-              }}
-            >
-              {slide.tagline[1]}
-            </motion.div>
+            {slide.tagline[1] && (
+              <motion.div
+                initial={{ opacity: 0, y: 36 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                className="font-black"
+                style={{
+                  fontSize: 'clamp(2.2rem, 7.5vw, 3.8rem)',
+                  lineHeight: 0.9,
+                  paddingBottom: '0.18em',
+                  ...slide.line2Style,
+                }}
+              >
+                {slide.tagline[1]}
+              </motion.div>
+            )}
           </motion.div>
         </AnimatePresence>
 
@@ -291,7 +329,7 @@ export default function HeroSection() {
 
         {/* Dots de navegação — centralizados no mobile */}
         <div className="flex items-center justify-center sm:justify-start gap-2 pb-8 sm:pb-7">
-          {SLIDES.map((_, i) => (
+          {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => goTo(i)}

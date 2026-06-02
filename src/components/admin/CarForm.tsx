@@ -54,6 +54,7 @@ export default function CarForm({ car }: CarFormProps) {
       model_url: car?.model_url ?? '',
       images: car?.images ?? [],
       images_mobile: car?.images_mobile ?? [],
+      hero_tagline: car?.hero_tagline ?? [],
       specs: defaultSpecs,
       color_options: car?.color_options ?? [],
     },
@@ -187,6 +188,26 @@ export default function CarForm({ car }: CarFormProps) {
         <div className="space-y-2">
           <label className={labelClass}>Tagline</label>
           <input {...register('short_tagline')} className={inputClass} placeholder="O futuro do desempenho" />
+        </div>
+
+        <div className="space-y-2">
+          <label className={labelClass}>Hero — Linha 1</label>
+          <input
+            className={inputClass}
+            placeholder="Não é um carro."
+            defaultValue={car?.hero_tagline?.[0] ?? ''}
+            {...register('hero_tagline.0')}
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className={labelClass}>Hero — Linha 2</label>
+          <input
+            className={inputClass}
+            placeholder="É uma sentença."
+            defaultValue={car?.hero_tagline?.[1] ?? ''}
+            {...register('hero_tagline.1')}
+          />
         </div>
 
         <div className="space-y-2">
