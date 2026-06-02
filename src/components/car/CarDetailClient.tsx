@@ -250,7 +250,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
           <div className="absolute bottom-8 right-8 z-10" style={{ fontSize: '10px', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.35)', fontWeight: 700 }}>
             {String(activeImgMobile + 1).padStart(2, '0')} / {String(imagesMobile.length).padStart(2, '0')}
           </div>
-          <button onClick={() => setLightbox(true)} className="absolute inset-0 z-[5] cursor-zoom-in" aria-label="Abrir galeria" />
+          <button onClick={() => { setActiveImg(activeImgMobile); setLightbox(true) }} className="absolute inset-0 z-[5] cursor-zoom-in" aria-label="Abrir galeria" />
         </div>
       )}
 
