@@ -16,13 +16,14 @@ export default async function AdminCarsPage({ searchParams }: Props) {
     <div>
       <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-white">
-            {featured === 'true' ? 'Veículos em Destaque' : 'Veículos'}
+          <p className="text-white/25 text-[10px] uppercase tracking-[0.3em] mb-2">Inventário</p>
+          <h1 className="text-2xl font-bold text-white tracking-tight">
+            {featured === 'true' ? 'Em Destaque' : 'Veículos'}
           </h1>
-          <p className="text-white/40 text-sm mt-1">
-            {cars.length} veículo(s)
+          <p className="text-white/35 text-sm mt-1">
+            {cars.length} veículo{cars.length !== 1 ? 's' : ''}
             {featured === 'true' && (
-              <Link href="/admin/carros" className="ml-2 text-white/30 hover:text-white underline underline-offset-2 transition-colors">
+              <Link href="/admin/carros" className="ml-2 text-white/25 hover:text-white/60 underline underline-offset-2 transition-colors duration-200">
                 ver todos
               </Link>
             )}
@@ -30,9 +31,9 @@ export default async function AdminCarsPage({ searchParams }: Props) {
         </div>
         <Link
           href="/admin/carros/novo"
-          className="flex items-center gap-2 ferrari-gradient text-white font-semibold px-5 py-2.5 rounded-lg text-sm hover:opacity-90 transition-opacity min-h-[44px]"
+          className="flex items-center gap-2 ferrari-gradient text-white font-medium px-5 py-2.5 rounded-lg text-xs uppercase tracking-wider hover:opacity-90 transition-opacity min-h-[44px]"
         >
-          <Plus size={16} />
+          <Plus size={14} />
           Novo Veículo
         </Link>
       </div>

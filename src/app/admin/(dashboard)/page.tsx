@@ -30,24 +30,28 @@ export default async function AdminDashboard() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-        <p className="text-white/40 text-sm mt-1">Visão geral da concessionária</p>
+        <p className="text-white/25 text-[10px] uppercase tracking-[0.3em] mb-2">Painel de controle</p>
+        <h1 className="text-2xl font-bold text-white tracking-tight">Dashboard</h1>
+        <p className="text-white/35 text-sm mt-1">Visão geral da concessionária</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {stats.map((stat) => {
           const Icon = stat.icon
           return (
             <Link
               key={stat.label}
               href={stat.href}
-              className="glass rounded-xl p-6 block transition-all duration-200 hover:border-white/15 hover:bg-white/[0.07] group"
+              className="relative glass rounded-xl p-6 block transition-all duration-300 hover:border-white/12 hover:bg-white/[0.06] group overflow-hidden"
             >
-              <div className="flex items-center justify-between mb-4">
-                <Icon size={20} className={stat.color} />
+              <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+              <div className="flex items-start justify-between mb-5">
+                <div className={`p-2 rounded-lg bg-white/[0.04] border border-white/[0.06] transition-colors duration-300 group-hover:border-white/10`}>
+                  <Icon size={16} className={stat.color} />
+                </div>
               </div>
-              <p className="text-3xl font-bold text-white group-hover:text-white transition-colors">{stat.value}</p>
-              <p className="text-white/40 text-sm mt-1 group-hover:text-white/60 transition-colors">{stat.label}</p>
+              <p className="text-3xl font-bold text-white tabular-nums">{stat.value}</p>
+              <p className="text-white/35 text-xs mt-2 uppercase tracking-wider group-hover:text-white/50 transition-colors duration-300">{stat.label}</p>
             </Link>
           )
         })}
