@@ -369,7 +369,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
                   Dúvidas frequentes
                 </span>
               </div>
-              <h2 className="font-black tracking-[-0.04em] text-white leading-[0.92]" style={{ fontSize: 'clamp(2.5rem, 4vw, 3.8rem)' }}>
+              <h2 className="font-black tracking-[-0.04em] text-white leading-[0.92]" style={{ fontSize: 'clamp(2.5rem, 4vw, 3.8rem)', paddingBottom: '0.1em' }}>
                 Tudo que você precisa saber.
               </h2>
             </div>
@@ -404,7 +404,7 @@ export default function FinanciamentoClient({ carros }: { carros: Car[] }) {
             animate={ctaInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.1, duration: 0.7, ease: EASE }}
             className="font-black tracking-[-0.04em] text-white leading-[0.9] mb-6 sm:mb-8"
-            style={{ fontSize: 'clamp(2.8rem, 5vw, 5rem)' }}
+            style={{ fontSize: 'clamp(2.8rem, 5vw, 5rem)', paddingBottom: '0.12em' }}
           >
             Fale com um<br />
             <span style={{ color: '#DC143C' }}>especialista.</span>
