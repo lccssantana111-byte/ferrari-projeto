@@ -246,7 +246,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
               <Image src={imagesMobile[activeImgMobile]} alt={`${car.name} — foto ${activeImgMobile + 1}`} fill sizes="100vw" className="object-cover" priority />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/70 via-transparent to-transparent" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.15) 35%, transparent 65%)' }} />
           <div className="absolute bottom-8 right-8 z-10" style={{ fontSize: '10px', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.35)', fontWeight: 700 }}>
             {String(activeImgMobile + 1).padStart(2, '0')} / {String(imagesMobile.length).padStart(2, '0')}
           </div>
