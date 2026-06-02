@@ -67,6 +67,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
   const [isDragging, setIsDragging] = useState(false)
 
   const lightboxRef = useRef<HTMLDivElement | null>(null)
+  const thumbsMobileRef = useRef<HTMLDivElement | null>(null)
   const pinchStartDist = useRef<number | null>(null)
   const pinchStartZoom = useRef<number>(1)
   const isPanning = useRef(false)
@@ -202,6 +203,14 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
     }
   }, [lightbox])
 
+  useEffect(() => {
+    const container = thumbsMobileRef.current
+    if (!container) return
+    const thumb = container.children[activeImgMobile] as HTMLElement | undefined
+    if (!thumb) return
+    thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+  }, [activeImgMobile])
+
   async function onSubmit(data: TestDriveFormData) {
     setLoading(true)
     setFormError(null)
@@ -283,7 +292,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
 
         {/* Miniaturas mobile */}
         {imagesMobile.length > 1 && (
-          <div className="sm:hidden flex gap-2 mt-4 overflow-x-auto pb-1 scrollbar-hide">
+          <div ref={thumbsMobileRef} className="sm:hidden flex gap-2 mt-4 overflow-x-auto pb-1 scrollbar-hide">
             {imagesMobile.map((img, i) => (
               <button key={i} onClick={() => setActiveImgMobile(i)} className="relative flex-shrink-0 overflow-hidden transition-all duration-200" style={{ width: 80, height: 52, border: i === activeImgMobile ? '1.5px solid #DC143C' : '1.5px solid rgba(255,255,255,0.07)', opacity: i === activeImgMobile ? 1 : 0.45 }}>
                 <Image src={img} alt={`${car.name} ${i + 1}`} fill sizes="80px" className="object-cover" />
