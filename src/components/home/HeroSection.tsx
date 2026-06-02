@@ -242,7 +242,7 @@ export default function HeroSection({ cars }: HeroSectionProps) {
 
         {/* Headline */}
         <AnimatePresence mode="wait">
-          <motion.div key={`title-${current}`} className="tracking-[-0.04em] mb-3 sm:mb-7">
+          <motion.div key={`title-${current}`} className="tracking-[-0.04em] mb-5 sm:mb-7">
             <motion.div
               initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
