@@ -1,4 +1,5 @@
 export const BRAND_NAME = 'Ferrari'
+export const SITE_URL = 'https://ferrarim.com.br'
 
 export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? ''
 

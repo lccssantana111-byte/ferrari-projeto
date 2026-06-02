@@ -1,8 +1,27 @@
+import type { Metadata } from 'next'
 import { getAllCars } from '@/lib/queries/cars'
 import FinanciamentoClient from './FinanciamentoClient'
 import type { Car } from '@/types'
+import { BRAND_NAME, SITE_URL } from '@/lib/constants'
 
 export const revalidate = 3600
+
+export const metadata: Metadata = {
+  title: 'Financiamento',
+  description: 'Financie seu Ferrari com as melhores condições do mercado. Simule parcelas, escolha o prazo e realize o sonho do seu supercar.',
+  alternates: { canonical: `${SITE_URL}/financiamento` },
+  openGraph: {
+    title: `Financiamento | ${BRAND_NAME}`,
+    description: 'Financie seu Ferrari com as melhores condições do mercado. Simule parcelas, escolha o prazo e realize o sonho do seu supercar.',
+    url: `${SITE_URL}/financiamento`,
+    images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: `Financiamento | ${BRAND_NAME}` }],
+  },
+  twitter: {
+    title: `Financiamento | ${BRAND_NAME}`,
+    description: 'Financie seu Ferrari com as melhores condições do mercado.',
+    images: ['/og-default.jpg'],
+  },
+}
 
 const FALLBACK_CARS: Car[] = [
   {

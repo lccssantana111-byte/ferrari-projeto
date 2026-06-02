@@ -1,12 +1,25 @@
 import { getAllCars } from '@/lib/queries/cars'
 import ColecaoFilters from '@/components/car/ColecaoFilters'
 import type { Metadata } from 'next'
+import { BRAND_NAME, SITE_URL } from '@/lib/constants'
 
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: 'Coleção | Ferrari',
-  description: 'Conheça todos os modelos Ferrari disponíveis em nosso estoque.',
+  title: 'Coleção',
+  description: 'Explore a coleção completa de Ferraris disponíveis. Modelos exclusivos selecionados com rigor, prontos para entrega.',
+  alternates: { canonical: `${SITE_URL}/colecao` },
+  openGraph: {
+    title: `Coleção | ${BRAND_NAME}`,
+    description: 'Explore a coleção completa de Ferraris disponíveis. Modelos exclusivos selecionados com rigor, prontos para entrega.',
+    url: `${SITE_URL}/colecao`,
+    images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: `Coleção | ${BRAND_NAME}` }],
+  },
+  twitter: {
+    title: `Coleção | ${BRAND_NAME}`,
+    description: 'Explore a coleção completa de Ferraris disponíveis.',
+    images: ['/og-default.jpg'],
+  },
 }
 
 export default async function ColecaoPage() {
