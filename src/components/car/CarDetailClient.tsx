@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { ChevronLeft, ChevronRight, X, ArrowRight, Check } from 'lucide-react'
@@ -62,6 +62,23 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
   function slideNext() { setSlideDir(1);  setSlideIndex(i => (i + 1) % totalSlides) }
   const visibleCars = otherCars.slice(slideIndex * VISIBLE, slideIndex * VISIBLE + VISIBLE)
   const [lightbox, setLightbox] = useState(false)
+  const [zoom, setZoom] = useState(1)
+  const [pan, setPan] = useState({ x: 0, y: 0 })
+  const [isDragging, setIsDragging] = useState(false)
+
+  const lightboxRef = useRef<HTMLDivElement | null>(null)
+  const pinchStartDist = useRef<number | null>(null)
+  const pinchStartZoom = useRef<number>(1)
+  const isPanning = useRef(false)
+  const panStartPointer = useRef({ x: 0, y: 0 })
+  const panStartOffset = useRef({ x: 0, y: 0 })
+
+  const MIN_ZOOM = 1
+  const MAX_ZOOM = 4
+  function clampZoom(v: number) { return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, v)) }
+  function resetZoom() { setZoom(1); setPan({ x: 0, y: 0 }) }
+  function closeLightbox() { resetZoom(); setLightbox(false) }
+
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
@@ -75,8 +92,8 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
   const imagesMobile = car.images_mobile?.length ? car.images_mobile : images
   const specs = Object.entries(car.specs ?? {}).filter(([, v]) => v !== null && v !== undefined && v !== '')
 
-  function prevImg() { setActiveImg((s) => (s - 1 + images.length) % images.length) }
-  function nextImg() { setActiveImg((s) => (s + 1) % images.length) }
+  function prevImg() { resetZoom(); setActiveImg((s) => (s - 1 + images.length) % images.length) }
+  function nextImg() { resetZoom(); setActiveImg((s) => (s + 1) % images.length) }
   function prevImgMobile() { setActiveImgMobile((s) => (s - 1 + imagesMobile.length) % imagesMobile.length) }
   function nextImgMobile() { setActiveImgMobile((s) => (s + 1) % imagesMobile.length) }
 
@@ -90,13 +107,100 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
   }
 
   const lightboxTouchStartX = useRef<number | null>(null)
-  function handleLightboxTouchStart(e: React.TouchEvent) { lightboxTouchStartX.current = e.touches[0].clientX }
+
+  function handleLightboxTouchStart(e: React.TouchEvent) {
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX
+      const dy = e.touches[0].clientY - e.touches[1].clientY
+      pinchStartDist.current = Math.hypot(dx, dy)
+      pinchStartZoom.current = zoom
+      lightboxTouchStartX.current = null
+    } else if (e.touches.length === 1) {
+      if (zoom > 1) {
+        isPanning.current = true
+        setIsDragging(true)
+        panStartPointer.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+        panStartOffset.current = { x: pan.x, y: pan.y }
+      } else {
+        lightboxTouchStartX.current = e.touches[0].clientX
+      }
+    }
+  }
+
+  function handleLightboxTouchMove(e: React.TouchEvent) {
+    if (e.touches.length === 2 && pinchStartDist.current !== null) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX
+      const dy = e.touches[0].clientY - e.touches[1].clientY
+      const scale = Math.hypot(dx, dy) / pinchStartDist.current
+      const next = clampZoom(pinchStartZoom.current * scale)
+      setZoom(next)
+      if (next <= 1) setPan({ x: 0, y: 0 })
+    } else if (e.touches.length === 1 && isPanning.current) {
+      setPan({
+        x: panStartOffset.current.x + (e.touches[0].clientX - panStartPointer.current.x),
+        y: panStartOffset.current.y + (e.touches[0].clientY - panStartPointer.current.y),
+      })
+    }
+  }
+
   function handleLightboxTouchEnd(e: React.TouchEvent) {
-    if (lightboxTouchStartX.current === null) return
-    const diff = lightboxTouchStartX.current - e.changedTouches[0].clientX
-    if (Math.abs(diff) > 40) diff > 0 ? nextImg() : prevImg()
+    isPanning.current = false
+    setIsDragging(false)
+    if (e.touches.length === 0 && pinchStartDist.current !== null) {
+      pinchStartDist.current = null
+      return
+    }
+    if (lightboxTouchStartX.current !== null && zoom === 1) {
+      const diff = lightboxTouchStartX.current - e.changedTouches[0].clientX
+      if (Math.abs(diff) > 40) diff > 0 ? nextImg() : prevImg()
+    }
     lightboxTouchStartX.current = null
   }
+
+  function handlePointerDown(e: React.PointerEvent) {
+    if (zoom <= 1) return
+    e.currentTarget.setPointerCapture(e.pointerId)
+    isPanning.current = true
+    setIsDragging(true)
+    panStartPointer.current = { x: e.clientX, y: e.clientY }
+    panStartOffset.current = { x: pan.x, y: pan.y }
+  }
+
+  function handlePointerMove(e: React.PointerEvent) {
+    if (!isPanning.current) return
+    setPan({
+      x: panStartOffset.current.x + (e.clientX - panStartPointer.current.x),
+      y: panStartOffset.current.y + (e.clientY - panStartPointer.current.y),
+    })
+  }
+
+  function handlePointerUp() { isPanning.current = false; setIsDragging(false) }
+
+  useEffect(() => {
+    const el = lightboxRef.current
+    if (!el || !lightbox) return
+
+    function onWheel(e: WheelEvent) {
+      e.preventDefault()
+      const delta = e.deltaY > 0 ? -0.15 : 0.15
+      setZoom(prev => {
+        const next = clampZoom(prev + delta)
+        if (next <= 1) setPan({ x: 0, y: 0 })
+        return next
+      })
+    }
+
+    function onTouchMove(e: TouchEvent) {
+      if (e.touches.length >= 2) e.preventDefault()
+    }
+
+    el.addEventListener('wheel', onWheel, { passive: false })
+    el.addEventListener('touchmove', onTouchMove, { passive: false })
+    return () => {
+      el.removeEventListener('wheel', onWheel)
+      el.removeEventListener('touchmove', onTouchMove)
+    }
+  }, [lightbox])
 
   async function onSubmit(data: TestDriveFormData) {
     setLoading(true)
@@ -625,39 +729,54 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
       <AnimatePresence>
         {lightbox && (
           <motion.div
+            ref={lightboxRef}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="fixed inset-0 z-[200] flex items-center justify-center"
-            style={{ background: 'rgba(0,0,0,0.95)' }}
-            onClick={() => setLightbox(false)}
+            style={{ background: 'rgba(0,0,0,0.95)', cursor: zoom > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default' }}
+            onClick={() => { if (zoom === 1) closeLightbox() }}
             onTouchStart={handleLightboxTouchStart}
+            onTouchMove={handleLightboxTouchMove}
             onTouchEnd={handleLightboxTouchEnd}
           >
             <button
               className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center transition-colors duration-200"
               style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }}
-              onClick={() => setLightbox(false)}
+              onClick={(e) => { e.stopPropagation(); closeLightbox() }}
             >
               <X size={16} />
             </button>
 
             <button
-              className="absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 hidden sm:flex items-center justify-center"
-              style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }}
+              className="absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 hidden sm:flex items-center justify-center transition-opacity duration-200"
+              style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)', opacity: zoom > 1 ? 0 : 1, pointerEvents: zoom > 1 ? 'none' : 'auto' }}
               onClick={(e) => { e.stopPropagation(); prevImg() }}
             >
               <ChevronLeft size={18} />
             </button>
 
-            <div className="relative w-full max-w-5xl aspect-[16/9] px-4 sm:px-20" onClick={(e) => e.stopPropagation()}>
-              <Image src={images[activeImg]} alt={`${car.name} ${activeImg + 1}`} fill sizes="100vw" className="object-contain" />
+            <div
+              className="relative w-full max-w-5xl aspect-[16/9] px-4 sm:px-20"
+              style={{
+                transform: `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)`,
+                transformOrigin: 'center center',
+                transition: isDragging ? 'none' : 'transform 0.15s ease-out',
+                touchAction: 'none',
+              }}
+              onClick={(e) => e.stopPropagation()}
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerCancel={handlePointerUp}
+            >
+              <Image src={images[activeImg]} alt={`${car.name} ${activeImg + 1}`} fill sizes="100vw" className="object-contain" draggable={false} />
             </div>
 
             <button
-              className="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 hidden sm:flex items-center justify-center"
-              style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }}
+              className="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 hidden sm:flex items-center justify-center transition-opacity duration-200"
+              style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)', opacity: zoom > 1 ? 0 : 1, pointerEvents: zoom > 1 ? 'none' : 'auto' }}
               onClick={(e) => { e.stopPropagation(); nextImg() }}
             >
               <ChevronRight size={18} />
@@ -666,6 +785,27 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
             <span className="absolute bottom-6" style={{ fontSize: '10px', letterSpacing: '0.3em', color: 'rgba(255,255,255,0.3)' }}>
               {String(activeImg + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
             </span>
+
+            {/* Controles de zoom */}
+            <div className="absolute bottom-6 left-6 flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+              <button
+                className="w-8 h-8 flex items-center justify-center transition-colors duration-200"
+                style={{ border: '1px solid rgba(255,255,255,0.15)', color: zoom <= MIN_ZOOM ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.5)', fontSize: 18, lineHeight: 1 }}
+                onClick={() => { const n = clampZoom(zoom - 0.5); setZoom(n); if (n <= 1) setPan({ x: 0, y: 0 }) }}
+                disabled={zoom <= MIN_ZOOM}
+                aria-label="Diminuir zoom"
+              >−</button>
+              <span style={{ fontSize: '9px', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', minWidth: 32, textAlign: 'center' }}>
+                {Math.round(zoom * 100)}%
+              </span>
+              <button
+                className="w-8 h-8 flex items-center justify-center transition-colors duration-200"
+                style={{ border: '1px solid rgba(255,255,255,0.15)', color: zoom >= MAX_ZOOM ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.5)', fontSize: 18, lineHeight: 1 }}
+                onClick={() => setZoom(prev => clampZoom(prev + 0.5))}
+                disabled={zoom >= MAX_ZOOM}
+                aria-label="Aumentar zoom"
+              >+</button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
