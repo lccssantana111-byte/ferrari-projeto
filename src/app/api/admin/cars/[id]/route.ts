@@ -48,5 +48,10 @@ export async function DELETE(
 
   const { error } = await supabase.from('cars').delete().eq('id', params.id)
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  revalidatePath('/')
+  revalidatePath('/colecao')
+  revalidatePath('/carros/[slug]', 'page')
+
   return new NextResponse(null, { status: 204 })
 }

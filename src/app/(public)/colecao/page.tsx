@@ -2,7 +2,7 @@ import { getAllCars } from '@/lib/queries/cars'
 import ColecaoFilters from '@/components/car/ColecaoFilters'
 import type { Metadata } from 'next'
 
-export const revalidate = 3600
+export const revalidate = 0
 
 export const metadata: Metadata = {
   title: 'Coleção | Ferrari',
