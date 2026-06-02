@@ -27,7 +27,7 @@ export default async function ColecaoPage() {
           </div>
           <h1
             className="font-black text-white mt-3 leading-[0.9] tracking-[-0.03em]"
-            style={{ fontSize: 'clamp(2.8rem, 5vw, 4.5rem)' }}
+            style={{ fontSize: 'clamp(2.8rem, 5vw, 4.5rem)', paddingBottom: '0.12em' }}
           >
             Coleção
             <br />
