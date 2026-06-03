@@ -117,7 +117,7 @@ function Panel({ children, width = 200, align = 'left' }: { children: React.Reac
         width,
         maxWidth: 'calc(100vw - 24px)',
         boxShadow: '0 16px 48px rgba(0,0,0,0.7)',
-        ...(align === 'right' ? { right: 0, left: 'auto' } : { left: 0 }),
+        ...(align === 'right' ? { right: 0, left: 'auto' } : { left: 0, right: 'auto' }),
       }}
     >
       {children}
@@ -368,7 +368,7 @@ export default function ColecaoFilters({ cars }: Props) {
               onToggle={() => { closeOthers('price'); setPriceOpen(v => !v); setTimeout(() => minRef.current?.focus(), 50) }}
             />
             {priceOpen && (
-              <Panel width={270} align="right">
+              <Panel width={260} align="right">
                 <div className="p-4">
                   <p style={{ fontSize: '9px', letterSpacing: '0.18em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', marginBottom: '14px' }}>
                     Faixa de preço
@@ -388,7 +388,7 @@ export default function ColecaoFilters({ cars }: Props) {
                         value={priceMin ? formatNum(parseInt(priceMin, 10)) : ''}
                         onChange={e => { const r = e.target.value.replace(/\D/g, ''); setPriceMin(r) }}
                         onKeyDown={e => { if (e.key === 'Enter') applyPrice() }}
-                        className="flex-1 bg-transparent outline-none text-right"
+                        className="flex-1 min-w-0 bg-transparent outline-none text-right"
                         style={{ fontSize: '13px', color: '#fff', caretColor: '#DC143C' }}
                       />
                     </div>
@@ -400,7 +400,7 @@ export default function ColecaoFilters({ cars }: Props) {
                         value={priceMax ? formatNum(parseInt(priceMax, 10)) : ''}
                         onChange={e => { const r = e.target.value.replace(/\D/g, ''); setPriceMax(r) }}
                         onKeyDown={e => { if (e.key === 'Enter') applyPrice() }}
-                        className="flex-1 bg-transparent outline-none text-right"
+                        className="flex-1 min-w-0 bg-transparent outline-none text-right"
                         style={{ fontSize: '13px', color: '#fff', caretColor: '#DC143C' }}
                       />
                     </div>
