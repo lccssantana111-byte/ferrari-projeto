@@ -14,7 +14,9 @@ interface ImageUploaderProps {
 export default function ImageUploader({ images, onChange, carId }: ImageUploaderProps) {
   const [uploading, setUploading] = useState<string[]>([])
   const [error, setError] = useState<string | null>(null)
+  const [dragOver, setDragOver] = useState<number | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const dragSrc = useRef<number | null>(null)
 
   async function handleFiles(files: FileList) {
     const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
@@ -73,6 +75,32 @@ export default function ImageUploader({ images, onChange, carId }: ImageUploader
     if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files)
   }
 
+  function handleThumbDragStart(i: number) {
+    dragSrc.current = i
+  }
+
+  function handleThumbDragOver(e: React.DragEvent, i: number) {
+    e.preventDefault()
+    if (dragSrc.current !== null && dragSrc.current !== i) setDragOver(i)
+  }
+
+  function handleThumbDrop(e: React.DragEvent, i: number) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (dragSrc.current === null || dragSrc.current === i) return
+    const next = [...images]
+    const [moved] = next.splice(dragSrc.current, 1)
+    next.splice(i, 0, moved)
+    onChange(next)
+    dragSrc.current = null
+    setDragOver(null)
+  }
+
+  function handleThumbDragEnd() {
+    dragSrc.current = null
+    setDragOver(null)
+  }
+
   return (
     <div className="space-y-4">
       <div
@@ -108,13 +136,22 @@ export default function ImageUploader({ images, onChange, carId }: ImageUploader
       {images.length > 0 && (
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
           {images.map((url, i) => (
-            <div key={url} className="relative aspect-square rounded-lg overflow-hidden group">
+            <div
+              key={url}
+              draggable
+              onDragStart={() => handleThumbDragStart(i)}
+              onDragOver={(e) => handleThumbDragOver(e, i)}
+              onDrop={(e) => handleThumbDrop(e, i)}
+              onDragEnd={handleThumbDragEnd}
+              className="relative aspect-square rounded-lg overflow-hidden group cursor-grab active:cursor-grabbing transition-opacity"
+              style={{ opacity: dragOver === i ? 0.4 : 1, outline: dragOver === i ? '2px solid #DC143C' : 'none' }}
+            >
               <Image
                 src={url}
                 alt={`Imagem ${i + 1}`}
                 fill
                 sizes="120px"
-                className="object-cover"
+                className="object-cover pointer-events-none"
               />
               <button
                 type="button"
