@@ -88,7 +88,7 @@ function carToSlide(car: Car, i: number) {
     objectPosition: 'center 40%',
     index: String(i + 1).padStart(2, '0'),
     model: car.name,
-    tagline: [t[0] ?? car.name, t[1] ?? ''] as [string, string],
+    tagline: [t[0] || car.name, t[1] || ''] as [string, string],
     line2Style: { color: '#DC143C' } as React.CSSProperties,
     specs: specs.length > 0 ? specs : FALLBACK_SLIDES[i % FALLBACK_SLIDES.length].specs,
     slug: car.slug,
