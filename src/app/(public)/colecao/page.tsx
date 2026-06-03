@@ -3,7 +3,7 @@ import ColecaoFilters from '@/components/car/ColecaoFilters'
 import type { Metadata } from 'next'
 import { BRAND_NAME, SITE_URL } from '@/lib/constants'
 
-export const revalidate = 0
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Coleção',

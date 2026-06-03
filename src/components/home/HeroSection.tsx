@@ -110,7 +110,7 @@ export default function HeroSection({ cars }: HeroSectionProps) {
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const touchStartX = useRef<number | null>(null)
 
-  function startCycle(index = current) {
+  function startCycle() {
     if (intervalRef.current) clearInterval(intervalRef.current)
     if (progressRef.current) clearInterval(progressRef.current)
     setProgress(0)
@@ -129,7 +129,7 @@ export default function HeroSection({ cars }: HeroSectionProps) {
   }, [])
 
   useEffect(() => {
-    startCycle(current)
+    startCycle()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current])
 

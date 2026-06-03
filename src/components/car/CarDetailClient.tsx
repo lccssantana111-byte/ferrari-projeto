@@ -51,7 +51,7 @@ const VISIBLE = 4
 
 export default function CarDetailClient({ car, formattedPrice, otherCars = [] }: Props) {
   const othersRef = useRef(null)
-  const othersInView = useInView(othersRef, { once: true, margin: '-60px' })
+  useInView(othersRef, { once: true, margin: '-60px' })
   const [slideIndex, setSlideIndex] = useState(0)
   const [slideDir, setSlideDir] = useState(1)
   const [activeImg, setActiveImg] = useState(0)
@@ -103,7 +103,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
   function handleTouchEnd(e: React.TouchEvent) {
     if (touchStartX.current === null) return
     const diff = touchStartX.current - e.changedTouches[0].clientX
-    if (Math.abs(diff) > 40) diff > 0 ? nextImgMobile() : prevImgMobile()
+    if (Math.abs(diff) > 40) { if (diff > 0) nextImgMobile(); else prevImgMobile() }
     touchStartX.current = null
   }
 
@@ -153,7 +153,7 @@ export default function CarDetailClient({ car, formattedPrice, otherCars = [] }:
     }
     if (lightboxTouchStartX.current !== null && zoom === 1) {
       const diff = lightboxTouchStartX.current - e.changedTouches[0].clientX
-      if (Math.abs(diff) > 40) diff > 0 ? nextImg() : prevImg()
+      if (Math.abs(diff) > 40) { if (diff > 0) nextImg(); else prevImg() }
     }
     lightboxTouchStartX.current = null
   }

@@ -30,7 +30,7 @@ export function useSwipe<T extends HTMLElement>(
       const dx = startX.current - e.changedTouches[0].clientX
       const dy = startY.current - e.changedTouches[0].clientY
       if (Math.abs(dx) > threshold && Math.abs(dx) > Math.abs(dy)) {
-        dx > 0 ? onNextRef.current() : onPrevRef.current()
+        if (dx > 0) { onNextRef.current() } else { onPrevRef.current() }
       }
       startX.current = null
       startY.current = null

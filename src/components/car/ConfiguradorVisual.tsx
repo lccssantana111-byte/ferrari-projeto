@@ -22,9 +22,9 @@ interface Props {
 }
 
 export default function ConfiguradorVisual({ car, formattedPrice }: Props) {
-  if (!car.color_options?.length) return null
-
   const [selectedColorIdx, setSelectedColorIdx] = useState(0)
+
+  if (!car.color_options?.length) return null
 
   const selectedColor = car.color_options[selectedColorIdx]
 

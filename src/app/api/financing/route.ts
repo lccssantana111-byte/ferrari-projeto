@@ -1,8 +1,14 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { financingLeadSchema } from '@/lib/validators'
+import { rateLimit } from '@/lib/rateLimit'
 
 export async function POST(request: Request) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown'
+  if (!rateLimit(ip)) {
+    return NextResponse.json({ error: 'Muitas tentativas. Tente novamente em 15 minutos.' }, { status: 429 })
+  }
+
   const body = await request.json()
   const parsed = financingLeadSchema.safeParse(body)
 
