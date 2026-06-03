@@ -242,33 +242,32 @@ export default function HeroSection({ cars }: HeroSectionProps) {
 
         {/* Headline */}
         <AnimatePresence mode="wait">
-          <motion.div key={`title-${current}`} className="tracking-[-0.04em] mb-5 sm:mb-7">
-            <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          <motion.div
+            key={`title-${current}`}
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="tracking-[-0.04em] mb-5 sm:mb-7"
+          >
+            <div
               className="font-black text-white"
-              style={{ fontSize: 'clamp(2.2rem, 7.5vw, 3.8rem)', lineHeight: 0.9 }}
+              style={{ fontSize: 'clamp(2.2rem, 7.5vw, 3.8rem)', lineHeight: 1.0, paddingBottom: '0.05em' }}
             >
               {slide.tagline[0]}
-            </motion.div>
+            </div>
             {slide.tagline[1] && (
-              <motion.div
-                initial={{ opacity: 0, y: 36 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+              <div
                 className="font-black"
                 style={{
                   fontSize: 'clamp(2.2rem, 7.5vw, 3.8rem)',
-                  lineHeight: 0.9,
+                  lineHeight: 1.0,
                   paddingBottom: '0.18em',
                   ...slide.line2Style,
                 }}
               >
                 {slide.tagline[1]}
-              </motion.div>
+              </div>
             )}
           </motion.div>
         </AnimatePresence>
